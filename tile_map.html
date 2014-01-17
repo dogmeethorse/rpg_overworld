@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TILE MAP DEMO</title>
+<style>
+canvas{
+	position:absolute;
+	top:s 10px;
+	left: 10px;
+	border: 1px solid black;
+}
+
+</style>
+</head>
+<body>
+<div>
+<canvas id="canvas" width="768" height="768">
+ Your browser does not support the HTML 5 Canvas. 
+</canvas>
+<canvas id="hCanvas" width="768" height="768">
+</div>
+<div style="float:right" width = 100>
+<p  id="keysdown" ></p>
+</div>
+<script type="text/javascript">
+	// columns per row : 12
+	// rows : 12
+	
+	const TILE_WIDTH  = 16;
+	const TILE_HEIGHT = 16;
+	const DEST_WIDTH = 64;
+	const DEST_HEIGHT = 64;
+	const NUM_COLS = 12;
+	const NUM_ROWS = 12;
+	
+	var keyOutput = document.getElementById('keysdown');
+	var theCanvas = document.getElementById('canvas');
+	var context = theCanvas.getContext('2d');
+
+	var heroCanvas = document.getElementById('hCanvas');
+	var hCtx = heroCanvas.getContext('2d');
+	var tileSheet= new Image();
+	
+
+	var counter= 0;
+
+	
+	tileSheet.addEventListener('load', eventPicLoaded , false);
+	tileSheet.src="tiles_16.png";
+	
+	var forest = new Tile(0, 0, true);
+	var sand = new Tile(2, 0, true);
+	var nightForest = new Tile(6, 0, true);
+	var water = new Tile(8, 0, false);
+	var swamp = new Tile(4, 0, true);
+	var mountain = new Tile(3, 0, false);
+	var nightSand = new Tile(9,0, true);
+	function eventPicLoaded() {
+		startUp();
+	}
+	
+	var map = {
+		layout : [
+			[0,0,0,0,0,0,0,0,0,0,0,0],
+			[0,0,1,1,1,0,0,1,1,1,0,0],
+			[0,1,1,1,0,0,2,1,2,1,1,0],
+			[0,1,1,2,2,2,2,2,2,2,1,0],
+			[0,1,2,2,2,2,2,2,2,2,1,0],
+			[0,4,2,2,1,2,2,1,2,2,0,0],
+			[0,4,4,2,2,2,2,1,1,0,0,0],
+			[0,4,4,2,2,1,3,3,1,2,0,0],
+			[0,4,1,2,2,2,1,1,2,2,1,0],
+			[0,1,1,2,2,2,2,2,2,2,1,0],
+			[0,0,1,2,2,1,1,2,2,1,0,0],
+			[0,0,0,0,0,0,0,0,0,0,0,0]
+		],
+		tileList : [water,sand,forest,mountain,swamp,nightSand,nightForest],
+		draw : function(){
+			for( var row = 0; row < NUM_ROWS; row++){
+				for(var col = 0; col < NUM_COLS; col++){
+					map.tileList[this.layout[row][col]].draw(col,row);
+				}
+			}
+		}
+	}
+
+
+	var hero= {
+		x : 2 * DEST_WIDTH,
+		y : 1 * DEST_HEIGHT,
+		tilePos : [2,1],
+		targetTile: [2,1],
+		targetTileValue : map.layout[2][1],
+		speed : 16,
+		direction : "stop",
+		nextDirection : "stop",
+		/* frame order: walk down walk up walk left walk right */
+		currentFrame : 0,
+		frames:[
+			new Frame(0,1), new Frame(1,1),
+			new Frame(2,1), new Frame(3,1),
+			new Frame(4,1), new Frame(6,1),
+			new Frame(5,1), new Frame(7,1) 
+		],
+		
+		getTargetTile : function(){
+			if(hero.direction == "down"){
+				hero.targetTile =[hero.tilePos[0],hero.tilePos[1]+1];
+			}
+			if(hero.direction == "up"){
+				hero.targetTile =[hero.tilePos[0],hero.tilePos[1]-1];
+			}
+			if(hero.direction == "right"){
+				hero.targetTile =[hero.tilePos[0] + 1,hero.tilePos[1]];
+			}
+			if(hero.direction == "left"){
+				hero.targetTile =[hero.tilePos[0] -1 ,hero.tilePos[1]];
+			}
+			hero.targetTileValue = map.layout[hero.targetTile[1]][hero.targetTile[0]];		
+		},
+		tileReached : function(){
+			if(hero.x/DEST_WIDTH == hero.targetTile[0] && hero.y/DEST_HEIGHT == hero.targetTile[1]){
+				hero.tilePos = hero.targetTile;
+				hero.direction = hero.nextDirection;
+				return true;
+			}
+			else{
+				return false;
+			}
+		},
+		draw : function(){	
+			hero.frames[hero.currentFrame].draw(hero.x, hero.y);			
+		}
+	}
+
+	hero.move = function(){
+		if(hero.tileReached()){
+			if(keys.downUp && keys.upUp && keys.leftUp && keys.rightUp){
+				hero.direction = 'stop';				
+			}			
+			else{
+				hero.getTargetTile();
+			}
+			if(!map.tileList[hero.targetTileValue].passable){
+				hero.direction = 'stop';
+				hero.targetTile = hero.tilePos;
+			}
+		}
+		else{
+			if(hero.direction == "down"){
+				if(hero.currentFrame != 0){
+					hero.currentFrame = 0;
+				}
+				else{
+					hero.currentFrame ++;
+				}		
+			} 
+			
+			if(hero.direction == "up"){
+				if(hero.currentFrame != 2){
+					hero.currentFrame = 2;
+				}
+				else{
+					hero.currentFrame ++;
+				}		
+			} 
+			if(hero.direction == "left"){
+				if(hero.currentFrame != 4){
+					hero.currentFrame = 4;
+				}
+				else{
+					hero.currentFrame ++;
+				}		
+			} 
+			if(hero.direction == "right"){
+				if(hero.currentFrame != 6){
+					hero.currentFrame = 6;
+				}
+				else{
+					hero.currentFrame ++;
+				}		
+			} 
+			
+			if(hero.direction == "down"){
+				hero.y += hero.speed;
+			}
+			if(hero.direction == "up"){
+				hero.y -= hero.speed;
+			}
+			if(hero.direction == "right"){
+				hero.x += hero.speed;
+			}
+			if(hero.direction == "left"){
+				hero.x -= hero.speed;
+			}
+		}
+		keyOutput.innerHTML = "Keys up: <br> up = " + keys.upUp+ " <br>left = " + keys.leftUp + " <br> right = " + keys.rightUp + " <br> down = " + keys.downUp; 
+		keyOutput.innerHTML += "<br> direction = " + hero.direction;
+		keyOutput.innerHTML += "<br> target Tile = " + hero.targetTile[0] + " " + hero.targetTile[1];
+		keyOutput.innerHTML += "<br> target Tile value = " + hero.targetTileValue;
+		keyOutput.innerHTML += "<br> target Tile passable = " + map.tileList[hero.targetTileValue].passable;
+	} 
+		
+
+	function Tile(x, y, passable){
+		//passable take a bool true if player can walk on tile, false if not
+		this.x = x;
+		this.y = y;
+		this.passable = passable;
+		Tile.prototype.draw = function(drawX, drawY){
+			context.drawImage(tileSheet, TILE_WIDTH * this.x, TILE_HEIGHT * this.y, TILE_WIDTH, TILE_HEIGHT, drawX * DEST_WIDTH, drawY * DEST_HEIGHT, DEST_WIDTH, DEST_HEIGHT);
+		}
+	}
+
+	function Frame(x,y){
+		this.x = x;
+		this.y = y;
+	
+		Frame.prototype.draw = function(hx,hy){
+			hCtx.clearRect(0,0,6400,6400);
+			hCtx.drawImage(tileSheet, TILE_WIDTH * this.x, TILE_HEIGHT * this.y, TILE_WIDTH, TILE_HEIGHT, hx , hy, DEST_WIDTH, DEST_HEIGHT);
+		}
+	}
+	
+	/*
+	0 = water
+	1 = sand
+	2 = forest
+	3 = mountain
+	4 = swamp
+	5 = nightSand
+	6 = nightForest
+	
+	*/
+
+	var keys = {
+		downUp : true,
+		upUp : true,
+		leftUp : true,
+		rightUp : true,	
+		handleDown : function(e){
+			/* 37 = left, 38 = up, 39 = right, 40 = down
+			87 = w, 65 = a, 84 = s, 68 =d*/
+			var key = e.keyCode;
+			
+			if(key == 37 || key == 65){
+				hero.nextDirection = 'left';
+				keys.leftUp = false;
+			}
+			if(key == 38 || key == 87){
+				hero.nextDirection = 'up';
+				keys.upUp  = false;
+			}
+			if(key == 39 || key == 68){
+				hero.nextDirection = 'right';
+				keys.rightUp = false;
+			}
+			if(key == 40 || key == 84){
+				hero.nextDirection = 'down';
+				keys.downUp = false;
+			}
+		},
+		handleUp : function(e){
+			var key = e.keyCode;
+			
+			if(key == 37 || key == 65){
+				keys.leftUp = true;
+			}
+			if(key == 38 || key == 87){
+				keys.upUp = true;
+			}
+			if(key == 39 || key == 68){
+				keys.rightUp = true;
+				
+			}
+			if(key == 40 || key == 84){
+				keys.downUp= true;
+			}	
+		}
+	}
+	
+	function drawScreen() {		 
+		map.draw();
+	}
+
+	function startUp() {				
+		window.addEventListener('keydown', keys.handleDown, false);
+		window.addEventListener('keyup', keys.handleUp, false);
+		
+		drawScreen();
+
+		setInterval(function(){
+				hero.move();
+				hero.draw();
+			}, 1000/8)
+	}
+
+</script> 
+</body>
+</html>
