@@ -14,11 +14,11 @@ canvas{
 </style>
 </head>
 <body>
-<div>
-<canvas id="canvas" width="768" height="768">
+<div width="775" height="775">
+<canvas id="canvas" width="704" height="704">
  Your browser does not support the HTML 5 Canvas. 
 </canvas>
-<canvas id="hCanvas" width="768" height="768">
+<canvas id="hCanvas" width="704" height="704">
 </div>
 <div style="float:right" width = 100>
 <p  id="keysdown" ></p>
@@ -31,8 +31,9 @@ canvas{
 	const TILE_HEIGHT = 16;
 	const DEST_WIDTH = 64;
 	const DEST_HEIGHT = 64;
-	const NUM_COLS = 12;
+	const NUM_COLS = 19;
 	const NUM_ROWS = 12;
+	const SCREEN_BORDER = 5;
 	
 	var keyOutput = document.getElementById('keysdown');
 	var theCanvas = document.getElementById('canvas');
@@ -62,20 +63,22 @@ canvas{
 	
 	var map = {
 		layout : [
-			[0,0,0,0,0,0,0,0,0,0,0,0],
-			[0,0,1,1,1,0,0,1,1,1,0,0],
-			[0,1,1,1,0,0,2,1,2,1,1,0],
-			[0,1,1,2,2,2,2,2,2,2,1,0],
-			[0,1,2,2,2,2,2,2,2,2,1,0],
-			[0,4,2,2,1,2,2,1,2,2,0,0],
-			[0,4,4,2,2,2,2,1,1,0,0,0],
-			[0,4,4,2,2,1,3,3,1,2,0,0],
-			[0,4,1,2,2,2,1,1,2,2,1,0],
-			[0,1,1,2,2,2,2,2,2,2,1,0],
-			[0,0,1,2,2,1,1,2,2,1,0,0],
-			[0,0,0,0,0,0,0,0,0,0,0,0]
+			[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+			[0,0,1,1,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0],
+			[0,1,1,1,0,0,2,1,2,1,1,0,0,0,0,0,0,0,0],
+			[0,1,1,2,2,2,2,2,2,2,1,1,1,1,0,0,0,0,0],
+			[0,1,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,0],
+			[0,4,2,2,1,2,2,1,2,2,1,1,1,1,2,2,2,1,0],
+			[0,4,4,2,2,2,2,1,1,0,0,0,1,1,2,2,2,1,0],
+			[0,4,4,2,2,1,3,3,1,2,0,0,1,2,2,2,2,1,0],
+			[0,4,1,2,2,2,1,1,2,2,2,1,1,1,1,1,1,0,0],
+			[0,1,1,2,2,2,2,2,2,2,1,1,1,1,1,0,0,0,0],
+			[0,0,1,2,2,1,1,2,2,1,0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 		],
 		tileList : [water,sand,forest,mountain,swamp,nightSand,nightForest],
+		x:0,
+		y:0,
 		draw : function(){
 			for( var row = 0; row < NUM_ROWS; row++){
 				for(var col = 0; col < NUM_COLS; col++){
@@ -87,12 +90,14 @@ canvas{
 
 
 	var hero= {
-		x : 2 * DEST_WIDTH,
-		y : 1 * DEST_HEIGHT,
-		tilePos : [2,1],
-		targetTile: [2,1],
+		x : 5 * DEST_WIDTH,
+		y : 5 * DEST_HEIGHT,
+		tilePos : [5,5],
+		targetTile : [5,5],
 		targetTileValue : map.layout[2][1],
+		moveStyle : "background",
 		speed : 16,
+		distanceTravelled : 0,
 		direction : "stop",
 		nextDirection : "stop",
 		/* frame order: walk down walk up walk left walk right */
@@ -103,7 +108,27 @@ canvas{
 			new Frame(4,1), new Frame(6,1),
 			new Frame(5,1), new Frame(7,1) 
 		],
-		
+		getMoveStyle : function(){		
+			if(hero.direction == "down" && 
+			(hero.targetTile[1] >= NUM_ROWS - SCREEN_BORDER || hero.targetTile[1] <= SCREEN_BORDER)){
+				hero.moveStyle = "hero";
+			}
+			else if(hero.direction == "up" &&
+			(hero.targetTile[1] >= NUM_ROWS - SCREEN_BORDER|| hero.targetTile[1] < SCREEN_BORDER)){ 
+				hero.moveStyle = "hero";
+			}
+			else if(hero.direction == "right"  && 
+			(hero.targetTile[0] > NUM_COLS - SCREEN_BORDER - 1|| hero.targetTile[0] <= SCREEN_BORDER)){ // left is what needs to be changed this works for right.
+				hero.moveStyle = "hero";
+			}
+			else if(hero.direction == "left" &&
+			(hero.targetTile[0] > NUM_COLS - SCREEN_BORDER - 1|| hero.targetTile[0] < SCREEN_BORDER)){
+				hero.moveStyle = "hero";
+			}
+			else{
+				hero.moveStyle = "background";
+			}
+		},
 		getTargetTile : function(){
 			if(hero.direction == "down"){
 				hero.targetTile =[hero.tilePos[0],hero.tilePos[1]+1];
@@ -120,34 +145,31 @@ canvas{
 			hero.targetTileValue = map.layout[hero.targetTile[1]][hero.targetTile[0]];		
 		},
 		tileReached : function(){
-			if(hero.x/DEST_WIDTH == hero.targetTile[0] && hero.y/DEST_HEIGHT == hero.targetTile[1]){
-				hero.tilePos = hero.targetTile;
-				hero.direction = hero.nextDirection;
-				return true;
+			if(hero.moveStyle == "hero"){
+				if((hero.x - map.x)/DEST_WIDTH == hero.targetTile[0] && (hero.y - map.y)/DEST_HEIGHT == hero.targetTile[1]){//probably have to offset for map translation in debugging
+					hero.tilePos = hero.targetTile;
+					hero.direction = hero.nextDirection;
+					return true;
+				}
+				else{
+					return false;
+				}
 			}
-			else{
-				return false;
+			else if(hero.moveStyle == "background"){
+				if(hero.targetTile[0] == SCREEN_BORDER + (-1 * map.x/DEST_WIDTH) && hero.targetTile[1] == SCREEN_BORDER + (-1 * map.y/DEST_HEIGHT)){
+					hero.tilePos = hero.targetTile;
+					hero.direction = hero.nextDirection;
+					return true;
+				}
+				else{
+					return false;
+				}
 			}
 		},
 		draw : function(){	
 			hero.frames[hero.currentFrame].draw(hero.x, hero.y);			
-		}
-	}
-
-	hero.move = function(){
-		if(hero.tileReached()){
-			if(keys.downUp && keys.upUp && keys.leftUp && keys.rightUp){
-				hero.direction = 'stop';				
-			}			
-			else{
-				hero.getTargetTile();
-			}
-			if(!map.tileList[hero.targetTileValue].passable){
-				hero.direction = 'stop';
-				hero.targetTile = hero.tilePos;
-			}
-		}
-		else{
+		},
+		selectFrame : function(){
 			if(hero.direction == "down"){
 				if(hero.currentFrame != 0){
 					hero.currentFrame = 0;
@@ -179,27 +201,80 @@ canvas{
 				}
 				else{
 					hero.currentFrame ++;
-				}		
-			} 
-			
+				}
+			}		
+		},
+		updatePosition : function(){
+			hero.distanceTravelled += hero.speed;
 			if(hero.direction == "down"){
-				hero.y += hero.speed;
+				if(hero.moveStyle == "hero"){
+					hero.y += hero.speed;
+				}
+				else{
+					map.y -=hero.speed;
+					context.translate(0, -hero.speed);
+				}
 			}
 			if(hero.direction == "up"){
-				hero.y -= hero.speed;
+				if(hero.moveStyle == "hero"){
+					hero.y -= hero.speed;
+				}
+				else{
+					map.y += hero.speed;
+					context.translate(0, hero.speed);		
+				}
 			}
 			if(hero.direction == "right"){
-				hero.x += hero.speed;
+				if(hero.moveStyle == "hero"){
+					hero.x += hero.speed;
+				}
+				else{
+					map.x -= hero.speed;
+					context.translate(-hero.speed, 0);
+				}
 			}
 			if(hero.direction == "left"){
-				hero.x -= hero.speed;
+				if(hero.moveStyle == "hero"){
+					hero.x -= hero.speed;
+				}
+				else{
+					map.x += hero.speed;
+					context.translate(hero.speed, 0);
+				}
+			}		
+		}
+	}
+
+	hero.move = function(){
+		if(hero.tileReached()){
+			if(keys.downUp && keys.upUp && keys.leftUp && keys.rightUp){
+				hero.direction = 'stop';				
+			}			
+			else{
+				hero.getTargetTile();
+				hero.getMoveStyle();
+			}
+			if(!map.tileList[hero.targetTileValue].passable){
+				hero.direction = 'stop';
+				hero.targetTile = hero.tilePos;
 			}
 		}
+		else{
+			hero.selectFrame(); 
+			hero.updatePosition();		
+		}
+		
 		keyOutput.innerHTML = "Keys up: <br> up = " + keys.upUp+ " <br>left = " + keys.leftUp + " <br> right = " + keys.rightUp + " <br> down = " + keys.downUp; 
 		keyOutput.innerHTML += "<br> direction = " + hero.direction;
 		keyOutput.innerHTML += "<br> target Tile = " + hero.targetTile[0] + " " + hero.targetTile[1];
+		keyOutput.innerHTML += "<br> hero.TilePos = " + hero.tilePos[0] + " " + hero.tilePos[1];
 		keyOutput.innerHTML += "<br> target Tile value = " + hero.targetTileValue;
 		keyOutput.innerHTML += "<br> target Tile passable = " + map.tileList[hero.targetTileValue].passable;
+		keyOutput.innerHTML += "<br> map.x = " + map.x;
+		keyOutput.innerHTML += "<br> map.y = " + map.y;
+		keyOutput.innerHTML += "<br> hero.x = " + hero.x;
+		keyOutput.innerHTML += "<br> hero.y = " + hero.y;
+		keyOutput.innerHTML += "<br> hero.moveStyle = " + hero.moveStyle;		
 	} 
 		
 
@@ -293,6 +368,7 @@ canvas{
 		setInterval(function(){
 				hero.move();
 				hero.draw();
+				drawScreen();
 			}, 1000/8)
 	}
 
