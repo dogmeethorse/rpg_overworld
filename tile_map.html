@@ -24,15 +24,15 @@ canvas{
 <p  id="keysdown" ></p>
 </div>
 <script type="text/javascript">
-	// columns per row : 12
-	// rows : 12
+	// columns per row : 19
+	// rows : 19
 	
 	const TILE_WIDTH  = 16;
 	const TILE_HEIGHT = 16;
 	const DEST_WIDTH = 64;
 	const DEST_HEIGHT = 64;
 	const NUM_COLS = 19;
-	const NUM_ROWS = 15;
+	const NUM_ROWS = 19;
 	const SCREEN_BORDER = 5;
 	
 	var keyOutput = document.getElementById('keysdown');
@@ -76,7 +76,11 @@ canvas{
 			[0,0,1,2,2,1,1,2,2,4,0,0,0,4,3,3,1,0,0],
 			[0,0,0,1,2,2,2,2,3,3,3,3,3,3,2,2,1,0,0],
 			[0,0,0,0,1,2,2,2,2,2,2,2,2,2,2,1,0,0,0],
-			[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0],
+			[0,0,0,0,1,1,1,2,2,1,1,1,1,1,1,1,0,0,0],
+			[0,0,0,0,1,2,2,2,0,2,2,1,2,1,1,2,0,0,0],
+			[0,0,0,0,2,2,2,2,2,2,3,3,3,1,3,2,1,0,0],
+			[0,0,0,0,2,2,2,3,3,1,1,2,3,2,1,1,1,0,0],
+			[0,0,0,0,0,2,3,3,3,3,3,1,1,1,2,2,0,0,0],
 			[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 		],
 		tileList : [water,sand,forest,mountain,swamp,nightSand,nightForest],
@@ -332,7 +336,7 @@ canvas{
 				hero.nextDirection = 'right';
 				keys.rightUp = false;
 			}
-			if(key == 40 || key == 84){
+			if(key == 40 || key == 83){
 				hero.nextDirection = 'down';
 				keys.downUp = false;
 			}
@@ -350,7 +354,7 @@ canvas{
 				keys.rightUp = true;
 				
 			}
-			if(key == 40 || key == 84){
+			if(key == 40 || key == 83){
 				keys.downUp= true;
 			}	
 		}
