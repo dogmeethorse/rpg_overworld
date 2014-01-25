@@ -158,6 +158,32 @@ const TILE_WIDTH  = 16;
 	}
 	
 	var pallas = Object.create(fingerhut);
+	pallas.layout = [
+			[3,3,3,3,3,3,3,3,3,3,3,6,6,3,3,3,3,3,3,3,3,3,3,3],
+			[3,2,2,2,2,2,2,2,2,2,2,6,1,2,2,2,2,2,2,2,2,2,2,3],
+			[3,2,3,5,1,5,1,5,3,2,2,1,1,4,1,1,1,3,3,3,3,3,1,3],
+			[3,2,1,5,2,5,2,5,1,2,2,1,1,2,4,4,1,3,5,5,5,3,1,3],
+			[3,1,3,5,1,3,1,5,3,2,2,1,1,2,4,4,1,1,5,5,5,3,1,3],
+			[3,2,1,5,1,5,1,5,1,1,1,1,1,2,1,1,2,3,5,5,5,3,1,3],
+			[3,2,3,1,3,5,3,1,3,5,5,5,5,5,5,5,1,3,5,5,5,3,1,3],
+			[3,2,2,2,2,5,2,2,2,5,0,0,0,0,0,5,2,3,3,3,5,3,1,3],
+			[3,1,1,1,1,5,1,1,1,5,0,0,0,0,0,5,1,1,1,1,5,1,1,3],
+			[1,6,6,6,6,6,2,6,6,5,0,0,5,0,0,5,6,6,6,6,1,1,2,6],
+			[6,6,1,1,6,6,6,6,1,5,0,0,0,0,0,5,1,1,2,6,6,6,6,6],
+			[3,3,3,3,6,2,2,2,2,5,0,0,0,0,0,5,2,2,2,2,2,2,2,3],
+			[3,5,5,3,1,2,2,2,2,5,5,5,5,5,5,5,1,1,1,2,1,2,3,3],
+			[3,5,5,1,6,1,1,1,1,1,1,1,6,1,1,1,1,1,1,1,1,1,3,3],
+			[3,5,5,3,6,3,3,3,3,1,1,2,6,2,2,2,2,6,2,2,2,6,2,3],
+			[3,3,3,3,1,3,5,5,3,1,1,6,6,6,6,2,6,6,6,2,2,2,2,3],
+			[3,5,5,3,6,1,5,5,3,2,1,6,2,2,6,2,2,2,2,2,2,2,2,3],
+			[3,5,5,1,1,3,3,3,3,6,6,6,2,3,3,3,3,3,3,3,3,3,5,3],
+			[3,5,5,3,6,3,5,5,3,2,2,6,6,3,5,5,3,5,5,3,5,5,5,3],
+			[3,3,3,3,6,1,5,5,3,1,2,2,6,3,5,5,3,5,5,3,5,5,5,3],
+			[3,5,5,3,6,3,5,5,3,1,1,6,6,5,5,5,3,3,5,3,5,5,5,3],
+			[3,5,5,1,6,3,3,3,3,2,2,6,1,3,5,5,5,5,5,5,5,5,5,3],
+			[3,5,5,3,6,1,2,2,2,2,2,6,6,3,5,5,5,5,5,3,5,5,5,3],
+			[3,3,3,3,3,3,3,3,3,3,3,1,6,3,3,3,3,3,3,3,3,3,3,3]
+		];
 	
 	pallas.leaveTown = function(){
 		context.setTransform(1,0,0,1,0,0);
@@ -325,12 +351,9 @@ const TILE_WIDTH  = 16;
 	}
 	
 	hero.move = function(){
-		if(hero.tileReached()){ // we can check first before we change direction or aquire a new target tile			
-			map.checkSpecialTiles();
-			console.log('tiles checked target tile is ' + hero.targetTile[0]+ ","+ hero.targetTile[1] +
-						 "tile pos " + hero.tilePos[0] + "," + hero.tilePos[1] );				
-			hero.updateTravelVariables();
-			
+		if(hero.tileReached()){ 
+			map.checkSpecialTiles();			
+			hero.updateTravelVariables();			
 			if(keys.downUp && keys.upUp && keys.leftUp && keys.rightUp){
 				hero.direction = 'stop';				
 			}			
@@ -384,17 +407,6 @@ const TILE_WIDTH  = 16;
 		}
 	}
 	
-	/*
-	0 = water
-	1 = sand
-	2 = forest
-	3 = mountain
-	4 = swamp
-	5 = nightSand
-	6 = nightForest
-	
-	*/
-
 	var keys = {
 		downUp : true,
 		upUp : true,
@@ -439,13 +451,12 @@ const TILE_WIDTH  = 16;
 				keys.downUp= true;
 			}	
 		}
-	}
-	
+	}	
 	
 	function drawScreen() {		 
 		map.draw();
 	}
-
+	
 	function startUp() {				
 		window.addEventListener('keydown', keys.handleDown, false);
 		window.addEventListener('keyup', keys.handleUp, false);
