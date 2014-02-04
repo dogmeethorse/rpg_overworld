@@ -2,13 +2,25 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Overworld to Town</title>
+<title>NPC test</title>
 <style>
 canvas{
+	z-index:0;
 	position:absolute;
 	top: 10px;
 	left: 10px;
 	border: 1px solid black;
+}
+#dialogBox{
+	z-index: 4;
+	border : 1px solid black;
+	display: inline;
+	position:absolute;
+	color:black;
+	top: 600px;
+	left: 40px;
+	height: 100px;
+	width: 600px;
 }
 
 </style>
@@ -20,10 +32,14 @@ canvas{
 </canvas>
 <canvas id="hCanvas" width="704" height="704">
 </div>
+<div id="dialogBox">hi</div>
 <div style="float:right" width = 100>
 <p  id="keysdown" ></p>
 </div>
+<script src="tiles.js"></script>
+<script src="npc.js" ></script>
 <script src="maps.js"></script>
 <script src="hero.js"></script>
+
 </body>
 </html>

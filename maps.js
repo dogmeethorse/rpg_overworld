@@ -1,38 +1,24 @@
-const TILE_WIDTH  = 16;
-	const TILE_HEIGHT = 16;
-	const DEST_WIDTH = 64;
-	const DEST_HEIGHT = 64;
-	const NUM_COLS = 24;
-	const NUM_ROWS = 24;
-	const SCREEN_BORDER = 5;
-	
-	var keyOutput = document.getElementById('keysdown');
-	var theCanvas = document.getElementById('canvas');
-	var context = theCanvas.getContext('2d');
+/* next add npc object
+	have merchant or shopkeeper inherit
+	look up more on inheritance*/
 
-	var heroCanvas = document.getElementById('hCanvas');
-	var hCtx = heroCanvas.getContext('2d');
-	var tileSheet= new Image();
-	
-
-	var counter= 0;
 	
 	
 	tileSheet.addEventListener('load', eventPicLoaded , false);
-		tileSheet.src="tiles_16_interior.png";
+	tileSheet.src="tiles_16_npc_demo.png";
 	
-	var forest = new Tile(0, 0, true);
-	var sand = new Tile(2, 0, true);
-	var nightForest = new Tile(6, 0, true);
-	var water = new Tile(8, 0, false);
-	var swamp = new Tile(4, 0, true);
-	var mountain = new Tile(3, 0, false);
-	var nightSand = new Tile(9,0, true);
-	var city = new Tile(10, 0, true);
-	var dungeon = new Tile(11, 0, true);
-	var tileFloor = new Tile(1, 0, true);
-	var woodBlock = new Tile(12, 0, false);
-	var stones = new Tile(13, 0, true);
+	var forest      = new Tile(0,  0, true);
+	var sand        = new Tile(2,  0, true);
+	var nightForest = new Tile(6,  0, true);
+	var water       = new Tile(8,  0, false);
+	var swamp       = new Tile(4,  0, true);
+	var mountain    = new Tile(3,  0, false);
+	var nightSand   = new Tile(9,  0, true);
+	var city        = new Tile(10, 0, true);
+	var dungeon     = new Tile(11, 0, true);
+	var tileFloor   = new Tile(1,  0, true);
+	var woodBlock   = new Tile(12, 0, false);
+	var stones      = new Tile(13, 0, true);
 	
 	function eventPicLoaded() {
 		startUp();
@@ -125,7 +111,10 @@ const TILE_WIDTH  = 16;
 			[2,2,2,2,2,2,2,2,2,2,2,6,6,3,3,3,3,3,3,3,3,3,3,1]
 		];
 	fingerhut.tileList = [water, sand, forest, woodBlock, swamp, tileFloor, stones];
-	
+	fingerhut.NpcList = [
+		new NPC("Old Man",   [oldManRest1, oldManRest2], 15, 6),
+		new NPC("Old Clone", [oldManRest1, oldManRest2],  5, 10)
+	];
 	fingerhut.enterTown = function(){	
 		hero.tilePos = [11,1];
 		hero.targetTile = [11,1];
@@ -154,6 +143,11 @@ const TILE_WIDTH  = 16;
 			hero.targetTile[1] > 22){
 			//console.log("leaving town?");
 			this.leaveTown();
+		}
+	}
+	fingerhut.drawNPCs = function(){
+		for( var npc = 0; npc < this.NpcList.length; npc++){
+			this.NpcList[npc].draw();
 		}
 	}
 	
@@ -199,178 +193,7 @@ const TILE_WIDTH  = 16;
 	var map = fingerhut;
 	
 	
-	var hero= {
-		x : 5 * DEST_WIDTH,
-		y : 5 * DEST_HEIGHT,
-		tilePos : [5,5],
-		targetTile : [5,5],
-		targetTileValue : map.layout[5][5],
-		moveStyle : "background",
-		speed : 16,
-		distanceTravelled : 0,
-		direction : "stop",
-		nextDirection : "stop",
-		/* frame order: walk down walk up walk left walk right */
-		currentFrame : 0,
-		frames:[
-			new Frame(0,1), new Frame(1,1),
-			new Frame(2,1), new Frame(3,1),
-			new Frame(4,1), new Frame(6,1),
-			new Frame(5,1), new Frame(7,1) 
-		],
-		getMoveStyle : function(){		
-			if(hero.direction == "down" && 
-			(hero.targetTile[1] >= NUM_ROWS - SCREEN_BORDER || hero.targetTile[1] <= SCREEN_BORDER)){
-				hero.moveStyle = "hero";
-			}
-			else if(hero.direction == "up" &&
-			(hero.targetTile[1] >= NUM_ROWS - SCREEN_BORDER - 1 || hero.targetTile[1] < SCREEN_BORDER)){ 
-				hero.moveStyle = "hero";
-			}
-			else if(hero.direction == "right"  && 
-			(hero.targetTile[0] >= NUM_COLS - SCREEN_BORDER  || hero.targetTile[0] <= SCREEN_BORDER)){
-				hero.moveStyle = "hero";
-			}
-			else if(hero.direction == "left" &&
-			(hero.targetTile[0] >= NUM_COLS - SCREEN_BORDER - 1|| hero.targetTile[0] < SCREEN_BORDER)){
-				hero.moveStyle = "hero";
-			}
-			else{
-				hero.moveStyle = "background";
-			}
-		},
-		getTargetTile : function(){
-			if(hero.direction == "down"){
-				hero.targetTile =[hero.tilePos[0],hero.tilePos[1]+1];
-			}
-			else if(hero.direction == "up"){
-				hero.targetTile =[hero.tilePos[0],hero.tilePos[1]-1];
-			}
-			else if(hero.direction == "right"){
-				hero.targetTile =[hero.tilePos[0] + 1,hero.tilePos[1]];
-			}
-			else if(hero.direction == "left"){
-				hero.targetTile =[hero.tilePos[0] -1 ,hero.tilePos[1]];
-			}
-			hero.targetTileValue = map.layout[hero.targetTile[1]][hero.targetTile[0]];		//reversed because row comes first
-		},
-		updateTravelVariables : function(){
-			hero.tilePos = hero.targetTile; // this broke it?
-			hero.direction = hero.nextDirection;
-			hero.distanceTravelled = 0;
-		},
-		tileReached : function(){
-			if(hero.distanceTravelled == DEST_WIDTH ||
-			  (hero.tilePos[0] == hero.targetTile[0] && hero.tilePos[1] == hero.targetTile[1])
-			){
-				return true;
-			}
-			else{
-				return false;
-			}
-		},
-		draw : function(){	
-			hero.frames[hero.currentFrame].draw(hero.x, hero.y);			
-		},
-		selectFrame : function(){
-			if(hero.direction == "down"){
-				if(hero.currentFrame != 0){
-					hero.currentFrame = 0;
-				}
-				else{
-					hero.currentFrame ++;
-				}		
-			} 
-			
-			if(hero.direction == "up"){
-				if(hero.currentFrame != 2){
-					hero.currentFrame = 2;
-				}
-				else{
-					hero.currentFrame ++;
-				}		
-			} 
-			if(hero.direction == "left"){
-				if(hero.currentFrame != 4){
-					hero.currentFrame = 4;
-				}
-				else{
-					hero.currentFrame ++;
-				}		
-			} 
-			if(hero.direction == "right"){
-				if(hero.currentFrame != 6){
-					hero.currentFrame = 6;
-				}
-				else{
-					hero.currentFrame ++;
-				}
-			}		
-		},
-		updatePosition : function(){
-			if(hero.direction != "stop"){
-				hero.distanceTravelled += hero.speed;
-			}
-			if(hero.direction == "down"){
-				if(hero.moveStyle == "hero"){
-					hero.y += hero.speed;
-				}
-				else{
-					map.y -=hero.speed;
-					context.translate(0, -hero.speed);
-				}
-			}
-			if(hero.direction == "up"){
-				if(hero.moveStyle == "hero"){
-					hero.y -= hero.speed;
-				}
-				else{
-					map.y += hero.speed;
-					context.translate(0, hero.speed);		
-				}
-			}
-			if(hero.direction == "right"){
-				if(hero.moveStyle == "hero"){
-					hero.x += hero.speed;
-				}
-				else{
-					map.x -= hero.speed;
-					context.translate(-hero.speed, 0);
-				}
-			}
-			if(hero.direction == "left"){
-				if(hero.moveStyle == "hero"){
-					hero.x -= hero.speed;
-				}
-				else{
-					map.x += hero.speed;
-					context.translate(hero.speed, 0);
-				}
-			}		
-		}
-	}
 	
-	hero.move = function(){
-		if(hero.tileReached()){ 
-			map.checkSpecialTiles();			
-			hero.updateTravelVariables();			
-			if(keys.downUp && keys.upUp && keys.leftUp && keys.rightUp){
-				hero.direction = 'stop';				
-			}			
-			else{
-				hero.getTargetTile();
-				hero.getMoveStyle();
-			}
-			if(!map.tileList[hero.targetTileValue].passable){
-				hero.direction = 'stop';
-				hero.targetTile = hero.tilePos;
-			}
-		}
-		else{
-			hero.selectFrame(); 
-			hero.updatePosition();		
-		}
-	} 
 	
 	function showDebugInfo(){
 		keyOutput.innerHTML = "Keys up: <br> up = " + keys.upUp+ " <br>left = " + keys.leftUp + " <br> right = " + keys.rightUp + " <br> down = " + keys.downUp; 
@@ -387,15 +210,6 @@ const TILE_WIDTH  = 16;
 		keyOutput.innerHTML += "<br> hero.moveStyle = " + hero.moveStyle;		
 	}
 
-	function Tile(x, y, passable){
-		//passable take a bool true if player can walk on tile, false if not
-		this.x = x;
-		this.y = y;
-		this.passable = passable;
-		Tile.prototype.draw = function(drawX, drawY){
-			context.drawImage(tileSheet, TILE_WIDTH * this.x, TILE_HEIGHT * this.y, TILE_WIDTH, TILE_HEIGHT, drawX * DEST_WIDTH, drawY * DEST_HEIGHT, DEST_WIDTH, DEST_HEIGHT);
-		}
-	}
 
 	function Frame(x,y){
 		this.x = x;
@@ -455,6 +269,9 @@ const TILE_WIDTH  = 16;
 	
 	function drawScreen() {		 
 		map.draw();
+		if(map.drawNPCs){
+			map.drawNPCs();
+		}
 	}
 	
 	function startUp() {				
