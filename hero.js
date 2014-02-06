@@ -159,7 +159,6 @@ var hero= {
 				hero.direction = "stop";
 				hero.targetTile = hero.tilePos;
 			}
-			console.log("checking npc list");
 		}
 	}
 	hero.move = function(){
@@ -173,6 +172,7 @@ var hero= {
 				hero.getTargetTile();
 				hero.getMoveStyle();
 			}
+			hero.selectFrame();
 			hero.checkTargetTile();
 		}
 		else{

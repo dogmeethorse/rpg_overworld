@@ -5,7 +5,7 @@
 	
 	
 	tileSheet.addEventListener('load', eventPicLoaded , false);
-	tileSheet.src="tiles_16_npc_demo.png";
+	tileSheet.src="tiles_16.png";
 	
 	var forest      = new Tile(0,  0, true);
 	var sand        = new Tile(2,  0, true);
@@ -57,7 +57,7 @@
 		draw : function(){
 			for( var row = 0; row < NUM_ROWS; row++){
 				for(var col = 0; col < NUM_COLS; col++){
-					this.tileList[this.layout[row][col]].draw(col,row);
+					this.tileList[this.layout[row][col]].draw(col,row, false);
 				}
 			}
 		}
@@ -112,8 +112,12 @@
 		];
 	fingerhut.tileList = [water, sand, forest, woodBlock, swamp, tileFloor, stones];
 	fingerhut.NpcList = [
-		new NPC("Old Man",   [oldManRest1, oldManRest2], 15, 6),
-		new NPC("Old Clone", [oldManRest1, oldManRest2],  5, 10)
+		new NPC("Old Man",   oldManSprites, 15, 6),
+		new MovingNPC("Old Clone", oldManSprites,  5, 10),
+		new MovingNPC("Black Girl", blackGirlSprites, 8, 10),
+		new MovingNPC("Old Jew", oldJewSprites, 9, 10),
+		new MovingNPC("fat lady", fatLadySprites, 6, 10),
+		new MovingNPC("kid shroom", kidShroomSprites, 7, 9)
 	];
 	fingerhut.enterTown = function(){	
 		hero.tilePos = [11,1];
@@ -211,16 +215,6 @@
 	}
 
 
-	function Frame(x,y){
-		this.x = x;
-		this.y = y;
-	
-		Frame.prototype.draw = function(hx,hy){
-			hCtx.clearRect(0,0,6400,6400);
-			hCtx.drawImage(tileSheet, TILE_WIDTH * this.x, TILE_HEIGHT * this.y, TILE_WIDTH, TILE_HEIGHT, hx , hy, DEST_WIDTH, DEST_HEIGHT);
-		}
-	}
-	
 	var keys = {
 		downUp : true,
 		upUp : true,
@@ -235,7 +229,7 @@
 				hero.nextDirection = 'left';
 				keys.leftUp = false;
 			}
-			if(key == 38 || key == 87){
+			if(key == 38 || key == 87){Tile
 				hero.nextDirection = 'up';
 				keys.upUp  = false;
 			}
@@ -269,6 +263,7 @@
 	
 	function drawScreen() {		 
 		map.draw();
+		hero.draw();
 		if(map.drawNPCs){
 			map.drawNPCs();
 		}
@@ -282,7 +277,14 @@
 
 		setInterval(function(){
 				hero.move();
-				hero.draw();
+				if(map.NpcList){
+					for(var npc = 0; npc < map.NpcList.length; npc++){
+						if(map.NpcList[npc] instanceof MovingNPC){
+							//console.log("attempt to move");
+							map.NpcList[npc].move();
+						}
+					}
+				}
 				drawScreen();
 				showDebugInfo();
 			}, 1000/8)

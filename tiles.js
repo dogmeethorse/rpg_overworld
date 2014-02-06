@@ -22,7 +22,32 @@
 		this.x = x;
 		this.y = y;
 		this.passable = passable;
-		Tile.prototype.draw = function(drawX, drawY){
-			context.drawImage(tileSheet, TILE_WIDTH * this.x, TILE_HEIGHT * this.y, TILE_WIDTH, TILE_HEIGHT, drawX * DEST_WIDTH, drawY * DEST_HEIGHT, DEST_WIDTH, DEST_HEIGHT);
+		Tile.prototype.draw = function(drawX, drawY, isNpc){
+			if(isNpc){
+				context.drawImage(tileSheet,
+					TILE_WIDTH * this.x, TILE_HEIGHT * this.y,
+					TILE_WIDTH, TILE_HEIGHT,
+					drawX, drawY, 
+					DEST_WIDTH, DEST_HEIGHT);
+			}
+			else{
+				context.drawImage(tileSheet,
+					TILE_WIDTH * this.x, TILE_HEIGHT * this.y,
+					TILE_WIDTH, TILE_HEIGHT,
+					drawX * DEST_WIDTH, drawY * DEST_HEIGHT,
+					DEST_WIDTH, DEST_HEIGHT);
+			}	
 		}
 	}
+	
+	
+	function Frame(x,y){
+		this.x = x;
+		this.y = y;
+	
+		Frame.prototype.draw = function(hx, hy){
+			hCtx.clearRect(0,0,6400,6400);
+			hCtx.drawImage(tileSheet, TILE_WIDTH * this.x, TILE_HEIGHT * this.y, TILE_WIDTH, TILE_HEIGHT, hx , hy, DEST_WIDTH, DEST_HEIGHT);
+		}
+	}
+	
