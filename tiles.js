@@ -12,6 +12,14 @@
 
 	var heroCanvas = document.getElementById('hCanvas');
 	var hCtx = heroCanvas.getContext('2d');
+	
+	context.imageSmoothingEnabled = false;
+	context.webkitImageSmoothingEnabled = false;
+    context.mozImageSmoothingEnabled = false;
+    hCtx.imageSmoothingEnabled = false;
+    hCtx.webkitImageSmoothingEnabled = false;
+    hCtx.mozImageSmoothingEnabled = false;
+	
 	var tileSheet= new Image();
 	
 
