@@ -1,0 +1,129 @@
+canvas{
+	position:absolute;
+	top: 10px;
+	left: 10px;
+	border: 1px solid black;
+    image-rendering: optimizeSpeed;             // Older versions of FF
+    image-rendering: -moz-crisp-edges;          // FF 6.0+
+    image-rendering: -webkit-optimize-contrast; // Webkit
+                                                //  (Safari now, Chrome soon)
+    image-rendering: -o-crisp-edges;            // OS X & Windows Opera (12.02+)
+    image-rendering: optimize-contrast;         // Possible future browsers.
+    -ms-interpolation-mode: nearest-neighbor;   // IE LOL
+}
+#canvas{
+	z-index: 1; 
+}
+
+#hCanvas{
+	z-index: 2;
+}
+
+#dialogBox{
+	position:absolute;
+	z-index: -1;
+	border : 1px solid black;
+	display: inline;
+	background-color:black;
+	top: 600px;
+	left: 40px;
+	height: 100px;
+	width: 600px;
+}
+
+h1{
+	text-align:center ;
+}
+
+h3{
+	text-align:center;
+	color:white;
+}
+
+p.game{
+	color:white;
+	margin-left: 10px;	
+}
+
+span.game{
+	color:white;
+}
+
+button.game{
+	display:box;
+	text-align: center;
+	width: 130px;
+	height: 30px;
+	background-color: #848484;
+	border-radius: 20px;
+	margin:5px;
+}
+
+#game_screen{
+	overflow:hidden;
+	position:relative;
+	z-index:1;
+	background-color: white;
+	margin-left:10px;
+	border: 2px solid black;
+	border-radius: 20px;
+	box-shadow: inset 0px 0px 15px #888; 
+}
+
+#background{
+	position:relative;
+	z-index:0;
+	display:box;
+	border: 1px solid black;
+	background-color:#0B6121;
+	width: 600px;
+	border-radius: 20px;
+	box-shadow: inset 0px 0px 30px #888;
+}
+
+div.game {
+	border: 2px solid black;
+	border-radius:20px;
+	box-shadow: inset 0px 0px 15px #888;
+	background-color: black;
+}
+
+#stats{
+	position:relative;
+	margin-right: 10px;
+	float:right;
+	width:150px;
+	height:100px;
+}
+
+#command_card{
+	display:box;
+	position:relative;
+	bottom: 285px;
+	clear: bottom;
+	float:right;
+	margin-right: 10px;
+	width:150px;
+	height:200px;		
+}
+
+#itemMenu{
+	position:absolute;
+	top:180px;
+	z-index:100;
+	padding:10px;
+	width :300px;
+	height : 200px;
+	margin-left:50px;
+}
+
+#shopMenu{
+	position:absolute;
+	top:120px;
+	z-index:100;
+	padding:10px;
+	width :300px;
+	height : 400px;
+	margin-left:50px;
+	border: 2px solid white;
+}

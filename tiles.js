@@ -6,12 +6,21 @@
 	const NUM_ROWS = 24;
 	const SCREEN_BORDER = 5;
 	
+	const START = 1;
+	const TOWN	= 10;
+	const TALK	= 15;
+	const OVERWORLD = 20;
+	const DUNGEON = 30;
+	const SHOP = 16;
+	const BATTLE = 25;
+	
 	var keyOutput = document.getElementById('keysdown');
 	var theCanvas = document.getElementById('canvas');
 	var context = theCanvas.getContext('2d');
 
 	var heroCanvas = document.getElementById('hCanvas');
 	var hCtx = heroCanvas.getContext('2d');
+	var dialogBox = document.getElementById('dialogBox');
 	
 	context.imageSmoothingEnabled = false;
 	context.webkitImageSmoothingEnabled = false;
@@ -20,8 +29,8 @@
     hCtx.webkitImageSmoothingEnabled = false;
     hCtx.mozImageSmoothingEnabled = false;
 	
-	var tileSheet= new Image();
-	
+	var tileSheet = new Image();
+	var state = TOWN;
 
 	var counter= 0;
 

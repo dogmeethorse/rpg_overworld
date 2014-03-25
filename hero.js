@@ -9,6 +9,7 @@ var hero= {
 		distanceTravelled : 0,
 		direction : "stop",
 		nextDirection : "stop",
+		action : false,
 		/* frame order: walk down walk up walk left walk right */
 		currentFrame : 0,
 		frames:[
@@ -161,13 +162,70 @@ var hero= {
 			}
 		}
 	}
+	
+	hero.tryAction = function(){
+		// attempts to do whatever actions make sense in context when spacebar is pressed
+		// resets hero.action to false when finished;
+		console.log("state 10 = town check " + state + " hero.action " + hero.action);
+		if(state == TOWN){
+			console.log('looking for people to talk to.');
+			if( hero.currentFrame == 0 || //check facing down
+				hero.currentFrame == 1){
+				for(var npc = 0; npc < map.NpcList.length; npc++){
+					if( hero.tilePos[0] == map.NpcList[npc].tilePos[0] &&
+						hero.tilePos[1] + 1 == map.NpcList[npc].tilePos[1]){
+						map.NpcList[npc].talk();
+					}
+				}
+			}
+			if( hero.currentFrame == 2 || //check facing up
+				hero.currentFrame == 3){
+				for(var npc = 0; npc < map.NpcList.length; npc++){
+					if( hero.tilePos[0] == map.NpcList[npc].tilePos[0] &&
+						hero.tilePos[1] - 1 == map.NpcList[npc].tilePos[1]){
+						map.NpcList[npc].talk();
+					}
+				}
+			}
+			if( hero.currentFrame == 4 || //check facing right
+				hero.currentFrame == 5){
+				for(var npc = 0; npc < map.NpcList.length; npc++){
+					if( hero.tilePos[0] - 1 == map.NpcList[npc].tilePos[0] &&
+						hero.tilePos[1] == map.NpcList[npc].tilePos[1]){
+						map.NpcList[npc].talk();
+					}
+				}
+			}
+			if( hero.currentFrame == 6 || //check facing left
+				hero.currentFrame == 7){
+				for(var npc = 0; npc < map.NpcList.length; npc++){
+					if( hero.tilePos[0] + 1 == map.NpcList[npc].tilePos[0] &&
+						hero.tilePos[1] == map.NpcList[npc].tilePos[1]){
+						map.NpcList[npc].talk();
+					}
+				}
+			}
+		}
+		else if(state == TALK){ //NPC puts you into talk state.
+			//right now if you leave town with dialog box in front won't be able to get it 
+			//to go away until you enter town again.
+			dialogBox.style.zIndex = -1;
+			state = TOWN;		
+		}
+		hero.action = false;
+	}
+	
 	hero.move = function(){
 		if(hero.tileReached()){ 
 			map.checkSpecialTiles();			
 			hero.updateTravelVariables();			
 			if(keys.downUp && keys.upUp && keys.leftUp && keys.rightUp){
 				hero.direction = 'stop';				
-			}			
+			}
+			if(hero.action){
+				console.log("about to try action " + hero.action);
+				hero.tryAction();
+			}		
 			else{
 				hero.getTargetTile();
 				hero.getMoveStyle();
@@ -180,20 +238,3 @@ var hero= {
 			hero.updatePosition();		
 		}
 	} 
-	hero.talk = function(){
-		console.log("talking");
-		for(var npc = 0; npc < map.NpcList.length; npc++){
-			console.log("going through list");
-			if( (hero.tilePos[0] == map.NpcList[npc].tilePos[0] &&
-				hero.tilePos[1] - 1 == map.NpcList[npc].tilePos[1]) ||
-				(hero.tilePos[0] == map.NpcList[npc].tilePos[0] &&
-				hero.tilePos[1] + 1 == map.NpcList[npc].tilePos[1]) ||
-				(hero.tilePos[0] -1 == map.NpcList[npc].tilePos[0] &&
-				hero.tilePos[1] == map.NpcList[npc].tilePos[1]) ||
-				(hero.tilePos[0] + 1 == map.NpcList[npc].tilePos[0] &&
-				hero.tilePos[1]  == map.NpcList[npc].tilePos[1])
-			){
-				map.NpcList[npc].talk();
-			}
-		}
-	}

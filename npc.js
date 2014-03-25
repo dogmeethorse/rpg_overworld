@@ -75,14 +75,18 @@ function NPC(name, sprites, xTile, yTile){
 	this.tilePos[1] = yTile;
 	this.x = xTile * DEST_WIDTH;; //for pixel positions
 	this.y = yTile * DEST_HEIGHT;;
-	this.onScreen = false;
+	this.onScreen = false; //not using this yet.
 	this.currentFrame = 0;
+	this.talking = false;
 }
 
 NPC.prototype.talk = function(){
+	state = TALK;
 	console.log("talking");
-	var dialogBox = document.getElementById('dialogBox');
-	dialogBox.innerHTML = "<p> Thou hast triggered the sample dialog</p>";
+	this.talking = true;
+	//physically moving the divs around
+	dialogBox.style.zIndex = 4;
+	dialogBox.innerHTML = "<p class='game'> Thou hast triggered the sample dialog</p>";
 }
 
 NPC.prototype.draw = function(){
@@ -106,25 +110,25 @@ function MovingNPC(name, sprites, xTile, yTile){
 	this.currentFrame = 0;
 	this.speed = 8;
 	this.distanceTravelled = 0;
+	this.talking = false;
 }
 MovingNPC.prototype = new NPC();
-MovingNPC.constructor = NPC.constructor;
 
 MovingNPC.prototype.getDirection = function(){
-	var randomDirection = randomInt(0,6);
-	if(randomDirection < 3){
+	var randomDirection = randomInt(0,30);
+	if(randomDirection < 27){
 		this.direction = "stop";
 	}
-	else if(randomDirection == 3){
+	else if(randomDirection == 27){
 		this.direction = "up";
 	}
-	else if(randomDirection == 4){
+	else if(randomDirection == 28){
 		this.direction = "down";
 	}
-	else if(randomDirection == 5){
+	else if(randomDirection == 29){
 		this.direction = "left";
 	}
-	else if(randomDirection == 6){
+	else if(randomDirection == 30){
 		this.direction = "right";
 	}
 }
@@ -185,7 +189,6 @@ MovingNPC.prototype.destinationReached = function(){
 }
 
 MovingNPC.prototype.updatePos = function(){
-	console.log(this.distanceTravelled + " " + this.x + " " + this.y + " " + this.currentFrame);
 	if(this.direction != "stop"){
 		this.distanceTravelled += this.speed;
 	}
@@ -254,3 +257,12 @@ MovingNPC.prototype.move = function(){
 	this.selectFrame();
 }
 
+function Shopkeeper(name, sprites, xTile, yTile){
+	NPC.apply(this, [name, sprites, xTile, yTile]);
+}
+Shopkeeper.prototype = new NPC();
+
+Shopkeeper.prototype.talk = function(){
+	NPC.prototype.talk.call(this);
+	shopPallas.open();
+}

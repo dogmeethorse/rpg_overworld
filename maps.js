@@ -1,6 +1,9 @@
 /* next add npc object
 	have merchant or shopkeeper inherit
-	look up more on inheritance*/
+	look up more on inheritance
+	eventPicLoaded is going to be a huge pain in the future. all asset loading will need 
+	to be completely redone.
+	*/
 
 	
 	
@@ -112,7 +115,7 @@
 		];
 	fingerhut.tileList = [water, sand, forest, woodBlock, swamp, tileFloor, stones];
 	fingerhut.NpcList = [
-		new NPC("Old Man",   oldManSprites, 15, 6),
+		new Shopkeeper("Old Man",   oldManSprites, 15, 6),
 		new MovingNPC("Old Clone", oldManSprites,  5, 10),
 		new MovingNPC("Black Girl", blackGirlSprites, 8, 10),
 		new MovingNPC("Old Jew", oldJewSprites, 9, 10),
@@ -214,7 +217,6 @@
 		keyOutput.innerHTML += "<br> hero.moveStyle = " + hero.moveStyle;		
 	}
 
-
 	var keys = {
 		downUp : true,
 		upUp : true,
@@ -222,7 +224,9 @@
 		rightUp : true,	
 		handleDown : function(e){
 			/* 37 = left, 38 = up, 39 = right, 40 = down
-			87 = w, 65 = a, 84 = s, 68 =d*/
+			 * 87 = w, 65 = a, 84 = s, 68 =d
+			 * 32 = spacebar
+			 */
 			var key = e.keyCode;
 			
 			if(key == 37 || key == 65){
@@ -240,6 +244,11 @@
 			if(key == 40 || key == 83){
 				hero.nextDirection = 'down';
 				keys.downUp = false;
+			}
+			if(key == 32){ //this is talking not quite sure how to add it in.
+				hero.nextDirection = 'stop';
+				hero.action = true;
+				console.log("trying action " + hero.action);
 			}
 		},
 		handleUp : function(e){
