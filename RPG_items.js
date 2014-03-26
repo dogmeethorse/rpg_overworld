@@ -58,7 +58,7 @@ function healingPotion(name,strength, cost){
 		
 		combatHero.inventory.splice(combatHero.inventory.indexOf(this), 1);
 		combatHero.setStats();
-		closeItemMenu(itemMenu);
+		inventoryMenu.updateItems();
 		sendMessage("You quaff the "+ this.name + " and gain " + this.strength + "hp", false);
 	}
 	

@@ -99,6 +99,7 @@ div.game {
 
 #itemMenu{
 	position:absolute;
+	overflow: scroll;
 	top:140px;
 	left: 730px;
 	z-index: 100;

@@ -16,7 +16,7 @@ function buyWeapon(shop, weapon){
 
 function useItem(item){
 	return function(){
-		hero.inventory[item].quaff();
+		combatHero.inventory[item].quaff();
 	}
 }
 var inventoryMenu = {
@@ -59,17 +59,17 @@ var inventoryMenu = {
 		}
 	},
 	updateItems : function(){
-		while (this.weaponList.lastChild) {
+		while (this.itemList.lastChild) {
     		this.itemList.removeChild(this.itemList.lastChild);
     	}	
     	var itemButtons = [];
 			var itemNo;
 	
-		for(itemNo = 0; itemNo < hero.inventory.length; itemNo++){
+		for(itemNo = 0; itemNo < combatHero.inventory.length; itemNo++){
 			itemButtons[itemNo] = document.createElement('button');
 		
 			itemButtons[itemNo].addEventListener('click', useItem(itemNo) ,false);		
-			itemButtons[itemNo].textContent = hero.inventory[itemNo].name;
+			itemButtons[itemNo].textContent = combatHero.inventory[itemNo].name;
 			this.itemList.appendChild(itemButtons[itemNo]);	
 		}
 	}
