@@ -46,7 +46,12 @@ var inventoryMenu = {
 			option[weap].setAttribute('type', "radio");
 			option[weap].setAttribute('name', "weapons");
 			option[weap].setAttribute('value', weap.toString());
-			option[weap].addEventListener('click', combatHero.weapons[+option[weap].value].equip());
+			option[weap].addEventListener('click', function(){
+				console.log("weap is "+ weap);
+				var num = weap;
+				console.log(num);
+				return function(id){combatHero.weapons[num].equip()};
+			}());
 			this.weaponList.appendChild(option[weap]);
 			var weapName = document.createElement('span');
 			weapName.innerHTML = combatHero.weapons[weap].name + "<br>";

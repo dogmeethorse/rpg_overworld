@@ -5,8 +5,10 @@ function Weapon(name, dmgBonus, attackChanceBonus, cost){
 	this.attackChanceBonus = attackChanceBonus;
 	this.cost = cost;
 }	
+
 	Weapon.prototype.equip = function(){
 		combatHero.weapon.unequip();
+		
 		combatHero.weapon = this;
 		combatHero.maxDmg += this.dmgBonus;
 		combatHero.atk += this.attackChanceBonus;
@@ -21,10 +23,11 @@ function Weapon(name, dmgBonus, attackChanceBonus, cost){
 	Weapon.prototype.buy = function(){
 		console.log(this);
 		console.log(" buying = "+ this.name + " cost = " + this.cost);
-		if(combatHero.gld >= this.cost){
+		if(combatHero.gold >= this.cost){
 			combatHero.weapons.push(new Weapon(this.name , this.dmgBonus, this.cost));
-			combatHero.gld -= this.cost;		
-			sendMessage("You bought a "+ this.name,true);
+			combatHero.gold -= this.cost;		
+			sendMessage("You bought a " + this.name,true);
+			inventoryMenu.updateWeapons();
 		}
 		else{
 			sendMessage("You cannot afford "+ this.name, true);
@@ -63,16 +66,16 @@ function healingPotion(name,strength, cost){
 		console.log(this);
 		console.log('trying to buy potion');
 		console.log("name ="+ this.name + "cost = " + this.cost);
-		if(combatHero.gld >= this.cost){
+		if(combatHero.gold >= this.cost){
 			console.log("buying Potion");
 			
 			combatHero.inventory.push(new healingPotion(this.name , this.strength, this.cost));
-			combatHero.gld -= this.cost;
+			combatHero.gold -= this.cost;
 			
-			sendMessage("You bought a "+ this.name,true);
-			
-			console.log("combatHero inventory length ="+ combatHero.inventory.length);
+			sendMessage("You bought a "+ this.name,true);			
+			console.log("combatHero inventory length =" + combatHero.inventory.length);
 			console.log(combatHero.inventory);
+			inventoryMenu.updateItems();
 			combatHero.setStats();
 		}
 		else{
@@ -89,7 +92,7 @@ combatHero = {
 	weapon : noWeapon,
 	maxHp : 10,
 	hp : 10,
-	xp : 10,
+	xp : 0,
 	nextLvlXp : 100,
 	lvl : 1,
 	gold : 100,
@@ -99,7 +102,7 @@ combatHero = {
 	weapons : [noWeapon],
 	inventory : [],
 	setStats : function(){
-		statsBox.innerHTML = "<span>Level: " + combatHero.lvl + "</span><br>";
+		statsBox.innerHTML  = "<span>Level: " + combatHero.lvl + "</span><br>";
 		statsBox.innerHTML += "<span>XP: " + combatHero.xp + "</span><br>";
 		statsBox.innerHTML += "<span>HP: " + combatHero.hp + "</span><br>";
 		statsBox.innerHTML += "<span>Gold : " + combatHero.gold + "</span><br>";
