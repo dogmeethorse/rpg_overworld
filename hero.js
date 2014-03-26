@@ -227,8 +227,10 @@ var hero= {
 				hero.tryAction();
 			}		
 			else{
-				hero.getTargetTile();
-				hero.getMoveStyle();
+				if(state == TOWN || state == OVERWORLD){
+					hero.getTargetTile();
+					hero.getMoveStyle();
+				}
 			}
 			hero.selectFrame();
 			hero.checkTargetTile();

@@ -1,6 +1,11 @@
 // facing index
 // 0, 1 front 2, 3 back 4, 5 left 6, 7 right
 
+var script= {
+	placeholder : "Hey buddy",
+	fingerhutShop : "Buy Something Will ya!"	
+}
+
 var oldManSprites = [
 						new Tile(0,2, true),
 						new Tile(1,2, true),
@@ -66,7 +71,7 @@ function randomInt(min,max){
 }
      
 
-function NPC(name, sprites, xTile, yTile){
+function NPC(name, sprites, xTile, yTile, message){
 	this.name = name;
 	this.direction = "stop";
 	this.sprites = sprites;
@@ -78,6 +83,7 @@ function NPC(name, sprites, xTile, yTile){
 	this.onScreen = false; //not using this yet.
 	this.currentFrame = 0;
 	this.talking = false;
+	this.message = message || script.placeholder;
 }
 
 NPC.prototype.talk = function(){
@@ -86,7 +92,7 @@ NPC.prototype.talk = function(){
 	this.talking = true;
 	//physically moving the divs around
 	dialogBox.style.zIndex = 4;
-	dialogBox.innerHTML = "<p class='game'> Thou hast triggered the sample dialog</p>";
+	dialogBox.innerHTML = "<p class='game'>" + this.message + "</p>";
 }
 
 NPC.prototype.draw = function(){
@@ -97,20 +103,10 @@ NPC.prototype.draw = function(){
 	}
 }
 
-function MovingNPC(name, sprites, xTile, yTile){
-	this.name = name;
-	this.direction = "stop";
-	this.sprites = sprites;
-	this.tilePos = [];
-	this.tilePos[0] = xTile;
-	this.tilePos[1] = yTile;
-	this.x = xTile * DEST_WIDTH; //for pixel positions
-	this.y = yTile * DEST_HEIGHT;
-	this.onScreen = false;
-	this.currentFrame = 0;
+function MovingNPC(name, sprites, xTile, yTile, message){
+	NPC.apply(this, [name, sprites, xTile, yTile, message]);
 	this.speed = 8;
 	this.distanceTravelled = 0;
-	this.talking = false;
 }
 MovingNPC.prototype = new NPC();
 
@@ -243,7 +239,7 @@ MovingNPC.prototype.selectFrame = function(){
 				}
 			}
 }
-
+ 
 MovingNPC.prototype.move = function(){
 	//console.log("npc moving");
 	if(this.destinationReached()){
@@ -257,8 +253,8 @@ MovingNPC.prototype.move = function(){
 	this.selectFrame();
 }
 
-function Shopkeeper(name, sprites, xTile, yTile){
-	NPC.apply(this, [name, sprites, xTile, yTile]);
+function Shopkeeper(name, sprites, xTile, yTile, message){
+	NPC.apply(this, [name, sprites, xTile, yTile, message]);
 }
 Shopkeeper.prototype = new NPC();
 

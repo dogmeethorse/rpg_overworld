@@ -21,7 +21,7 @@
 	var heroCanvas = document.getElementById('hCanvas');
 	var hCtx = heroCanvas.getContext('2d');
 	var dialogBox = document.getElementById('dialogBox');
-	
+	var statsBox = document.getElementById('stats');
 	context.imageSmoothingEnabled = false;
 	context.webkitImageSmoothingEnabled = false;
     context.mozImageSmoothingEnabled = false;
@@ -33,7 +33,16 @@
 	var state = TOWN;
 
 	var counter= 0;
-
+	
+	function sendMessage(output,addOrReplace){
+   		if(addOrReplace == true){ 		
+    	   	dialogBox.innerHTML = '<span>' + output + '</span>';
+    	}
+   		else{
+    	    dialogBox.innerHTML += '<span>' + output + '</span>';
+    	}
+	}	
+	
 	function Tile(x, y, passable){
 		//passable take a bool true if player can walk on tile, false if not
 		this.x = x;

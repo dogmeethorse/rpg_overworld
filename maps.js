@@ -115,7 +115,7 @@
 		];
 	fingerhut.tileList = [water, sand, forest, woodBlock, swamp, tileFloor, stones];
 	fingerhut.NpcList = [
-		new Shopkeeper("Old Man",   oldManSprites, 15, 6),
+		new Shopkeeper("Old Man",   oldManSprites, 15, 6, script.fingerhutShop),
 		new MovingNPC("Old Clone", oldManSprites,  5, 10),
 		new MovingNPC("Black Girl", blackGirlSprites, 8, 10),
 		new MovingNPC("Old Jew", oldJewSprites, 9, 10),
@@ -286,11 +286,13 @@
 
 		setInterval(function(){
 				hero.move();
-				if(map.NpcList){
-					for(var npc = 0; npc < map.NpcList.length; npc++){
-						if(map.NpcList[npc] instanceof MovingNPC){
-							//console.log("attempt to move");
-							map.NpcList[npc].move();
+				if(state == TOWN){
+					if(map.NpcList){
+						for(var npc = 0; npc < map.NpcList.length; npc++){
+							if(map.NpcList[npc] instanceof MovingNPC){
+								//console.log("attempt to move");
+								map.NpcList[npc].move();
+							}
 						}
 					}
 				}

@@ -11,6 +11,7 @@ function Weapon(name, dmgBonus, attackChanceBonus, cost){
 		combatHero.maxDmg += this.dmgBonus;
 		combatHero.atk += this.attackChanceBonus;
 		console.log("wielding :"+ combatHero.weapon.name);
+		inventoryMenu.currentWeapon.innerHTML = "<span> Wielding: " +combatHero.weapon.name + "</span>";
 	}
 	
 	Weapon.prototype.unequip = function(){
@@ -28,7 +29,7 @@ function Weapon(name, dmgBonus, attackChanceBonus, cost){
 		else{
 			sendMessage("You cannot afford "+ this.name, true);
 		}
-		setStats();
+		combatHero.setStats();
 	}
 
 
@@ -53,7 +54,7 @@ function healingPotion(name,strength, cost){
 		}
 		
 		combatHero.inventory.splice(combatHero.inventory.indexOf(this), 1);
-		setStats();
+		combatHero.setStats();
 		closeItemMenu(itemMenu);
 		sendMessage("You quaff the "+ this.name + " and gain " + this.strength + "hp", false);
 	}
@@ -72,7 +73,7 @@ function healingPotion(name,strength, cost){
 			
 			console.log("combatHero inventory length ="+ combatHero.inventory.length);
 			console.log(combatHero.inventory);
-			setStats();
+			combatHero.setStats();
 		}
 		else{
 			sendMessage("You cannot afford "+ this.name, true);
@@ -96,7 +97,14 @@ combatHero = {
 	maxDmg : 1 + this.lvl,// + this.weapon.dmgBonus, 
 	minDmg : 1 + this.lvl -1,
 	weapons : [noWeapon],
-	inventory : []
+	inventory : [],
+	setStats : function(){
+		statsBox.innerHTML = "<span>Level: " + combatHero.lvl + "</span><br>";
+		statsBox.innerHTML += "<span>XP: " + combatHero.xp + "</span><br>";
+		statsBox.innerHTML += "<span>HP: " + combatHero.hp + "</span><br>";
+		statsBox.innerHTML += "<span>Gold : " + combatHero.gold + "</span><br>";
+	}
 }
 
 combatHero.maxDmg = combatHero.lvl + combatHero.weapon.dmgBonus;
+combatHero.setStats();
