@@ -3,7 +3,8 @@
 
 var script= {
 	placeholder : "Hey buddy",
-	fingerhutShop : "Buy Something Will ya!"	
+	fingerhutShop : "Buy Something Will ya!",
+	blackGirl : "Let me see you dance!"	
 }
 
 var oldManSprites = [

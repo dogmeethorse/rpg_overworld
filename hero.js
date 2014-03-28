@@ -167,6 +167,9 @@ var hero= {
 		// attempts to do whatever actions make sense in context when spacebar is pressed
 		// resets hero.action to false when finished;
 		console.log("state 10 = town check " + state + " hero.action " + hero.action);
+		if(dialogBox.style.zIndex == 4){
+			dialogBox.style.zIndex = -1;
+		}
 		if(state == TOWN){
 			console.log('looking for people to talk to.');
 			if( hero.currentFrame == 0 || //check facing down

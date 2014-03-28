@@ -35,6 +35,7 @@
 	var counter= 0;
 	
 	function sendMessage(output,addOrReplace){
+		dialogBox.style.zIndex = 4;
    		if(addOrReplace == true){ 		
     	   	dialogBox.innerHTML = '<span>' + output + '</span>';
     	}

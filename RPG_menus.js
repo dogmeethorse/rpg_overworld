@@ -50,7 +50,7 @@ var inventoryMenu = {
 				console.log("weap is "+ weap);
 				var num = weap;
 				console.log(num);
-				return function(id){combatHero.weapons[num].equip()};
+				return function(){combatHero.weapons[num].equip()};
 			}());
 			this.weaponList.appendChild(option[weap]);
 			var weapName = document.createElement('span');
@@ -72,6 +72,13 @@ var inventoryMenu = {
 			itemButtons[itemNo].textContent = combatHero.inventory[itemNo].name;
 			this.itemList.appendChild(itemButtons[itemNo]);	
 		}
+	},
+	sellmode : function(){
+		function addSellButtons(list, inventory){
+			var listArray = list.children;
+		}
+		addSellButtons(this.weaponList);
+		addSellButtons(this.itemLIst);
 	}
 }
 
@@ -83,7 +90,7 @@ var shopPallas = {
 	itemsToBuy : document.createElement('div'),
 	weaponList : document.createElement('div'),
 	init : function(){
-		this.self = this;
+		this.self = function(){return this}();
 		this.background.setAttribute('class','game');
 		this.background.setAttribute('id', 'shopMenu');
 		this.background.innerHTML = '<h3>SHOP<h3>'		

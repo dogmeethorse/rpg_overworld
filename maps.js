@@ -5,8 +5,6 @@
 	to be completely redone.
 	*/
 
-	
-	
 	tileSheet.addEventListener('load', eventPicLoaded , false);
 	tileSheet.src="tiles_16.png";
 	
@@ -116,13 +114,14 @@
 	fingerhut.tileList = [water, sand, forest, woodBlock, swamp, tileFloor, stones];
 	fingerhut.NpcList = [
 		new Shopkeeper("Old Man",   oldManSprites, 15, 6, script.fingerhutShop),
-		new MovingNPC("Old Clone", oldManSprites,  5, 10),
-		new MovingNPC("Black Girl", blackGirlSprites, 8, 10),
-		new MovingNPC("Old Jew", oldJewSprites, 9, 10),
-		new MovingNPC("fat lady", fatLadySprites, 6, 10),
-		new MovingNPC("kid shroom", kidShroomSprites, 7, 9)
+		new MovingNPC("Old Clone", oldManSprites,  3, 14),
+		new MovingNPC("Black Girl", blackGirlSprites, 22, 10, script.blackGirl),
+		new MovingNPC("Old Jew", oldJewSprites, 12, 5),
+		new MovingNPC("fat lady", fatLadySprites, 21, 16),
+		new MovingNPC("kid shroom", kidShroomSprites, 8, 20)
 	];
-	fingerhut.enterTown = function(){	
+	fingerhut.enterTown = function(){
+		state = TOWN;	
 		hero.tilePos = [11,1];
 		hero.targetTile = [11,1];
 		hero.x = 320;
@@ -132,8 +131,8 @@
 		map = this;
 	}
 	fingerhut.leaveTown = function(){
+		state = OVERWORLD;
 		context.setTransform(1,0,0,1,0,0);
-		
 		map = overworld;
 		hero.tilePos[0] = 5;
 		hero.tilePos[1] = 5;
@@ -187,6 +186,7 @@
 		];
 	
 	pallas.leaveTown = function(){
+		state= OVERWORLD;
 		context.setTransform(1,0,0,1,0,0);
 		context.translate(-192, -576);
 		map = overworld;
@@ -285,18 +285,18 @@
 		drawScreen();
 
 		setInterval(function(){
-				hero.move();
-				if(state == TOWN){
-					if(map.NpcList){
-						for(var npc = 0; npc < map.NpcList.length; npc++){
-							if(map.NpcList[npc] instanceof MovingNPC){
-								//console.log("attempt to move");
-								map.NpcList[npc].move();
-							}
+			hero.move();
+			if(state == TOWN){
+				if(map.NpcList){
+					for(var npc = 0; npc < map.NpcList.length; npc++){
+						if(map.NpcList[npc] instanceof MovingNPC){
+							//console.log("attempt to move");
+							map.NpcList[npc].move();
 						}
 					}
 				}
-				drawScreen();
-				showDebugInfo();
-			}, 1000/8)
+			}
+			drawScreen();
+			showDebugInfo();
+		}, 1000/8)
 	}
