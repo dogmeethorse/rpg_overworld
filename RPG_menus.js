@@ -98,7 +98,7 @@ var shopPallas = {
 		//adding weapons
 		for(var weap = 0; weap < this.weapons.length; weap++){
 			weapButtons[weap] = document.createElement('button')
-			weapButtons[weap].addEventListener('click', buyWeapon(this.self, weap),false);
+			weapButtons[weap].addEventListener('click', buyWeapon(shopPallas, weap),false);
 			weapButtons[weap].innerHTML = this.weapons[weap].name + " price " + this.weapons[weap].cost + "gold";
 			this.weaponList.appendChild(weapButtons[weap]);
 		}	
@@ -108,7 +108,7 @@ var shopPallas = {
 		for(itemNo = 0; itemNo < this.items.length; itemNo++ ){
 			itemButtons[itemNo] = document.createElement('button');
 			itemButtons[itemNo].textContent= this.items[itemNo].name + " " + this.items[itemNo].cost + "gold";
-			itemButtons[itemNo].addEventListener('click', buyItem(this.self, itemNo),false);			
+			itemButtons[itemNo].addEventListener('click', buyItem(shopPallas, itemNo),false);			
 			this.itemsToBuy.appendChild(itemButtons[itemNo]);
 		}
 	
