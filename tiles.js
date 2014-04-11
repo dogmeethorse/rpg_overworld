@@ -34,6 +34,10 @@
 
 	var counter= 0;
 	
+	function randomInt(min,max){
+   		return Math.floor(Math.random() * (max - (min-1) )) + min;
+	} 
+	
 	function sendMessage(output,addOrReplace){
 		dialogBox.style.zIndex = 4;
    		if(addOrReplace == true){ 		
@@ -66,7 +70,6 @@
 			}	
 		}
 	}
-	
 	
 	function Frame(x,y){
 		this.x = x;

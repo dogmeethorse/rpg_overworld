@@ -67,10 +67,6 @@ var kidShroomSprites = [
 						new Tile(6,6, true),
 						new Tile(7,6, true)
 					 ]
-function randomInt(min,max){
-    return Math.floor(Math.random() * (max - (min-1) )) + min;
-}
-     
 
 function NPC(name, sprites, xTile, yTile, message){
 	this.name = name;

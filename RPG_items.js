@@ -35,7 +35,6 @@ function Weapon(name, dmgBonus, attackChanceBonus, cost){
 		combatHero.setStats();
 	}
 
-
 var noWeapon = new Weapon("Bare Hands", 0, 0, 0);
 var stick = new Weapon('Wooden Stick', 2, 4, 5);
 var dagger = new Weapon('Dagger', 4, 5, 20);
@@ -108,6 +107,31 @@ combatHero = {
 		statsBox.innerHTML += "<span>Gold : " + combatHero.gold + "</span><br>";
 	}
 }
+combatHero.levelUp = function(){
+	console.log('hero gaining new level');
+	hero.lvl++;
+	sendMessage("You have reached the next Level.", false);
+	hero.nextLvlXp =  hero.nextLvlXp * 2;
+	sendMessage("xp to next level is " + hero.nextLvlXp, false);
+	hero.maxDmg = 1 + hero.lvl + hero.weapon.dmgBonus; 
+	hero.minDmg = 1 + hero.lvl -1;
+	hero.maxHp += 10;
+}
 
+combatHero.checkLevel = function(){
+	console.log(hero.nextLvlXp +" xp for next lvl " + hero.xp + " current xp");
+	if(hero.xp >= hero.nextLvlXp){
+		hero.levelUp();
+	}
+	else{
+		console.log('no new level');
+	}
+}
+
+combatHero.die = function(){
+	sendMessage("You have fallen in battle. You will not be remembered.", false);
+	state = ENDGAME;
+	game_box.end();
+}
 combatHero.maxDmg = combatHero.lvl + combatHero.weapon.dmgBonus;
 combatHero.setStats();

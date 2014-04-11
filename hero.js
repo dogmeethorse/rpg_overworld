@@ -215,6 +215,9 @@ var hero= {
 			dialogBox.style.zIndex = -1;
 			state = TOWN;		
 		}
+		else if(state == BATTLE){
+			state = OVERWORLD;
+		}
 		hero.action = false;
 	}
 	

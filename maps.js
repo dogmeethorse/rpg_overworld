@@ -74,14 +74,18 @@
 			hero.getTargetTile();
 		}
 		//check if on Pallas location
-		if((hero.targetTile[0] == 8 && hero.targetTile[1] == 14) &&
+		else if((hero.targetTile[0] == 8 && hero.targetTile[1] == 14) &&
 			(hero.tilePos[0] != 8 || hero.tilePos[1] != 14)
 		){
 			pallas.enterTown();
 			hero.direction = "stop";
 			hero.getTargetTile();
+		}
+		else if(hero.distanceTravelled > 0){
+			if(enemies.areThere()){
+				enemies.handleAppearance();
+			}
 		}	
-	
 	}
 	
 	var fingerhut = Object.create(overworld);
