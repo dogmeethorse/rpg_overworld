@@ -22,6 +22,9 @@
 	var hCtx = heroCanvas.getContext('2d');
 	var dialogBox = document.getElementById('dialogBox');
 	var statsBox = document.getElementById('stats');
+	var dragonSmasher = document.getElementById('dragonSmasher');
+	var fightButton = document.getElementById('fight');
+	
 	context.imageSmoothingEnabled = false;
 	context.webkitImageSmoothingEnabled = false;
     context.mozImageSmoothingEnabled = false;
@@ -34,7 +37,7 @@
 
 	var counter= 0;
 	
-	function randomInt(min,max){
+	function randomInt(min, max){
    		return Math.floor(Math.random() * (max - (min-1) )) + min;
 	} 
 	

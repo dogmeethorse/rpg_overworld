@@ -300,7 +300,9 @@
 					}
 				}
 			}
-			drawScreen();
+			if(state != BATTLE){
+				drawScreen();
+			}
 			showDebugInfo();
 		}, 1000/8)
 	}

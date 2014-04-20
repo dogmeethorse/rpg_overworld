@@ -1,11 +1,18 @@
 combat = {
 	currentEnemy : null,
+	done  : new Event('done'),
+	attachEvents : function(){
+		fightButton.addEventListener(  'done',  combat.enemyTurn);	 // hero turn done
+		fightButton.addEventListener(  'click', combatHero.attack),//hero atttack 
+		dragonSmasher.addEventListener('done',  combat.heroTurn);//end enemy turn
+	},
 	init : function(){
 		console.log('init COMBAT');
 		this.currentEnemy = enemies.selectBaddy();
 		this.currentEnemy.greeting();
 		this.currentEnemy.draw();
 		console.log("enemy hp = " + this.currentEnemy.hp);
+		this.attachEvents();
 	},
 	end :function(how){
 		//how is a string that says how combat ended
@@ -22,26 +29,37 @@ combat = {
 		setStats();
 	},
 	heroTurn : function(){
-	
+		//enable fight button
 	},
 	enemyTurn : function(){
-	
+		//check if enemy alive
+		//disable fight button
+			if(combat.currentEnemy.isAlive()){
+				//attack
+				//effects?
+			}
+			else{
+				//treasure
+			}
+		// effects
+		//fire done event:
+		//dragonSmasher.dispatchEvent(combat.done);
 	}
 }
 
 function resolveCombat(result){
 	if(result!= null){
-		var feedback = "You hit the " + current_enemy.name + " for " + result + " damage!"
+		
 		fightArea.whiteFlash();
 		sounds.regHit.play();
 		console.log("feedback string = " + feedback);
-		sendMessage( feedback, true);
+		
 		console.log ("Enemy hp = " + current_enemy.hp);
 	}
 	else{
 		console.log("miss");
 		var feedback = "You missed the " + current_enemy.name + "!";
-		sounds.heroMiss.play();
+		//sounds.heroMiss.play();
 		sendMessage(feedback, true);
 		
 	}

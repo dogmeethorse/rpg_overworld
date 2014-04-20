@@ -96,8 +96,8 @@ combatHero = {
 	lvl : 1,
 	gold : 100,
 	attack : 0.5,
-	maxDmg : 1 + this.lvl,// + this.weapon.dmgBonus, 
-	minDmg : 1 + this.lvl -1,
+	maxDmg : 1 + this.lvl, // + this.weapon.dmgBonus, 
+	minDmg :1, // this.lvl,
 	weapons : [noWeapon],
 	inventory : [],
 	setStats : function(){
@@ -107,14 +107,31 @@ combatHero = {
 		statsBox.innerHTML += "<span>Gold : " + combatHero.gold + "</span><br>";
 	}
 }
+
+combatHero.dealDamage = function(){
+	return randomInt(combatHero.minDmg, combatHero.maxDmg);
+}
+
+combatHero.attack = function(){
+	//state = OVERWORLD; 
+	var attackRoll = Math.random();
+	if(attackRoll < 1){
+		var damage =  combatHero.dealDamage.apply(combatHero);
+		combat.currentEnemy.hp -= damage;
+		var feedback = "You hit the " + combat.currentEnemy.name + " for " + damage + " damage!";
+		sendMessage( feedback, true);
+	}
+	fightButton.dispatchEvent(combat.done);
+}
+
 combatHero.levelUp = function(){
 	console.log('hero gaining new level');
 	hero.lvl++;
 	sendMessage("You have reached the next Level.", false);
 	hero.nextLvlXp =  hero.nextLvlXp * 2;
 	sendMessage("xp to next level is " + hero.nextLvlXp, false);
-	hero.maxDmg = 1 + hero.lvl + hero.weapon.dmgBonus; 
-	hero.minDmg = 1 + hero.lvl -1;
+	hero.maxDmg = 1 + combatHero.lvl + combatHero.weapon.dmgBonus; 
+	hero.minDmg = 1 + hero.lvl;
 	hero.maxHp += 10;
 }
 
@@ -133,5 +150,6 @@ combatHero.die = function(){
 	state = ENDGAME;
 	game_box.end();
 }
-combatHero.maxDmg = combatHero.lvl + combatHero.weapon.dmgBonus;
+combatHero.maxDmg = combatHero.lvl + combatHero.weapon.dmgBonus + 1;
+combatHero.minDmg = combatHero.lvl;
 combatHero.setStats();

@@ -154,11 +154,13 @@ var hero= {
 			hero.direction = 'stop';
 			hero.targetTile = hero.tilePos;
 		}
-		for(var npc = 0; npc < map.NpcList.length; npc++){
-			if( hero.targetTile[0] == map.NpcList[npc].tilePos[0] &&
-				hero.targetTile[1] == map.NpcList[npc].tilePos[1]){
-				hero.direction = "stop";
-				hero.targetTile = hero.tilePos;
+		if(map.NpcList){
+			for(var npc = 0; npc < map.NpcList.length; npc++){
+				if( hero.targetTile[0] == map.NpcList[npc].tilePos[0] &&
+					hero.targetTile[1] == map.NpcList[npc].tilePos[1]){
+					hero.direction = "stop";
+					hero.targetTile = hero.tilePos;
+				}
 			}
 		}
 	}

@@ -86,7 +86,7 @@ var shopPallas = {
 	self : null,
 	items:[smallPotion, largePotion],
 	weapons:[stick, dagger, shortSword, flail, longSword],
-	background: document.createElement('div'),
+	background : document.createElement('div'),
 	itemsToBuy : document.createElement('div'),
 	weaponList : document.createElement('div'),
 	init : function(){

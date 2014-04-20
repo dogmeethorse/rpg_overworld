@@ -50,6 +50,8 @@ span{
 }
 
 button.game{
+	z-index: 10;
+	position: absolute;
 	display:box;
 	text-align: center;
 	width: 130px;

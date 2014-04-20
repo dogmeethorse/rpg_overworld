@@ -34,29 +34,23 @@ function Enemy(index, name,hp,dmg,aggro,atk,esc){
 	Enemy.prototype.die = function(){
 		this.hp = this.maxHp;
 	}
+	Enemy.prototype.hit = function(){
+		var attackRoll = Math.random();
+		if(attackRoll > this.atkChance){
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
 	
 	Enemy.prototype.takeTurn = function(){
 		sendMessage("The " + this.name + " is attacking!", false);
-		var result = this.attack(hero);
-		if(result != null){
+		if(this.hit()){
 			var feedback = "The " + this.name + " hit you for " + result + " damage!"
-			console.log("feedback string = " + feedback);
-			if(result >= 5){
-				console.log("doing shake");
-				game_box.shake();
-				sounds.bigHit.play();
-			}
-			else if(result >= 1){
-				fightArea.redFlash();
-				sounds.regHit.play();
-			}
-			else{
-				sounds.smallHit.play();
-			}
 			sendMessage(feedback, false);
 		}
 		else{
-			sounds.enemyMiss.play();
 			var feedback = "The " + this.name + " missed you!";
 			sendMessage(feedback, false);
 		}
@@ -77,15 +71,15 @@ function loadImage(imName){
 var enemies = {
 	pics : [],
 	list : [	
-		new Enemy(0,'These are Supposed to be Bones', 11,2,0,20,0), //0
-		new Enemy(1,'Mean Lady', 25,10,0,30,0),						//1
-		new Enemy(2,'Robed Jerk', 10,3,0,20,0),						//2
-		new Enemy(3,'Imp', 4,1,0,20,0), 							//3
-		new Enemy(4,'Angry Chest', 8,5,0,20,0),						//4
-		new Enemy(5,'Scary Shadow', 7,4,0,20,0),					//5
-		new Enemy(6,'Gross Thing', 6,4,0,20,0),						//6
-		new Enemy(7,'Skeleton',3,2,0,50,20),						//7
-		new Enemy(8,'Zombie', 5,3,0,20,0)],							//8
+		new Enemy(0,'These are Supposed to be Bones', 11, 2, 0, 0.2, 0),//0
+		new Enemy(1,'Mean Lady', 25, 10, 0, 0.3, 0),					//1
+		new Enemy(2,'Robed Jerk', 10, 3, 0, 0.2, 0),					//2
+		new Enemy(3,'Imp', 4, 1, 0, 0.2, 0), 							//3
+		new Enemy(4,'Angry Chest', 8, 5, 0, 0.2, 0),					//4
+		new Enemy(5,'Scary Shadow', 7, 4,0, 0.2, 0),					//5
+		new Enemy(6,'Gross Thing', 6, 4, 0, 0.2, 0),					//6
+		new Enemy(7,'Skeleton', 3, 2, 0, 50, 0.2, 0),					//7
+		new Enemy(8,'Zombie', 5, 3, 0, 20, 0)],							//8
 	zone : 0,
 	zones :[[8,7,3], [0,3,5,6], [2,5,6], [2,5,6]],
 	loadPics: function(){
