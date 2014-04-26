@@ -1,13 +1,16 @@
 combat = {
 	currentEnemy : null,
 	done  : new Event('done'),
+	eDone : new Event('eDone'), //enemy is done.
 	attachEvents : function(){
 		fightButton.addEventListener(  'done',  combat.enemyTurn);	 // hero turn done
 		fightButton.addEventListener(  'click', combatHero.attack),//hero atttack 
-		dragonSmasher.addEventListener('done',  combat.heroTurn);//end enemy turn
+		dragonSmasher.addEventListener('eDone',  combat.heroTurn);//end enemy turn
 	},
 	init : function(){
+		fightButton.style.display = "inline";
 		console.log('init COMBAT');
+		console.log('hello');
 		this.currentEnemy = enemies.selectBaddy();
 		this.currentEnemy.greeting();
 		this.currentEnemy.draw();
@@ -19,6 +22,8 @@ combat = {
 		console.log('ending combat');
 		this.currentEnemy.die();
 		state = OVERWORLD;
+		fightButton.style.display = "none";
+		dialogBox.style.zIndex = -1; // should change
 	},
 	giveTreasure: function(){
 		var xpGain = current_enemy.hp;
@@ -29,39 +34,30 @@ combat = {
 		setStats();
 	},
 	heroTurn : function(){
-		//enable fight button
+		combatHero.setStats();
+		if(combatHero.isALive()){
+			//enable fight button
+		}
+		else{
+			combatHero.die();
+			combat.end();
+		}
 	},
 	enemyTurn : function(){
 		//check if enemy alive
 		//disable fight button
 			if(combat.currentEnemy.isAlive()){
 				//attack
+				var  effectLevel =  combat.currentEnemy.takeTurn();
 				//effects?
 			}
 			else{
 				//treasure
+				combat.end();
 			}
 		// effects
 		//fire done event:
-		//dragonSmasher.dispatchEvent(combat.done);
-	}
-}
-
-function resolveCombat(result){
-	if(result!= null){
-		
-		fightArea.whiteFlash();
-		sounds.regHit.play();
-		console.log("feedback string = " + feedback);
-		
-		console.log ("Enemy hp = " + current_enemy.hp);
-	}
-	else{
-		console.log("miss");
-		var feedback = "You missed the " + current_enemy.name + "!";
-		//sounds.heroMiss.play();
-		sendMessage(feedback, true);
-		
+		dragonSmasher.dispatchEvent(combat.eDone);
 	}
 }
 

@@ -20,7 +20,7 @@ function Enemy(index, name,hp,dmg,aggro,atk,esc){
 	this.maxHp = this.hp;
 	
 	Enemy.prototype.draw = function(){		
-		 hCtx.drawImage(enemies.pics[this.index], 0, 0, 400,400);
+		 hCtx.drawImage(enemies.pics[this.index], 150, 0, 400,400);
 	}
 	
 	Enemy.prototype.isAlive = function(){
@@ -43,17 +43,24 @@ function Enemy(index, name,hp,dmg,aggro,atk,esc){
 			return true;
 		}
 	}
+	Enemy.prototype.dealDamage = function(){
+		return randomInt(this.minDmg, this.maxDmg);
+	}
 	
 	Enemy.prototype.takeTurn = function(){
 		sendMessage("The " + this.name + " is attacking!", false);
+		var damage = null;
 		if(this.hit()){
-			var feedback = "The " + this.name + " hit you for " + result + " damage!"
+			damage = this.dealDamage();
+			var feedback = "The " + this.name + " hit you for " + damage + " damage!";
+			combatHero.hp -= damage;
 			sendMessage(feedback, false);
 		}
 		else{
 			var feedback = "The " + this.name + " missed you!";
 			sendMessage(feedback, false);
 		}
+		return damage;
 	}
 	
 	Enemy.prototype.greeting = function(){

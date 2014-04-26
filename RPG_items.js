@@ -144,12 +144,20 @@ combatHero.checkLevel = function(){
 		console.log('no new level');
 	}
 }
+combatHero.isAlive = function(){
+	if(combatHero.hp > 0){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
 
 combatHero.die = function(){
 	sendMessage("You have fallen in battle. You will not be remembered.", false);
 	state = ENDGAME;
-	game_box.end();
 }
+
 combatHero.maxDmg = combatHero.lvl + combatHero.weapon.dmgBonus + 1;
 combatHero.minDmg = combatHero.lvl;
 combatHero.setStats();

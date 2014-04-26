@@ -121,6 +121,12 @@ div.game {
 	height:200px;		
 }
 
+#fight{
+	display: none;
+	position: absolute;
+	top: 460px;
+	left: 400px;
+}
 
 #shopMenu{
 	position:absolute;
