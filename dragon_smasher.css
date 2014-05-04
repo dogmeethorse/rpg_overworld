@@ -127,6 +127,12 @@ div.game {
 	top: 460px;
 	left: 400px;
 }
+#run{
+	display: none;
+	position: absolute;
+	top: 460px;
+	left: 550px;
+}
 
 #shopMenu{
 	position:absolute;

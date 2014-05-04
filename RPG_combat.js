@@ -1,14 +1,18 @@
 combat = {
 	currentEnemy : null,
-	done  : new Event('done'),
+	hdone  : new Event('hdone'),
 	eDone : new Event('eDone'), //enemy is done.
 	attachEvents : function(){
-		fightButton.addEventListener(  'done',  combat.enemyTurn);	 // hero turn done
-		fightButton.addEventListener(  'click', combatHero.attack),//hero atttack 
+		dragonSmasher.addEventListener('hdone',  combat.enemyTurn);	 // hero turn done
 		dragonSmasher.addEventListener('eDone',  combat.heroTurn);//end enemy turn
+		
+		fightButton.addEventListener('click', combatHero.attack),//hero attack
+		runButton.addEventListener('click', combatHero.run); 
+	
 	},
 	init : function(){
 		fightButton.style.display = "inline";
+		runButton.style.display = "inline";
 		console.log('init COMBAT');
 		console.log('hello');
 		this.currentEnemy = enemies.selectBaddy();
@@ -23,7 +27,8 @@ combat = {
 		this.currentEnemy.die();
 		state = OVERWORLD;
 		fightButton.style.display = "none";
-		dialogBox.style.zIndex = -1; // should change
+		runButton.style.display = "none";
+		window.setTimeout(function(){dialogBox.style.zIndex = -1}, 1000); 
 	},
 	giveTreasure: function(){
 		var xpGain = current_enemy.hp;
@@ -34,9 +39,11 @@ combat = {
 		setStats();
 	},
 	heroTurn : function(){
+
 		combatHero.setStats();
-		if(combatHero.isALive()){
-			//enable fight button
+		if(combatHero.isAlive()){
+			fightButton.disabled = false;
+			runButton.disabled= false;
 		}
 		else{
 			combatHero.die();
@@ -46,6 +53,8 @@ combat = {
 	enemyTurn : function(){
 		//check if enemy alive
 		//disable fight button
+		fightButton.disabled = true;
+		runButton.disabled = true;
 			if(combat.currentEnemy.isAlive()){
 				//attack
 				var  effectLevel =  combat.currentEnemy.takeTurn();

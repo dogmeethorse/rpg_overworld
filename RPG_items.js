@@ -100,6 +100,7 @@ combatHero = {
 	minDmg :1, // this.lvl,
 	weapons : [noWeapon],
 	inventory : [],
+	fleeChance : 1,
 	setStats : function(){
 		statsBox.innerHTML  = "<span>Level: " + combatHero.lvl + "</span><br>";
 		statsBox.innerHTML += "<span>XP: " + combatHero.xp + "</span><br>";
@@ -121,7 +122,18 @@ combatHero.attack = function(){
 		var feedback = "You hit the " + combat.currentEnemy.name + " for " + damage + " damage!";
 		sendMessage( feedback, true);
 	}
-	fightButton.dispatchEvent(combat.done);
+	dragonSmasher.dispatchEvent(combat.hdone);
+}
+
+combatHero.run = function(){
+	if(Math.random() <= combatHero.fleeChance){
+		sendMessage("You escape like a coward! Congratulations", false);
+		combat.end();
+	}
+	else{
+		sendMessage("You cannot escape!");
+	}
+	dragonSmasher.dispatchEvent(combat.hdone);
 }
 
 combatHero.levelUp = function(){

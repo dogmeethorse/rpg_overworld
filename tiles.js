@@ -24,6 +24,7 @@
 	var statsBox = document.getElementById('stats');
 	var dragonSmasher = document.getElementById('dragonSmasher');
 	var fightButton = document.getElementById('fight');
+	var runButton = document.getElementById('run');
 	
 	context.imageSmoothingEnabled = false;
 	context.webkitImageSmoothingEnabled = false;
