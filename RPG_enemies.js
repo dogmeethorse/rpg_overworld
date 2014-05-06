@@ -19,8 +19,12 @@ function Enemy(index, name,hp,dmg,aggro,atk,esc){
 	this.aggro = aggro;  //chance on whether monster will attack of flee from 0-1
 	this.maxHp = this.hp;
 	
-	Enemy.prototype.draw = function(){		
-		 hCtx.drawImage(enemies.pics[this.index], 150, 0, 400,400);
+	Enemy.prototype.draw = function(){
+		hCtx.fillStyle = "#567DCE";
+		hCtx.fillRect(150, 50, 400, 400);
+		hCtx.fillStyle = "#346524";
+		hCtx.fillRect(150, 300, 400, 150);	
+		hCtx.drawImage(enemies.pics[this.index], 150, 0, 400,400);
 	}
 	
 	Enemy.prototype.isAlive = function(){

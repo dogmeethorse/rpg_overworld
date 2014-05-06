@@ -125,13 +125,13 @@ div.game {
 	display: none;
 	position: absolute;
 	top: 460px;
-	left: 400px;
+	left: 150px;
 }
 #run{
 	display: none;
 	position: absolute;
 	top: 460px;
-	left: 550px;
+	left: 400px;
 }
 
 #shopMenu{
