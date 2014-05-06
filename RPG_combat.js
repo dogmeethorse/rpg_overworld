@@ -21,7 +21,7 @@ combat = {
 		console.log("enemy hp = " + this.currentEnemy.hp);
 		this.attachEvents();
 	},
-	end :function(how){
+	end : function(how){
 		//how is a string that says how combat ended
 		console.log('ending combat');
 		this.currentEnemy.die();
@@ -30,16 +30,15 @@ combat = {
 		runButton.style.display = "none";
 		window.setTimeout(function(){dialogBox.style.zIndex = -1}, 1000); 
 	},
-	giveTreasure: function(){
-		var xpGain = current_enemy.hp;
-		var gldGain = current_enemy.maxDmg;
-		sendMessage( "you got " + xpGain + "xp and " + gldGain + " gold.", false );
-		hero.xp += xpGain;
-		hero.gld += gldGain;
+	giveTreasure : function(){
+		var xpGain = combat.CurrentEnemy.hp;
+		var goldGain = combat.currentEnemy.maxDmg;
+		sendMessage( "you got " + xpGain + "xp and " + goldGain + " gold.", false );
+		combatHero.xp += xpGain;
+		combatHero.gold += goldGain;
 		setStats();
 	},
 	heroTurn : function(){
-
 		combatHero.setStats();
 		if(combatHero.isAlive()){
 			fightButton.disabled = false;
@@ -48,6 +47,7 @@ combat = {
 		else{
 			combatHero.die();
 			combat.end();
+			combat.currentEnemy.die();
 		}
 	},
 	enemyTurn : function(){
