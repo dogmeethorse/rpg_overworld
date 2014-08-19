@@ -11,20 +11,32 @@ combat = {
 	
 	},
 	init : function(){
-		fightButton.style.display = "inline";
-		runButton.style.display = "inline";
+		fightButton.style.display  = "inline";
+		runButton.style.display    = "inline";
+		fightButton.disabled = false;
+		runButton.disabled   = false;
 		console.log('init COMBAT');
 		console.log('hello');
-		this.currentEnemy = enemies.selectBaddy();
-		this.currentEnemy.greeting();
-		this.currentEnemy.draw();
-		console.log("enemy hp = " + this.currentEnemy.hp);
-		this.attachEvents();
+		if(this.currentEnemy = enemies.selectBaddy()){
+			this.currentEnemy.greeting();
+			this.currentEnemy.draw();
+			console.log("enemy hp = " + this.currentEnemy.hp);
+			this.attachEvents();
+		}
+		else{
+			console.log('failed to select a bad guy');
+			combat.end();
+		}
 	},
 	end : function(how){
 		//how is a string that says how combat ended
 		console.log('ending combat');
-		this.currentEnemy.die();
+		if(this.currentEnemy){
+			this.currentEnemy.die();
+		}
+		else{
+			console.log("failed to pick enemy");
+		}
 		state = OVERWORLD;
 		fightButton.style.display = "none";
 		runButton.style.display = "none";

@@ -20,6 +20,7 @@ function Weapon(name, dmgBonus, attackChanceBonus, cost){
 		combatHero.maxDmg -= this.dmgBonus;
 		combatHero.atk -= this.attackChanceBonus;
 	}
+	
 	Weapon.prototype.buy = function(){
 		console.log(this);
 		console.log(" buying = "+ this.name + " cost = " + this.cost);
@@ -33,6 +34,12 @@ function Weapon(name, dmgBonus, attackChanceBonus, cost){
 			sendMessage("You cannot afford "+ this.name, true);
 		}
 		combatHero.setStats();
+	}
+	
+	Weapon.prototype.sell = function(){
+		combatHero.weapons.splice(combatHero.inventory.indexOf(this), 1);
+		inventoryMenu.updateWeapons();
+		combatHero.gold += Math.floor(this.cost/2);
 	}
 
 var noWeapon = new Weapon("Bare Hands", 0, 0, 0);
@@ -81,6 +88,11 @@ function healingPotion(name,strength, cost){
 			sendMessage("You cannot afford "+ this.name, true);
 		}
 		
+	}
+	healingPotion.prototype.sell = function(){
+		combatHero.inventory.splice(combatHero.inventory.indexOf(this), 1);
+		inventoryMenu.updateItems();
+		combatHero.gold += Math.floor(this.cost/2);
 	}
 }
 

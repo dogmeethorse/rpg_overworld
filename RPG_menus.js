@@ -73,12 +73,34 @@ var inventoryMenu = {
 			this.itemList.appendChild(itemButtons[itemNo]);	
 		}
 	},
-	sellmode : function(){
-		function addSellButtons(list, inventory){
-			var listArray = list.children;
+	sellmode : function(){ // This adds a heading that says sell to the items and then changes what the button does.
+		function buttonListener(list, button){
+			return function(){
+					console
+					button.sell(); // this doesn't work because it button is an html object not the item itself.
+					addSellButtons(list);
+				 }
 		}
-		addSellButtons(this.weaponList);
-		addSellButtons(this.itemLIst);
+		function addSellButtons(list){
+			console.log(list);
+			console.log(list.length);
+			for(var item = 0; item < list.length; item++){
+				console.log("Item = " + list[item]);
+				console.log( list[item].tagName);
+				if(list[item].tagName == "INPUT" ||list[item].tagName == "BUTTON"){
+					console.log("it is input or button");
+					var sellVersion = list[item].cloneNode(true);
+					sellVersion.addEventListener('click', buttonListener(list[item], list) , false);
+					list[item].parentNode.replaceChild(sellVersion, list[item]);
+				}
+			// this isn't going to work need to get children go through 
+			// the list of children; check to see if the child is a button
+			// if it is than change the click to sell the item. 
+			// also add a sell function.	
+			} 
+		}
+		addSellButtons(this.weaponList.children);
+		addSellButtons(this.itemList.children);
 	}
 }
 

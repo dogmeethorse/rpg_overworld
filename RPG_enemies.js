@@ -20,10 +20,11 @@ function Enemy(index, name,hp,dmg,aggro,atk,esc){
 	this.maxHp = this.hp;
 	
 	Enemy.prototype.draw = function(){
-		hCtx.fillStyle = "#567DCE";
-		hCtx.fillRect(150, 50, 400, 400);
-		hCtx.fillStyle = "#346524";
-		hCtx.fillRect(150, 300, 400, 150);	
+		//hCtx.fillStyle = "#567DCE";
+		//hCtx.fillRect(150, 50, 400, 400);
+		//hCtx.fillStyle = "#346524";
+		//hCtx.fillRect(150, 300, 400, 150);
+		hCtx.drawImage(fightBackground, 150, 50, 400, 400);	
 		hCtx.drawImage(enemies.pics[this.index], 150, 0, 400,400);
 	}
 	
@@ -79,6 +80,9 @@ function loadImage(imName){
 	return im;
 }
 
+//
+//
+//
 var enemies = {
 	pics : [],
 	list : [	
@@ -125,8 +129,9 @@ var enemies = {
 		}
 	},
 	selectBaddy : function(){
-		var baddy = randomInt(0, this.zones.length -1);
-		return this.list[this.zones[this.zone][baddy]];
+		var baddy = randomInt(0, this.zones[this.zone].length -1);
+		console.log("zone = " + this.zone + " baddy number" + baddy);
+		return enemies.list[this.zones[this.zone][baddy]];
 	},
 	handleAppearance : function(){
 		console.log('enemy found');

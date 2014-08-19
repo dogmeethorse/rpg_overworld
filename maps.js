@@ -5,8 +5,9 @@
 	to be completely redone.
 	*/
 
-	tileSheet.addEventListener('load', eventPicLoaded , false);
-	tileSheet.src="tiles_16.png";
+	tileSheet.addEventListener('load', eventPicLoaded, false);
+	tileSheet.src = "tiles_16.png";
+	fightBackground.src = "fightBackground.png";
 	
 	var forest      = new Tile(0,  0, true);
 	var sand        = new Tile(2,  0, true);
