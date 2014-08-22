@@ -25,10 +25,10 @@ function Weapon(name, dmgBonus, attackChanceBonus, cost){
 		console.log(this);
 		console.log(" buying = "+ this.name + " cost = " + this.cost);
 		if(combatHero.gold >= this.cost){
-			combatHero.weapons.push(new Weapon(this.name , this.dmgBonus, this.cost));
+			combatHero.weapons.push(new Weapon(this.name , this.dmgBonus, this.attackChanceBonus, this.cost));
 			combatHero.gold -= this.cost;		
-			sendMessage("You bought a " + this.name,true);
-			inventoryMenu.updateWeapons();
+			sendMessage("You bought a " + this.name, true);
+			inventoryMenu.updateWeapons();// this line should instead call a function specifically written for the shop
 		}
 		else{
 			sendMessage("You cannot afford "+ this.name, true);
@@ -37,9 +37,12 @@ function Weapon(name, dmgBonus, attackChanceBonus, cost){
 	}
 	
 	Weapon.prototype.sell = function(){
-		combatHero.weapons.splice(combatHero.inventory.indexOf(this), 1);
-		inventoryMenu.updateWeapons();
-		combatHero.gold += Math.floor(this.cost/2);
+		if(this.name != "Bare Hands"){
+			combatHero.weapons.splice(combatHero.inventory.indexOf(this), 1);
+			inventoryMenu.updateWeapons(); //this line should instead call a function written for shopping.
+			combatHero.gold += Math.floor(this.cost/2);
+		}
+		combatHero.setStats();
 	}
 
 var noWeapon = new Weapon("Bare Hands", 0, 0, 0);
@@ -81,7 +84,7 @@ function healingPotion(name,strength, cost){
 			sendMessage("You bought a "+ this.name,true);			
 			console.log("combatHero inventory length =" + combatHero.inventory.length);
 			console.log(combatHero.inventory);
-			inventoryMenu.updateItems();
+			inventoryMenu.updateItems(); // need sell function
 			combatHero.setStats();
 		}
 		else{
@@ -91,8 +94,9 @@ function healingPotion(name,strength, cost){
 	}
 	healingPotion.prototype.sell = function(){
 		combatHero.inventory.splice(combatHero.inventory.indexOf(this), 1);
-		inventoryMenu.updateItems();
+		inventoryMenu.updateItems(); //same as for weapon need sell function
 		combatHero.gold += Math.floor(this.cost/2);
+		combatHero.setStats();
 	}
 }
 

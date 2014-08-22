@@ -24,6 +24,8 @@ var inventoryMenu = {
 	weaponList : document.createElement('form'),
 	itemList : document.createElement('div'),
 	currentWeapon : document.createElement('div'),
+	sellSign : document.createElement("h4"),
+
 	create : function(){
 		this.background.setAttribute('class','game');
 		this.background.setAttribute('id', 'itemMenu');
@@ -31,6 +33,8 @@ var inventoryMenu = {
 		this.background.appendChild(this.weaponList);
 		this.background.appendChild(this.itemList);
 		this.background.appendChild(this.currentWeapon);
+		this.sellSign.setAttribute('class', 'game');
+		this.sellSign.innerHTML = "Selling items. Click to sell";
 		dragonSmasher.appendChild(this.background);
 	},
 	updateWeapons : function(){
@@ -57,6 +61,13 @@ var inventoryMenu = {
 			weapName.innerHTML = combatHero.weapons[weap].name + "<br>";
 			this.weaponList.appendChild(weapName);
 		}
+		if(state == SHOP){
+			console.log('trying to add sell buttons');
+			this.handleSellMode()
+		}
+		else{
+			console.log('state is not shop');
+		}
 	},
 	updateItems : function(){
 		while (this.itemList.lastChild) {
@@ -72,35 +83,59 @@ var inventoryMenu = {
 			itemButtons[itemNo].textContent = combatHero.inventory[itemNo].name;
 			this.itemList.appendChild(itemButtons[itemNo]);	
 		}
+		if( state == SHOP){
+			console.log('trying to add sell buttons');
+			this.handleSellMode();
+		}
+		else{
+			console.log('state is not SHOP');
+		}
 	},
-	sellmode : function(){ // This adds a heading that says sell to the items and then changes what the button does.
-		function buttonListener(list, button){
-			return function(){
-					console
-					button.sell(); // this doesn't work because it button is an html object not the item itself.
+	enterSellMode : function(){
+		this.background.insertBefore(this.sellSign, this.background.firstChild);
+	},
+	handleSellMode : function(){ // This adds a heading that says sell to the items and then changes what the button does.
+		function buttonListener(list, button, inventoryNumber){
+			if(button.tagName == "INPUT"){
+				return function(){
+					console.log("button = " + button);
+					combatHero.weapons[inventoryNumber].sell();
 					addSellButtons(list);
-				 }
+					
+				}
+			}
+			else if(button.tagName =="BUTTON"){
+				return function(){
+					combatHero.inventory[inventoryNumber].sell();
+					addSellButtons(list);
+				}
+			}
 		}
 		function addSellButtons(list){
+		// go through the list of children; check to see if the child is a button
+		// if it is than change the click to sell the item.
 			console.log(list);
 			console.log(list.length);
+			var inventoryNumber = 0;
 			for(var item = 0; item < list.length; item++){
 				console.log("Item = " + list[item]);
 				console.log( list[item].tagName);
 				if(list[item].tagName == "INPUT" ||list[item].tagName == "BUTTON"){
 					console.log("it is input or button");
 					var sellVersion = list[item].cloneNode(true);
-					sellVersion.addEventListener('click', buttonListener(list[item], list) , false);
+					sellVersion.addEventListener('click', buttonListener(list, list[item], inventoryNumber) , false);
 					list[item].parentNode.replaceChild(sellVersion, list[item]);
-				}
-			// this isn't going to work need to get children go through 
-			// the list of children; check to see if the child is a button
-			// if it is than change the click to sell the item. 
-			// also add a sell function.	
+					inventoryNumber++;
+				} 	
 			} 
 		}
 		addSellButtons(this.weaponList.children);
 		addSellButtons(this.itemList.children);
+	},
+	endSellMode : function(){
+		this.background.removeChild(this.sellSign);
+		this.updateWeapons();
+		this.updateItems();
 	}
 }
 
@@ -142,11 +177,15 @@ var shopPallas = {
 		this.background.appendChild(closeShop);
 	},	
 	open : function (){
-		dragonSmasher.appendChild(this.background);
 		state = SHOP;
+		dragonSmasher.appendChild(this.background);
+		inventoryMenu.enterSellMode();
+		inventoryMenu.handleSellMode();
+
 	},
 	close : function(shopMenu){
 		dragonSmasher.removeChild(this.background);
+		inventoryMenu.endSellMode();
 		dialogBox.style.zIndex = -1;
 		state = TOWN;
 	}
