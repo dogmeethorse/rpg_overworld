@@ -235,7 +235,7 @@ var hero= {
 				hero.tryAction();
 			}		
 			else{
-				if(state == TOWN || state == OVERWORLD){
+				if(state == TOWN || state == OVERWORLD|| state == DUNGEON){
 					hero.getTargetTile();
 					hero.getMoveStyle();
 				}

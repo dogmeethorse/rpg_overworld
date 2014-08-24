@@ -9,21 +9,28 @@
 	tileSheet.src = "tiles_16.png";
 	fightBackground.src = "fightBackground.png";
 	
-	var forest      = new Tile(0,  0, true);
-	var sand        = new Tile(2,  0, true);
-	var nightForest = new Tile(6,  0, true);
-	var water       = new Tile(8,  0, false);
-	var swamp       = new Tile(4,  0, true);
-	var mountain    = new Tile(3,  0, false);
-	var nightSand   = new Tile(9,  0, true);
-	var city        = new Tile(10, 0, true);
-	var dungeon     = new Tile(11, 0, true);
-	var tileFloor   = new Tile(1,  0, true);
-	var woodBlock   = new Tile(12, 0, false);
-	var stones      = new Tile(13, 0, true);
-	var darkStone   = new Tile(14, 0, false);
-	var redFloor    = new Tile(15, 0, true);
-	var orStone     = new Tile(16, 0, false);
+	var forest          = new Tile(0,  0, true);
+	var sand            = new Tile(2,  0, true);
+	var nightForest     = new Tile(6,  0, true);
+	var water           = new Tile(8,  0, false);
+	var swamp           = new Tile(4,  0, true);
+	var mountain        = new Tile(3,  0, false);
+	var nightSand       = new Tile(9,  0, true);
+	var city            = new Tile(10, 0, true);
+	var dungeon         = new Tile(11, 0, true);
+	var tileFloor       = new Tile(1,  0, true);
+	var woodBlock       = new Tile(12, 0, false);
+	var stones          = new Tile(13, 0, true);
+	var darkStone       = new Tile(14, 0, false);
+	var redFloor        = new Tile(15, 0, true);
+	var orStone         = new Tile(16, 0, false);
+	var dragonLeftHead  = new Tile(10, 1, true);
+	var dragonRightHead = new Tile(11, 1, true);
+	var dragonLeftBody  = new Tile(10, 2, true);
+	var dragonRightBody = new Tile(11, 2, true);
+	var stairsUp        = new Tile(21, 0, true);
+	var chestClosed     = new Tile(17, 0, true);
+	var chestOpen       = new Tile(18, 0, true);
 	
 	function eventPicLoaded() {
 		startUp();
@@ -201,7 +208,7 @@
 			[3,5,5,3,6,1,2,2,2,2,2,6,6,3,5,5,5,5,5,3,5,5,5,3],
 			[3,3,3,3,3,3,3,3,3,3,3,1,6,3,3,3,3,3,3,3,3,3,3,3]
 		];
-	
+	pallas.NpcList = [];
 	pallas.leaveTown = function(){
 		state= OVERWORLD;
 		context.setTransform(1,0,0,1,0,0);
@@ -217,10 +224,10 @@
 	var map = fingerhut;
 	
 	var dungeon = Object.create(fingerhut);
-	//                   0         1             2         3          4         5        6
-	dungeon.tileList = [stones, nightForest, nightSand, darkStone, redFloor, orStone, water];
+	//                   0         1             2         3          4         5        6      7
+	dungeon.tileList = [stones, nightForest, nightSand, darkStone, redFloor, orStone, water, stairsUp];
 	dungeon.layout= [
-			[3,3,3,3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,3,3,3],
+			[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],
 			[3,2,2,2,2,2,2,2,2,2,2,0,0,2,2,0,2,3,2,2,2,2,2,3],
 			[3,2,3,5,1,5,1,5,3,2,2,0,1,4,2,2,1,3,3,3,3,3,1,3],
 			[3,2,1,5,2,0,2,5,1,2,2,0,1,2,4,5,1,3,0,0,0,3,1,3],
@@ -236,26 +243,33 @@
 			[3,0,5,1,0,1,4,0,0,0,0,0,0,0,0,0,6,6,3,2,4,3,3,3],
 			[3,0,0,3,0,3,4,3,3,1,1,2,6,2,2,6,6,6,2,2,2,6,2,3],
 			[3,3,3,3,2,3,0,0,0,1,1,6,6,6,6,6,6,6,6,2,2,2,2,3],
-			[3,0,0,3,0,1,0,5,0,2,1,6,2,2,6,2,2,2,0,2,2,2,2,3],
-			[3,0,0,1,2,3,3,3,3,0,0,6,2,3,3,3,3,3,0,3,3,3,5,3],
-			[3,0,0,3,0,3,0,0,3,2,2,6,6,3,0,0,3,5,4,3,5,5,5,3],
-			[3,0,0,0,0,1,0,0,3,1,2,2,6,3,0,0,3,3,4,3,3,3,5,3],
-			[3,0,0,0,0,0,0,0,3,1,1,6,6,0,0,0,3,4,4,4,4,3,0,3],
-			[3,0,0,1,0,3,3,3,3,2,2,6,1,3,0,0,3,4,4,4,4,3,0,3],
-			[3,0,0,3,0,1,2,2,2,2,2,6,6,3,0,0,3,4,4,4,4,3,0,3],
+			[3,3,0,3,0,1,0,5,0,2,1,6,2,2,6,2,2,2,0,2,2,2,2,3],
+			[3,3,0,1,2,3,3,3,3,0,0,6,2,3,3,3,3,3,0,3,3,3,5,3],
+			[3,3,0,3,0,3,0,0,3,2,2,6,6,3,0,0,3,5,4,3,5,5,5,3],
+			[3,3,0,3,0,1,0,0,3,1,2,2,6,3,0,0,3,3,4,3,3,3,5,3],
+			[3,3,0,0,0,0,0,0,3,1,1,6,6,0,0,0,3,4,4,4,4,3,0,3],
+			[3,3,0,3,0,3,3,3,3,2,2,6,1,3,0,0,3,4,4,4,4,3,0,3],
+			[3,3,7,3,0,1,2,2,2,2,2,6,6,3,0,0,3,4,4,4,4,3,0,3],
 			[3,3,3,3,3,3,3,3,3,3,3,1,6,3,3,3,3,3,3,3,3,3,3,3]
 		];
 	dungeon.NpcList = [];
+	dungeon.specialLocations = {
+		boss: [6,18]
+	}
+	dungeon.drawSpecialLocations = function(){
+		dragon.drawOnMap(dungeon.specialLocations.boss[0], dungeon.specialLocations.boss[1]);
+	}
 	dungeon.enterTown = function(){
-		state = TOWN;	
-		hero.tilePos = [11,1];
-		hero.targetTile = [11,1];
-		hero.x = 320;
-		hero.y = 64;
+		state = DUNGEON;	
+		hero.tilePos = [2,22];
+		hero.targetTile = [2,22];
+		hero.x = 128;
+		hero.y = 576;
 		context.setTransform(1,0,0,1,0,0);
-		context.translate(-384, 0);
+		context.translate(0, -832);
 		map = this;
 	}
+	
 	dungeon.leaveTown = function(){
 		state = OVERWORLD;
 		context.setTransform(1,0,0,1,0,0);
@@ -268,7 +282,20 @@
 		hero.x = 512;
 		hero.y = 320;	
 	}
-	
+	dungeon.checkSpecialTiles = function(){
+		//check if walked to stairs
+		if((hero.targetTile[0] == 2 && hero.targetTile[1] == 22) &&
+			(hero.tilePos[0] != 2 || hero.tilePos[1] != 22)
+		){
+			dungeon.leaveTown();
+			hero.direction = "stop";
+		}
+		//check to see if walked on dragon
+		console.log('checking tiles');
+		if(dragon.collision(dungeon.specialLocations.boss[0], dungeon.specialLocations.boss[1])){
+			dragon.battle();
+		}
+	}
 	function showDebugInfo(){
 		keyOutput.innerHTML = "Keys up: <br> up = " + keys.upUp+ " <br>left = " + keys.leftUp + " <br> right = " + keys.rightUp + " <br> down = " + keys.downUp; 
 		keyOutput.innerHTML += "<br> direction = " + hero.direction;
@@ -342,6 +369,9 @@
 		hero.draw();
 		if(map.drawNPCs){
 			map.drawNPCs();
+		}
+		if(state == DUNGEON){
+			dungeon.drawSpecialLocations();
 		}
 	}
 	

@@ -109,6 +109,7 @@ var enemies = {
 		this.pics[6] = loadImage('shadow_tendrils.png');
 		this.pics[7] = loadImage('skeleton.png');
 		this.pics[8] = loadImage('zombie.png');
+		this.pics[9] = loadImage('Dragon3.png');
 	},
 	getZone : function(){
 		if(hero.tilePos[0] < 13){
@@ -129,6 +130,10 @@ var enemies = {
 		}
 	},
 	selectBaddy : function(){
+		if(state == DUNGEON){
+			return dragon;
+		}
+		
 		var baddy = randomInt(0, this.zones[this.zone].length -1);
 		console.log("zone = " + this.zone + " baddy number" + baddy);
 		return enemies.list[this.zones[this.zone][baddy]];
@@ -142,7 +147,7 @@ var enemies = {
 	},
 	areThere : function(){
 		var encounterRoll = Math.random();
-		if(encounterRoll < 0.5){
+		if(encounterRoll < 0.2){
 			return true;
 		}
 		else{
@@ -150,4 +155,38 @@ var enemies = {
 		}
 	}
 }
+var dragon = {};
+Enemy.apply(dragon, [9, "Dragon", 60, 10, 0, 0.3, 0]);
+dragon.prototype = new Enemy();
+dragon.drawOnMap = function(x, y){
+	dragonLeftHead.draw(x, y);
+	dragonRightHead.draw(x+1, y);
+	dragonLeftBody.draw(x, y+1);
+	dragonRightBody.draw(x+1, y+1);
+}
+dragon.collision = function(dragonx, dragony){
+	if(dragonx != hero.targetTile[0] && dragonx + 1 != hero.targetTile[0]){
+		return false;
+	}
+	else if(dragony != hero.targetTile[1] && dragony + 1 != hero.targetTile[1]){
+		return false;
+	}
+	else if((dragonx == hero.tilePos[0] && dragony == hero.tilePos[1]) ||
+	(dragonx + 1 == hero.tilePos[0] && dragony + 1 == hero.tilePos[1])){
+		return false;
+	}
+	else{
+		return true;
+	}
+}
+dragon.battle = function(){
+		fightButton.style.display  = "inline";
+		runButton.style.display    = "inline";
+		fightButton.disabled = false;
+		runButton.disabled   = false;
+		combat.currentEnemy = dragon;
+		combat.attachEvents();
+		state = BATTLE;
+}
+
 enemies.loadPics();

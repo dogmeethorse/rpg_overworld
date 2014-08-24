@@ -67,6 +67,77 @@ var kidShroomSprites = [
 						new Tile(6,6, true),
 						new Tile(7,6, true)
 					 ]
+var blondeSprites = [
+						new Tile(0,7, true),
+						new Tile(1,7, true),
+						new Tile(2,7, true),
+						new Tile(3,7, true),
+						new Tile(4,7, true),
+						new Tile(5,7, true),
+						new Tile(6,7, true),
+						new Tile(7,7, true)
+]
+var afroGuySprites = [
+						new Tile(0,8, true),
+						new Tile(1,8, true),
+						new Tile(2,8, true),
+						new Tile(3,8, true),
+						new Tile(4,8, true),
+						new Tile(5,8, true),
+						new Tile(6,8, true),
+						new Tile(7,8, true)
+]
+var alienSprites = [
+						new Tile(0,9, true),
+						new Tile(1,9, true),
+						new Tile(2,9, true),
+						new Tile(3,9, true),
+						new Tile(4,9, true),
+						new Tile(5,9, true),
+						new Tile(6,9, true),
+						new Tile(7,9, true)
+]
+var ninjaZorroSprites = [
+						new Tile(0,10, true),
+						new Tile(1,10, true),
+						new Tile(2,10, true),
+						new Tile(3,10, true),
+						new Tile(4,10, true),
+						new Tile(5,10, true),
+						new Tile(6,10, true),
+						new Tile(7,10, true)
+]
+var technicianSprites = [
+						new Tile(0,11, true),
+						new Tile(1,11, true),
+						new Tile(2,11, true),
+						new Tile(3,11, true),
+						new Tile(4,11, true),
+						new Tile(5,11, true),
+						new Tile(6,11, true),
+						new Tile(7,11, true)
+]
+var moustacheSprites = [
+						new Tile(0,12, true),
+						new Tile(1,12, true),
+						new Tile(2,12, true),
+						new Tile(3,12, true),
+						new Tile(4,12, true),
+						new Tile(5,12, true),
+						new Tile(6,12, true),
+						new Tile(7,12, true)
+]
+
+var dogBoySprites = [
+						new Tile(0,13, true),
+						new Tile(1,13, true),
+						new Tile(2,13, true),
+						new Tile(3,13, true),
+						new Tile(4,13, true),
+						new Tile(5,13, true),
+						new Tile(6,13, true),
+						new Tile(7,13, true)
+]
 
 function NPC(name, sprites, xTile, yTile, message){
 	this.name = name;
