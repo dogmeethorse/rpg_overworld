@@ -208,7 +208,10 @@
 			[3,5,5,3,6,1,2,2,2,2,2,6,6,3,5,5,5,5,5,3,5,5,5,3],
 			[3,3,3,3,3,3,3,3,3,3,3,1,6,3,3,3,3,3,3,3,3,3,3,3]
 		];
-	pallas.NpcList = [];
+	pallas.NpcList = [  new MovingNPC('blonde', blondeSprites, 12, 12),
+						new MovingNPC('afro guy', afroGuySprites, 5, 10),
+						new MovingNPC('dog boy', dogBoySprites, 4, 12)	
+					]
 	pallas.leaveTown = function(){
 		state= OVERWORLD;
 		context.setTransform(1,0,0,1,0,0);
@@ -257,7 +260,9 @@
 		boss: [6,18]
 	}
 	dungeon.drawSpecialLocations = function(){
-		dragon.drawOnMap(dungeon.specialLocations.boss[0], dungeon.specialLocations.boss[1]);
+		if(dungeon.specialLocations.boss){
+			dragon.drawOnMap(dungeon.specialLocations.boss[0], dungeon.specialLocations.boss[1]);
+		}
 	}
 	dungeon.enterTown = function(){
 		state = DUNGEON;	
@@ -291,9 +296,11 @@
 			hero.direction = "stop";
 		}
 		//check to see if walked on dragon
-		console.log('checking tiles');
-		if(dragon.collision(dungeon.specialLocations.boss[0], dungeon.specialLocations.boss[1])){
-			dragon.battle();
+		//console.log('checking tiles');
+		if(dungeon.specialLocations.boss){
+			if(dragon.collision(dungeon.specialLocations.boss[0], dungeon.specialLocations.boss[1])){
+				dragon.battle();
+			}
 		}
 	}
 	function showDebugInfo(){

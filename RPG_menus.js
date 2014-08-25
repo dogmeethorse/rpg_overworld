@@ -70,6 +70,7 @@ var inventoryMenu = {
 		}
 	},
 	updateItems : function(){
+		console.log('updating itmes.')
 		while (this.itemList.lastChild) {
     		this.itemList.removeChild(this.itemList.lastChild);
     	}	
@@ -114,14 +115,14 @@ var inventoryMenu = {
 		function addSellButtons(list){
 		// go through the list of children; check to see if the child is a button
 		// if it is than change the click to sell the item.
-			console.log(list);
-			console.log(list.length);
+			//console.log(list);
+			//console.log(list.length);
 			var inventoryNumber = 0;
 			for(var item = 0; item < list.length; item++){
-				console.log("Item = " + list[item]);
-				console.log( list[item].tagName);
+				//console.log("Item = " + list[item]);
+				//console.log( list[item].tagName);
 				if(list[item].tagName == "INPUT" ||list[item].tagName == "BUTTON"){
-					console.log("it is input or button");
+					//console.log("it is input or button");
 					var sellVersion = list[item].cloneNode(true);
 					sellVersion.addEventListener('click', buttonListener(list, list[item], inventoryNumber) , false);
 					list[item].parentNode.replaceChild(sellVersion, list[item]);
@@ -185,9 +186,9 @@ var shopPallas = {
 	},
 	close : function(shopMenu){
 		dragonSmasher.removeChild(this.background);
+		state = TOWN;
 		inventoryMenu.endSellMode();
 		dialogBox.style.zIndex = -1;
-		state = TOWN;
 	}
 }
 shopPallas.init();

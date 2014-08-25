@@ -155,9 +155,7 @@ var enemies = {
 		}
 	}
 }
-var dragon = {};
-Enemy.apply(dragon, [9, "Dragon", 60, 10, 0, 0.3, 0]);
-dragon.prototype = new Enemy();
+var dragon = new Enemy(9, "Dragon", 60, 10, 0, 0.3, 0);
 dragon.drawOnMap = function(x, y){
 	dragonLeftHead.draw(x, y);
 	dragonRightHead.draw(x+1, y);
@@ -187,6 +185,10 @@ dragon.battle = function(){
 		combat.currentEnemy = dragon;
 		combat.attachEvents();
 		state = BATTLE;
+		dragon.draw();
 }
-
+dragon.die = function(){
+	delete dungeon.specialLocations.boss;
+	state = dungeon;
+}
 enemies.loadPics();
