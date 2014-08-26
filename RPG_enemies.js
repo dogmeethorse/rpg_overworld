@@ -11,6 +11,7 @@ var enemy_pics = [];
 function Enemy(index, name,hp,dmg,aggro,atk,esc){
 	this.index = index;
 	this.name = name;
+	this.xp = hp;
 	this.hp = hp;
 	this.maxDmg = dmg;
 	this.minDmg = 0;

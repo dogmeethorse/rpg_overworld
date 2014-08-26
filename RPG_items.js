@@ -133,10 +133,14 @@ combatHero.attack = function(){
 	//state = OVERWORLD; 
 	var attackRoll = Math.random();
 	if(attackRoll < 1){
-		var damage =  combatHero.dealDamage.apply(combatHero);
+		var damage =  combatHero.dealDamage.apply(combatHero);// what? why did I do this?
 		combat.currentEnemy.hp -= damage;
 		var feedback = "You hit the " + combat.currentEnemy.name + " for " + damage + " damage!";
 		sendMessage( feedback, true);
+		combat.hdone.result = "hit";
+	}
+	else{
+		combat.hdone.result = "miss";
 	}
 	dragonSmasher.dispatchEvent(combat.hdone);
 }
@@ -144,12 +148,14 @@ combatHero.attack = function(){
 combatHero.run = function(){
 	if(Math.random() <= combatHero.fleeChance){
 		sendMessage("You escape like a coward! Congratulations", false);
+		combat.hdone.result = "run succeed";
 		combat.end();
 	}
 	else{
 		sendMessage("You cannot escape!");
+		combat.hdone.result = "run fail";
 	}
-	dragonSmasher.dispatchEvent(combat.hdone);
+	dragonSmasher.dispatchEvent(combat.hdone);// why doesn't combat end as part handling hdone.  why do I have those things separate?
 }
 
 combatHero.levelUp = function(){

@@ -1,10 +1,10 @@
 combat = {
 	currentEnemy : null,
-	hdone  : new Event('hdone'),
-	eDone : new Event('eDone'), //enemy is done.
+	hdone  : new Event('hdone'), // hero is done
+	edone : new Event('eDone'), //enemy is done.
 	attachEvents : function(){
-		dragonSmasher.addEventListener('hdone',  combat.enemyTurn);	 // hero turn done
-		dragonSmasher.addEventListener('eDone',  combat.heroTurn);//end enemy turn
+		dragonSmasher.addEventListener('hdone',  function(){combat.handleResult('hero')});	 // hero turn done
+		dragonSmasher.addEventListener('eDone',  function(){combat.handleResult('enemy')});//end enemy turn
 		
 		fightButton.addEventListener('click', combatHero.attack),//hero attack
 		runButton.addEventListener('click', combatHero.run); 
@@ -43,15 +43,14 @@ combat = {
 		window.setTimeout(function(){dialogBox.style.zIndex = -1}, 1000); 
 	},
 	giveTreasure : function(){
-		var xpGain = combat.CurrentEnemy.hp;
+		var xpGain = combat.currentEnemy.xp;
 		var goldGain = combat.currentEnemy.maxDmg;
 		sendMessage( "you got " + xpGain + "xp and " + goldGain + " gold.", false );
 		combatHero.xp += xpGain;
 		combatHero.gold += goldGain;
-		setStats();
+		combatHero.setStats();
 	},
 	heroTurn : function(){
-		combatHero.setStats();
 		if(combatHero.isAlive()){
 			fightButton.disabled = false;
 			runButton.disabled= false;
@@ -63,22 +62,55 @@ combat = {
 		}
 	},
 	enemyTurn : function(){
+		console.log(combat.hdone.result);
 		//check if enemy alive
 		//disable fight button
 		fightButton.disabled = true;
 		runButton.disabled = true;
-			if(combat.currentEnemy.isAlive()){
-				//attack
-				var  effectLevel =  combat.currentEnemy.takeTurn();
-				//effects?
-			}
-			else{
-				//treasure
-				combat.end();
-			}
+		var  effectLevel =  combat.currentEnemy.takeTurn();
+		combatHero.setStats();
 		// effects
 		//fire done event:
-		dragonSmasher.dispatchEvent(combat.eDone);
+		dragonSmasher.dispatchEvent(combat.edone);
+	},
+	handleResult : function(actor){
+		function handleHeroResult(){
+			if(combat.hdone.result == "hit"){
+				if(combat.currentEnemy.isAlive()){
+					combat.enemyTurn();
+				}
+				else{
+					combat.giveTreasure();
+					combat.end();
+				}
+			}
+			else if(combat.hdone.result == "miss"){
+				combat.enemyTurn();
+			}
+			else if(combat.hdone.result == "run succeed"){
+				combat.end();
+			}
+			else if(combat.hdone.result == "run fail"){
+				combat.enemyTurn();
+			}
+		}
+		
+		function handleEnemyResult(){
+			if(combatHero.isAlive()){
+				combat.heroTurn();
+			}
+			else{
+				handleEnd();
+			}
+		}
+		if(actor == "hero"){
+			handleHeroResult();
+		}
+		else if (actor == "enemy"){
+			handleEnemyResult();
+		}
+		combat.hdone.result = null;
+		combat.edone.result = null;
 	}
 }
 

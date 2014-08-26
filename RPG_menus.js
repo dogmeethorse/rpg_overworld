@@ -2,14 +2,14 @@ var dragonSmasher = document.getElementById("dragonSmasher");
 
 function buyItem(shop, item){
 	return function(){
-		console.log("shop = "+ shop);
+		//console.log("shop = "+ shop);
 		shop.items[item].buy();
 	}
 }
 
 function buyWeapon(shop, weapon){
 	return function(){
-	console.log("shop = "+ shop);
+	//console.log("shop = "+ shop);
 		shop.weapons[weapon].buy();
 	}
 }
@@ -51,7 +51,7 @@ var inventoryMenu = {
 			option[weap].setAttribute('name', "weapons");
 			option[weap].setAttribute('value', weap.toString());
 			option[weap].addEventListener('click', function(){
-				console.log("weap is "+ weap);
+				//console.log("weap is "+ weap);
 				var num = weap;
 				console.log(num);
 				return function(){combatHero.weapons[num].equip()};
@@ -62,15 +62,15 @@ var inventoryMenu = {
 			this.weaponList.appendChild(weapName);
 		}
 		if(state == SHOP){
-			console.log('trying to add sell buttons');
+			//console.log('trying to add sell buttons');
 			this.handleSellMode()
 		}
 		else{
-			console.log('state is not shop');
+			//console.log('state is not shop');
 		}
 	},
 	updateItems : function(){
-		console.log('updating itmes.')
+		//console.log('updating items.')
 		while (this.itemList.lastChild) {
     		this.itemList.removeChild(this.itemList.lastChild);
     	}	
@@ -85,11 +85,11 @@ var inventoryMenu = {
 			this.itemList.appendChild(itemButtons[itemNo]);	
 		}
 		if( state == SHOP){
-			console.log('trying to add sell buttons');
+			//console.log('trying to add sell buttons');
 			this.handleSellMode();
 		}
 		else{
-			console.log('state is not SHOP');
+			//console.log('state is not SHOP');
 		}
 	},
 	enterSellMode : function(){
@@ -99,7 +99,7 @@ var inventoryMenu = {
 		function buttonListener(list, button, inventoryNumber){
 			if(button.tagName == "INPUT"){
 				return function(){
-					console.log("button = " + button);
+					//console.log("button = " + button);
 					combatHero.weapons[inventoryNumber].sell();
 					addSellButtons(list);
 					
