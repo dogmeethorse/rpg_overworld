@@ -38,7 +38,13 @@ function Weapon(name, dmgBonus, attackChanceBonus, cost){
 	
 	Weapon.prototype.sell = function(){
 		if(this.name != "Bare Hands"){
-			combatHero.weapons.splice(combatHero.inventory.indexOf(this), 1);
+			//console.log('selling '+ this.name);
+			//console.log('index ' + combatHero.inventory.indexOf(this));
+			combatHero.weapons.splice(combatHero.weapons.indexOf(this), 1);
+			if(combatHero.weapons.indexOf(this)== -1 && combatHero.weapon == this){
+				this.unequip();
+				noWeapon.equip();
+			}
 			inventoryMenu.updateWeapons(); //this line should instead call a function written for shopping.
 			combatHero.gold += Math.floor(this.cost/2);
 		}
@@ -108,7 +114,7 @@ combatHero = {
 	maxHp : 10,
 	hp : 10,
 	xp : 0,
-	nextLvlXp : 100,
+	nextLvlXp : 10,
 	lvl : 1,
 	gold : 100,
 	attack : 0.5,
@@ -120,7 +126,7 @@ combatHero = {
 	setStats : function(){
 		statsBox.innerHTML  = "<span>Level: " + combatHero.lvl + "</span><br>";
 		statsBox.innerHTML += "<span>XP: " + combatHero.xp + "</span><br>";
-		statsBox.innerHTML += "<span>HP: " + combatHero.hp + "</span><br>";
+		statsBox.innerHTML += "<span>HP: " + combatHero.hp + "/" + combatHero.maxHp + "</span><br>";
 		statsBox.innerHTML += "<span>Gold : " + combatHero.gold + "</span><br>";
 	}
 }
@@ -160,19 +166,20 @@ combatHero.run = function(){
 
 combatHero.levelUp = function(){
 	console.log('hero gaining new level');
-	hero.lvl++;
+	combatHero.lvl++;
 	sendMessage("You have reached the next Level.", false);
-	hero.nextLvlXp =  hero.nextLvlXp * 2;
-	sendMessage("xp to next level is " + hero.nextLvlXp, false);
-	hero.maxDmg = 1 + combatHero.lvl + combatHero.weapon.dmgBonus; 
-	hero.minDmg = 1 + hero.lvl;
-	hero.maxHp += 10;
+	combatHero.nextLvlXp =  combatHero.nextLvlXp * 2;
+	sendMessage("xp to next level is " + combatHero.nextLvlXp, false);
+	combatHero.maxDmg = 1 + combatHero.lvl + combatHero.weapon.dmgBonus; 
+	combatHero.minDmg = 1 + combatHero.lvl;
+	combatHero.maxHp += 4;
+	combatHero.setStats();
 }
 
 combatHero.checkLevel = function(){
-	console.log(hero.nextLvlXp +" xp for next lvl " + hero.xp + " current xp");
-	if(hero.xp >= hero.nextLvlXp){
-		hero.levelUp();
+	//console.log(hero.nextLvlXp +" xp for next lvl " + hero.xp + " current xp");
+	if(combatHero.xp >= combatHero.nextLvlXp){
+		combatHero.levelUp();
 	}
 	else{
 		console.log('no new level');

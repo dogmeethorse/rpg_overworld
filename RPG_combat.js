@@ -81,6 +81,7 @@ combat = {
 				}
 				else{
 					combat.giveTreasure();
+					combatHero.checkLevel();
 					combat.end();
 				}
 			}

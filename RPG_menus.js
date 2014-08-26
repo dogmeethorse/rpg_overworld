@@ -96,11 +96,11 @@ var inventoryMenu = {
 		this.background.insertBefore(this.sellSign, this.background.firstChild);
 	},
 	handleSellMode : function(){ // This adds a heading that says sell to the items and then changes what the button does.
-		function buttonListener(list, button, inventoryNumber){
+		function buttonListener(list, button, inNumber){
 			if(button.tagName == "INPUT"){
 				return function(){
 					//console.log("button = " + button);
-					combatHero.weapons[inventoryNumber].sell();
+					combatHero.weapons[inNumber].sell();
 					addSellButtons(list);
 					
 				}
