@@ -136,11 +136,16 @@
 	fingerhut.tileList = [water, sand, forest, woodBlock, swamp, tileFloor, stones];
 	fingerhut.NpcList = [
 		new Shopkeeper("Old Man",   oldManSprites, 15, 6, script.fingerhutShop),
+		new NPC("Mayor", afroGuySprites, 7, 14, script.mayorFingerhut),
+		new NPC("bathGuy", oldJewSprites, 17,20, script.bathGuy),
+		new NPC("bathGuy2", oldManSprites, 20,18, script.bathGuy2),
+		new NPC("antisocial", oldManSprites, 20, 7,script.antisocial),
+		new NPC("warner", kidShroomSprites, 17, 16, script.warner),
 		new MovingNPC("Old Clone", oldManSprites,  3, 14),
 		new MovingNPC("Black Girl", blackGirlSprites, 22, 10, script.blackGirl),
-		new MovingNPC("Old Jew", oldJewSprites, 12, 5),
-		new MovingNPC("fat lady", fatLadySprites, 21, 16),
-		new MovingNPC("kid shroom", kidShroomSprites, 8, 20)
+		new MovingNPC("Old Jew", oldJewSprites, 12, 5, script.oldJew),
+		new MovingNPC("fat lady", fatLadySprites, 21, 16, script.fatLady1),
+		new MovingNPC("kid shroom", kidShroomSprites, 8, 20, script.kidShroom1)
 	];
 	
 	fingerhut.enterTown = function(){
@@ -208,12 +213,21 @@
 			[3,5,5,3,6,1,2,2,2,2,2,6,6,3,5,5,5,5,5,3,5,5,5,3],
 			[3,3,3,3,3,3,3,3,3,3,3,1,6,3,3,3,3,3,3,3,3,3,3,3]
 		];
-	pallas.NpcList = [  new MovingNPC('blonde', blondeSprites, 12, 12),
-						new MovingNPC('afro guy', afroGuySprites, 5, 10),
-						new MovingNPC('dog boy', dogBoySprites, 4, 12)	
+	pallas.NpcList = [  
+						new Shopkeeper('rich guy', moustacheSprites, 18, 18),
+						new NPC('old squatter', oldManSprites, 19, 4, script.squatter),
+						new NPC('poor lady', fatLadySprites, 1, 13, script.poorLady),
+						new NPC('poor jew', oldJewSprites, 1, 17, script.poorJew),
+						new NPC('other poor lady', fatLadySprites, 1, 21, script.poorLady2),
+						new NPC('questionable blonde', blondeSprites, 7 ,19, script.questionableLady),
+						new MovingNPC('blonde', blondeSprites, 12, 12, script.blonde),
+						new MovingNPC('afro guy', afroGuySprites, 5, 10, script.mayorLookAlike),
+						new MovingNPC('dog boy', dogBoySprites, 4, 12, script.dogBoy),
+						new MovingNPC('wandering jew', oldJewSprites, 15, 4, script.wanderingJew),
+						new MovingNPC('civil engineer', blackGirlSprites, 18, 15, script.civic)	
 					]
 	pallas.leaveTown = function(){
-		state= OVERWORLD;
+		state = OVERWORLD;
 		context.setTransform(1,0,0,1,0,0);
 		context.translate(-192, -576);
 		map = overworld;

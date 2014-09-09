@@ -48,11 +48,12 @@
 	function sendMessage(output,addOrReplace){
 		dialogBox.style.zIndex = 4;
    		if(addOrReplace == true){ 		
-    	   	dialogBox.innerHTML = '<span>' + output + '</span>';
+    	   	dialogBox.innerHTML = '<span class="game">' + output + '</span>';
     	}
    		else{
-    	    dialogBox.innerHTML += '<span>' + output + '</span>';
+    	    dialogBox.innerHTML += '<span class="game">' + output + '</span>';
     	}
+    	dialogBox.scrollTop = dialogBox.scrollHeight;
 	}	
 	
 	function Tile(x, y, passable){

@@ -214,6 +214,7 @@ var hero= {
 		else if(state == TALK){ //NPC puts you into talk state.
 			//right now if you leave town with dialog box in front won't be able to get it 
 			//to go away until you enter town again.
+			// the above comment is no longer true
 			dialogBox.style.zIndex = -1;
 			state = TOWN;		
 		}

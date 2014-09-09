@@ -25,10 +25,11 @@ canvas{
 	border : 1px solid black;
 	display: inline;
 	background-color:black;
-	top: 600px;
+	top: 500px;
 	left: 40px;
 	height: 100px;
 	width: 600px;
+	overflow: scroll;
 }
 
 h1{
@@ -42,9 +43,11 @@ h3{
 h4{
 	color:white;
 }
-p.game{
+p.game, span.game{
 	color:white;
-	margin-left: 10px;	
+	margin-left: 10px;
+	font-size : x-large;
+	font-family : monospace;	
 }
 
 span{

@@ -4,7 +4,25 @@
 var script= {
 	placeholder : "Hey buddy",
 	fingerhutShop : "Buy Something Will ya!",
-	blackGirl : "Let me see you dance!"	
+	blackGirl : "Let me see you dance!"	,
+	dogBoy : "The dragon made fun of my dog!",
+	fatLady1 : "The dragon judged me!",
+	kidShroom1 : "The mayor of Pallas is attacking anyone who tries to enter the town.",
+	oldJew : "Can't go to Pallas anymore since the mayor flipped out!",
+	mayorFingerhut : "The other mayor is mean!",
+	bathGuy : "Are you too shy to take your clothes off at the public bath too? How will we ever get clean?",
+	bathGuy2 : "The Dragon flew by. It made me feel small and insecure.",
+	antisocial: "No, you can't come in my house. Don't even talk to me.",
+	squatter : "Thanks for killing the mayor! Now I can live in her house!",
+	poorLady : "Can I have the dead mayor's cloak?",
+	poorLady2 : "Tell my husband to bite me!",
+	questionableLady : "Are you just gonna look all day?",
+	mayorLookAlike : "I heard I look just like the mayor of Fingerhut. He must get all the ladies!",
+	poorJew : "Whaddya want an award? for killing the mayor!? The game is called Dragonsmasher, not mayor smasher!",
+	wanderingJew : "This little town of Pallas is a lot quieter now that the mayor is gone.",
+	blonde: "I could give you a great big kiss for murdering that woman! SMOOCH!",
+	civic: "We really need to invest in infrastructure! This place is falling apart!",
+	warner: "If you travel past the mountains the monsters get tougher."
 }
 
 var oldManSprites = [
