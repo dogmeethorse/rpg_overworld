@@ -32,7 +32,7 @@
 	var chestClosed     = new Tile(17, 0, true);
 	var chestOpen       = new Tile(18, 0, true);
 	
-	function eventPicLoaded() {
+	function eventPicLoaded() { // this is where the game really starts
 		startUp();
 	}
 	
@@ -401,7 +401,14 @@
 		window.addEventListener('keyup', keys.handleUp, false);
 		
 		drawScreen();
-
+		// we should add intro before the game loop starts. maybe
+		dialogBox.loadBuffer(script.intro1, script.intro2, script.intro3);
+		dialogBox.open();
+		dialogBox.sayNextInBuffer();
+		while(!dialogBox.bufferIsEmpty){
+			hero.move();
+		}
+		
 		setInterval(function(){
 			hero.move();
 			if(state == TOWN){

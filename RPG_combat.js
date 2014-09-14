@@ -37,10 +37,10 @@ combat = {
 		else{
 			console.log("failed to pick enemy");
 		}
-		state = OVERWORLD;
+		state = OVERWORLD; // what we really want is for the state to pop back to OVERWORLD OR DUNGEON  AFTER DIALOG BOX IS CLOSED.
 		fightButton.style.display = "none";
 		runButton.style.display = "none";
-		window.setTimeout(function(){dialogBox.style.zIndex = -1}, 1000); 
+		window.setTimeout(dialogBox.close, 1000); // we want to get rid of this
 	},
 	giveTreasure : function(){
 		var xpGain = combat.currentEnemy.xp;

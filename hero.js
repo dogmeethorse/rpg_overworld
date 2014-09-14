@@ -169,9 +169,9 @@ var hero= {
 		// attempts to do whatever actions make sense in context when spacebar is pressed
 		// resets hero.action to false when finished;
 		console.log("state 10 = town check " + state + " hero.action " + hero.action);
-		if(dialogBox.style.zIndex == 4){
-			dialogBox.style.zIndex = -1;
-		}
+		//if(dialogBox.style.zIndex == 4){
+			//dialogBox.style.zIndex = -1;
+		//}
 		if(state == TOWN){
 			console.log('looking for people to talk to.');
 			if( hero.currentFrame == 0 || //check facing down
@@ -215,12 +215,16 @@ var hero= {
 			//right now if you leave town with dialog box in front won't be able to get it 
 			//to go away until you enter town again.
 			// the above comment is no longer true
-			dialogBox.style.zIndex = -1;
-			state = TOWN;		
+			if(dialogBox.bufferIsEmpty()){
+				dialogBox.close();
+			}
+			else{
+				dialogBox.sayNextInBuffer();
+			}
 		}
-		else if(state == BATTLE){
-			state = OVERWORLD;
-		}
+		//else if(state == BATTLE){
+		//	state = OVERWORLD;
+		//}
 		hero.action = false;
 	}
 	

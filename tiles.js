@@ -55,6 +55,48 @@
     	}
     	dialogBox.scrollTop = dialogBox.scrollHeight;
 	}	
+	dialogBox.buffer = [];
+	dialogBox.revertState = state;
+	dialogBox.loadBuffer = function(){
+		for(var i = 0; i < arguments.length; i ++){
+			dialogBox.buffer.push(arguments[i]);
+		}
+	}
+	
+	dialogBox.clearBuffer = function(){
+		dialogBox.buffer = [];
+	}
+	
+	dialogBox.bufferIsEmpty = function(){
+		return (dialogBox.buffer.length < 1);
+		// there is actually no reason to do long if else blocks if you just want to test
+		// if something is true or false it turns out.
+	}
+	
+	dialogBox.sayNextInBuffer = function(){
+		//have to add return value for if buffer is empty
+		sendMessage(dialogBox.buffer.shift(), false);
+	}
+	
+	dialogBox.close = function(){
+		dialogBox.style.zIndex = -1;
+		state = dialogBox.revertState;
+	}
+	
+	dialogBox.open = function(){
+		dialogBox.revertState = state;
+		state = TALK;
+		dialogBox.style.zIndex = 4;
+	}
+	
+	dialogBox.isOpen = function(){
+		if(dialogBox.syle.zIndex === 4){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 	
 	function Tile(x, y, passable){
 		//passable take a bool true if player can walk on tile, false if not

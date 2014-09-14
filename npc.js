@@ -20,9 +20,15 @@ var script= {
 	mayorLookAlike : "I heard I look just like the mayor of Fingerhut. He must get all the ladies!",
 	poorJew : "Whaddya want an award? for killing the mayor!? The game is called Dragonsmasher, not mayor smasher!",
 	wanderingJew : "This little town of Pallas is a lot quieter now that the mayor is gone.",
-	blonde: "I could give you a great big kiss for murdering that woman! SMOOCH!",
-	civic: "We really need to invest in infrastructure! This place is falling apart!",
-	warner: "If you travel past the mountains the monsters get tougher."
+	blonde : "I could give you a great big kiss for murdering that woman! SMOOCH!",
+	civic : "We really need to invest in infrastructure! This place is falling apart!",
+	warner : "If you travel past the mountains the monsters get tougher.",
+	dragon1 : "sup",
+	dragon2 : "son",
+	dragon3 : "I love you",
+	intro1 : "You wake up...",
+	intro2 : " with a desire...",
+	intro3 : "   to kill monsters and get xp!"
 }
 
 var oldManSprites = [
@@ -173,12 +179,12 @@ function NPC(name, sprites, xTile, yTile, message){
 }
 
 NPC.prototype.talk = function(){
-	state = TALK;
+	//state = TALK;
 	console.log("talking");
 	this.talking = true;
 	//physically moving the divs around
-	dialogBox.style.zIndex = 4;
-	dialogBox.innerHTML = "<p class='game'>" + this.message + "</p>";
+	dialogBox.open();
+	sendMessage(this.message, true);
 }
 
 NPC.prototype.draw = function(){

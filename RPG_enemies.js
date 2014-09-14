@@ -136,11 +136,11 @@ var enemies = {
 		}
 		
 		var baddy = randomInt(0, this.zones[this.zone].length -1);
-		console.log("zone = " + this.zone + " baddy number" + baddy);
+		//console.log("zone = " + this.zone + " baddy number" + baddy);
 		return enemies.list[this.zones[this.zone][baddy]];
 	},
 	handleAppearance : function(){
-		console.log('enemy found');
+		//console.log('enemy found');
 		state = BATTLE;
 		this.getZone();
 		//this.selectBaddy();
@@ -170,7 +170,7 @@ dragon.collision = function(dragonx, dragony){
 	else if(dragony != hero.targetTile[1] && dragony + 1 != hero.targetTile[1]){
 		return false;
 	}
-	else if((dragonx == hero.tilePos[0] && dragony == hero.tilePos[1]) ||
+	else if((dragonx == hero.tilePos[0] && dragony == hero.tilePos[1]) ||// no longer understand this
 	(dragonx + 1 == hero.tilePos[0] && dragony + 1 == hero.tilePos[1])){
 		return false;
 	}
@@ -178,6 +178,17 @@ dragon.collision = function(dragonx, dragony){
 		return true;
 	}
 }
+
+dragon.loadScript = function(){
+	dialogBox.loadBuffer(dragon1, dragon2, dragon3);
+}
+
+dragon.introduction = function(){
+	this.loadScript();
+	dialogBox.open();
+	dialogBox.sayNextInBuffer();
+}
+
 dragon.battle = function(){
 		fightButton.style.display  = "inline";
 		runButton.style.display    = "inline";
