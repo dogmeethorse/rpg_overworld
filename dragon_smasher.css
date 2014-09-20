@@ -29,6 +29,7 @@ canvas{
 	left: 40px;
 	height: 100px;
 	width: 600px;
+	padding : 3px;
 	overflow: scroll;
 }
 
@@ -126,13 +127,13 @@ div.game {
 	height:200px;		
 }
 
-#fight{
+#fight, #yes{
 	display: none;
 	position: absolute;
 	top: 460px;
 	left: 150px;
 }
-#run{
+#run, #no{
 	display: none;
 	position: absolute;
 	top: 460px;

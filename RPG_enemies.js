@@ -88,14 +88,14 @@ var enemies = {
 	pics : [],
 	list : [	
 		new Enemy(0,'These are Supposed to be Bones', 11, 2, 0, 0.2, 0),//0
-		new Enemy(1,'Mean Lady', 25, 10, 0, 0.3, 0),					//1
-		new Enemy(2,'Robed Jerk', 10, 3, 0, 0.2, 0),					//2
-		new Enemy(3,'Imp', 4, 1, 0, 0.2, 0), 							//3
-		new Enemy(4,'Angry Chest', 8, 5, 0, 0.2, 0),					//4
-		new Enemy(5,'Scary Shadow', 7, 4,0, 0.2, 0),					//5
-		new Enemy(6,'Gross Thing', 6, 4, 0, 0.2, 0),					//6
-		new Enemy(7,'Skeleton', 3, 2, 0, 50, 0.2, 0),					//7
-		new Enemy(8,'Zombie', 5, 3, 0, 20, 0)],							//8
+		new Enemy(1,'Mean Lady',  25, 10, 0, 0.3, 0),					//1
+		new Enemy(2,'Robed Jerk', 10,  3, 0, 0.2, 0),					//2
+		new Enemy(3,'Imp',         4,  1, 0, 0.2, 0), 					//3
+		new Enemy(4,'Angry Chest', 8,  5, 0, 0.2, 0),					//4
+		new Enemy(5,'Scary Shadow',7,  4, 0, 0.2, 0),					//5
+		new Enemy(6,'Gross Thing', 6,  4, 0, 0.2, 0),					//6
+		new Enemy(7,'Skeleton',    3,  2, 0, 0.2, 0),					//7
+		new Enemy(8,'Zombie',      5,  3, 0, 0.5, 0)],					//8
 	zone : 0,
 	zones :[[8,7,3], [0,3,5,6], [2,5,6], [2,5,6]],
 	loadPics: function(){
@@ -157,6 +157,7 @@ var enemies = {
 	}
 }
 var dragon = new Enemy(9, "Dragon", 60, 10, 0, 0.3, 0);
+
 dragon.drawOnMap = function(x, y){
 	dragonLeftHead.draw(x, y);
 	dragonRightHead.draw(x+1, y);
@@ -180,24 +181,63 @@ dragon.collision = function(dragonx, dragony){
 }
 
 dragon.loadScript = function(){
-	dialogBox.loadBuffer(dragon1, dragon2, dragon3);
+	dialogBox.loadBuffer(script.dragon1,
+	 					script.dragon2, 
+	 					script.dragon3, 
+					 	script.dragon4,
+					 	script.dragon5,
+					 	script.dragon6, 
+	 					script.dragonquestion);
 }
 
 dragon.introduction = function(){
 	this.loadScript();
+	dialogBox.clear();
 	dialogBox.open();
 	dialogBox.sayNextInBuffer();
 }
-
 dragon.battle = function(){
-		fightButton.style.display  = "inline";
-		runButton.style.display    = "inline";
-		fightButton.disabled = false;
-		runButton.disabled   = false;
-		combat.currentEnemy = dragon;
-		combat.attachEvents();
-		state = BATTLE;
-		dragon.draw();
+	dialogBox.leaveQuestionMode();
+	alert('fighting');
+	fightButton.style.display  = "inline";
+	runButton.style.display    = "inline";
+	fightButton.disabled = false;
+	runButton.disabled   = false;
+	combat.currentEnemy = this;
+	combat.attachEvents();
+	state = BATTLE;
+}
+
+dragon.yes = function(){
+	dragon.removelisteners();
+	alert('sweet ending coming soon');
+}
+dragon.no = function(){
+	dragon.removelisteners();
+	alert('clicked no');
+	dragon.battle();
+	
+}
+
+dragon.addListeners = function(){
+	yesButton.addEventListener('click', dragon.yes);
+	noButton.addEventListener('click', dragon.no);
+}
+
+dragon.removelisteners = function(){
+	yesButton.removeEventListener('click', dragon.yes);
+	noButton.removeEventListener('click', dragon.no);
+}
+
+dragon.propose = function(){
+	dialogBox.sayNextInBuffer();
+	this.addListeners();
+	dialogBox.enterQuestionMode();
+}
+
+dragon.encounter = function(){
+	this.draw();
+	this.introduction();
 }
 dragon.die = function(){
 	delete dungeon.specialLocations.boss;

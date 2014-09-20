@@ -313,7 +313,7 @@
 		//console.log('checking tiles');
 		if(dungeon.specialLocations.boss){
 			if(dragon.collision(dungeon.specialLocations.boss[0], dungeon.specialLocations.boss[1])){
-				dragon.battle();
+				dragon.encounter();
 			}
 		}
 	}
@@ -363,7 +363,7 @@
 			if(key == 32){ //this is talking not quite sure how to add it in.
 				hero.nextDirection = 'stop';
 				hero.action = true;
-				console.log("trying action " + hero.action);
+				//console.log("trying action " + hero.action);
 			}
 		},
 		handleUp : function(e){
@@ -395,6 +395,14 @@
 			dungeon.drawSpecialLocations();
 		}
 	}
+	function doIntroduction(){
+		dialogBox.loadBuffer(script.intro1, script.intro2, script.intro3);
+		dialogBox.open();
+		dialogBox.sayNextInBuffer();
+		while(!dialogBox.bufferIsEmpty){ // introduction to the game.
+			hero.move();
+		}
+	}
 	
 	function startUp() {				
 		window.addEventListener('keydown', keys.handleDown, false);
@@ -402,12 +410,7 @@
 		
 		drawScreen();
 		// we should add intro before the game loop starts. maybe
-		dialogBox.loadBuffer(script.intro1, script.intro2, script.intro3);
-		dialogBox.open();
-		dialogBox.sayNextInBuffer();
-		while(!dialogBox.bufferIsEmpty){
-			hero.move();
-		}
+		doIntroduction();
 		
 		setInterval(function(){
 			hero.move();
@@ -421,9 +424,9 @@
 					}
 				}
 			}
-			if(state != BATTLE){
+			if(state != BATTLE && state != TALK){
 				drawScreen();
 			}
-			showDebugInfo();
+			//showDebugInfo();
 		}, 1000/8)
 	}

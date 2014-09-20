@@ -74,7 +74,14 @@ function healingPotion(name,strength, cost){
 		combatHero.inventory.splice(combatHero.inventory.indexOf(this), 1);
 		combatHero.setStats();
 		inventoryMenu.updateItems();
+		if(state === TOWN || state === OVERWORLD || state === DUNGEON){
+			dialogBox.open();
+		}
 		sendMessage("You quaff the "+ this.name + " and gain " + this.strength + "hp", false);
+		if(state === BATTLE){
+			console.log('potion in battle');
+			dragonSmasher.dispatchEvent(combat.hdone);
+		}	
 	}
 	
 	healingPotion.prototype.buy = function(){

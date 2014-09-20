@@ -37,14 +37,16 @@ combat = {
 		else{
 			console.log("failed to pick enemy");
 		}
-		state = OVERWORLD; // what we really want is for the state to pop back to OVERWORLD OR DUNGEON  AFTER DIALOG BOX IS CLOSED.
+		// what we really want is for the state to pop back to OVERWORLD OR DUNGEON  AFTER DIALOG BOX IS CLOSED.
 		fightButton.style.display = "none";
 		runButton.style.display = "none";
-		window.setTimeout(dialogBox.close, 1000); // we want to get rid of this
+		//window.setTimeout(dialogBox.close, 1000); // we want to get rid of this
 	},
 	giveTreasure : function(){
 		var xpGain = combat.currentEnemy.xp;
 		var goldGain = combat.currentEnemy.maxDmg;
+		state = OVERWORLD; 
+		dialogBox.open();
 		sendMessage( "you got " + xpGain + "xp and " + goldGain + " gold.", false );
 		combatHero.xp += xpGain;
 		combatHero.gold += goldGain;
@@ -94,6 +96,9 @@ combat = {
 			else if(combat.hdone.result == "run fail"){
 				combat.enemyTurn();
 			}
+			else{
+				combat.enemyTurn();
+			}
 		}
 		
 		function handleEnemyResult(){
@@ -116,5 +121,5 @@ combat = {
 }
 
 function handleEnd(){
-	sendMessage("Another nameless warrior tries his luck. Click fight to begin your adventure. Click on the shop to buy supplies for your journey.", true);
+	sendMessage("You are dead", false);
 }

@@ -168,12 +168,12 @@ var hero= {
 	hero.tryAction = function(){
 		// attempts to do whatever actions make sense in context when spacebar is pressed
 		// resets hero.action to false when finished;
-		console.log("state 10 = town check " + state + " hero.action " + hero.action);
+		//console.log("state 10 = town check " + state + " hero.action " + hero.action);
 		//if(dialogBox.style.zIndex == 4){
 			//dialogBox.style.zIndex = -1;
 		//}
 		if(state == TOWN){
-			console.log('looking for people to talk to.');
+			//console.log('looking for people to talk to.');
 			if( hero.currentFrame == 0 || //check facing down
 				hero.currentFrame == 1){
 				for(var npc = 0; npc < map.NpcList.length; npc++){
@@ -230,13 +230,16 @@ var hero= {
 	
 	hero.move = function(){
 		if(hero.tileReached()){ 
-			map.checkSpecialTiles();			
+			if(state != TALK && state != BATTLE){
+				map.checkSpecialTiles();
+				//console.log('checking tiles');
+			}			
 			hero.updateTravelVariables();			
 			if(keys.downUp && keys.upUp && keys.leftUp && keys.rightUp){
 				hero.direction = 'stop';				
 			}
 			if(hero.action){
-				console.log("about to try action " + hero.action);
+				//console.log("about to try action " + hero.action);
 				hero.tryAction();
 			}		
 			else{

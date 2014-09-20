@@ -26,6 +26,8 @@
 	var dragonSmasher = document.getElementById('dragonSmasher');
 	var fightButton = document.getElementById('fight');
 	var runButton = document.getElementById('run');
+	var yesButton = document.getElementById('yes');
+	var noButton = document.getElementById('no');
 	
 	context.imageSmoothingEnabled = false;
 	context.webkitImageSmoothingEnabled = false;
@@ -63,19 +65,36 @@
 		}
 	}
 	
+	dialogBox.clear = function(){
+		dialogBox.innerHTML = "";
+	}
 	dialogBox.clearBuffer = function(){
 		dialogBox.buffer = [];
 	}
 	
 	dialogBox.bufferIsEmpty = function(){
-		return (dialogBox.buffer.length < 1);
-		// there is actually no reason to do long if else blocks if you just want to test
-		// if something is true or false it turns out.
+		return ((dialogBox.buffer.length < 1)|| dialogBox.question);
 	}
 	
 	dialogBox.sayNextInBuffer = function(){
-		//have to add return value for if buffer is empty
-		sendMessage(dialogBox.buffer.shift(), false);
+		var message = dialogBox.buffer.shift()
+		if(typeof message !=="string"){
+			message();
+		}
+		else{
+			sendMessage(message, false);
+		}
+	}
+	dialogBox.enterQuestionMode = function(){
+		dialogBox.question = true;
+		yesButton.style.display  = "inline";
+		noButton.style.display   = "inline";
+	}
+	
+	dialogBox.leaveQuestionMode = function(){
+		dialogBox.question = false;
+		yesButton.style.display  = "none";
+		noButton.style.display   = "none";		
 	}
 	
 	dialogBox.close = function(){

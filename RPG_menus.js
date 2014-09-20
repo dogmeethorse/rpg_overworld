@@ -107,7 +107,7 @@ var inventoryMenu = {
 			}
 			else if(button.tagName =="BUTTON"){
 				return function(){
-					combatHero.inventory[inventoryNumber].sell();
+					combatHero.inventory[inNumber].sell();
 					addSellButtons(list);
 				}
 			}
