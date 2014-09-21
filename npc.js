@@ -32,7 +32,10 @@ var script= {
 	dragonquestion : "What do you say?",
 	intro1 : "You wake up...",
 	intro2 : " with a desire...",
-	intro3 : "   to kill monsters and get xp!"
+	intro3 : "   to kill monsters and get xp!",
+	mayor1 : "How Dare You try to enter my town!",
+	mayor2 : "I will smash you!",
+	mayor3 : function(){evilMayor.battle()}
 }
 
 var oldManSprites = [

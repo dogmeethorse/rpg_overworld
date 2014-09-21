@@ -26,7 +26,7 @@ function Enemy(index, name,hp,dmg,aggro,atk,esc){
 		//hCtx.fillStyle = "#346524";
 		//hCtx.fillRect(150, 300, 400, 150);
 		hCtx.drawImage(fightBackground, 150, 50, 400, 400);	
-		hCtx.drawImage(enemies.pics[this.index], 150, 0, 400,400);
+		hCtx.drawImage(enemies.pics[this.index], 150, 25, 400,400);
 	}
 	
 	Enemy.prototype.isAlive = function(){
@@ -89,13 +89,13 @@ var enemies = {
 	list : [	
 		new Enemy(0,'These are Supposed to be Bones', 11, 2, 0, 0.2, 0),//0
 		new Enemy(1,'Mean Lady',  25, 10, 0, 0.3, 0),					//1
-		new Enemy(2,'Robed Jerk', 10,  3, 0, 0.2, 0),					//2
-		new Enemy(3,'Imp',         4,  1, 0, 0.2, 0), 					//3
-		new Enemy(4,'Angry Chest', 8,  5, 0, 0.2, 0),					//4
-		new Enemy(5,'Scary Shadow',7,  4, 0, 0.2, 0),					//5
-		new Enemy(6,'Gross Thing', 6,  4, 0, 0.2, 0),					//6
-		new Enemy(7,'Skeleton',    3,  2, 0, 0.2, 0),					//7
-		new Enemy(8,'Zombie',      5,  3, 0, 0.5, 0)],					//8
+		new Enemy(2,'Robed Jerk', 10,  3, 0, 0.2, .25),					//2
+		new Enemy(3,'Imp',         4,  1, 0, 0.2, .65), 					//3
+		new Enemy(4,'Angry Chest', 8,  5, 0, 0.2, .2),					//4
+		new Enemy(5,'Scary Shadow',7,  4, 0, 0.2, .3),					//5
+		new Enemy(6,'Gross Thing', 6,  4, 0, 0.2, .4),					//6
+		new Enemy(7,'Skeleton',    3,  2, 0, 0.2, .6),					//7
+		new Enemy(8,'Zombie',      5,  3, 0, 0.5, .8)],					//8
 	zone : 0,
 	zones :[[8,7,3], [0,3,5,6], [2,5,6], [2,5,6]],
 	loadPics: function(){
@@ -198,7 +198,7 @@ dragon.introduction = function(){
 }
 dragon.battle = function(){
 	dialogBox.leaveQuestionMode();
-	alert('fighting');
+	//alert('fighting');
 	fightButton.style.display  = "inline";
 	runButton.style.display    = "inline";
 	fightButton.disabled = false;
@@ -214,7 +214,7 @@ dragon.yes = function(){
 }
 dragon.no = function(){
 	dragon.removelisteners();
-	alert('clicked no');
+	//alert('clicked no');
 	dragon.battle();
 	
 }
@@ -242,5 +242,41 @@ dragon.encounter = function(){
 dragon.die = function(){
 	delete dungeon.specialLocations.boss;
 	state = dungeon;
+}
+
+var evilMayor = Object.create(dragon);
+	evilMayor.index = 1;
+	evilMayor.name = "Very angry mayor";
+	evilMayor.xp = 25;
+	evilMayor.hp = 25;
+	evilMayor.maxDmg = 14;
+	evilMayor.minDmg = 2;
+	evilMayor.atkChance = 0.4;
+	evilMayor.escChance = 0;
+	evilMayor.aggro = 1;  
+	evilMayor.maxHp = this.hp;
+
+evilMayor.collision = function(){
+	var mayorTiles = [
+		[7,13],
+		[8,13],
+		[9,13],
+		[7,14],
+		[9,14],
+		[7,15],
+		[8,15],
+		[9,15]
+	];
+	for( var tile = 0; tile < mayorTiles.length; tile++){
+		if(hero.targetTile[0] === mayorTiles[tile][0] &&
+		hero.targetTile[1] === mayorTiles[tile][1]){
+			return true;	
+		}
+	}
+	return false;
+}
+evilMayor.loadScript = function(){
+	dialogBox.loadBuffer(script.mayor1, script.mayor2, script.mayor3);
+	overworld.mayor = false;
 }
 enemies.loadPics();

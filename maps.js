@@ -74,10 +74,17 @@
 			}
 		}
 	}
-	overworld.checkSpecialTiles = function(){	
+	overworld.mayor = true;
+	overworld.checkSpecialTiles = function(){		
 		//check if on fingerhut location
 		//console.log('checking tiles');
-		if((hero.targetTile[0] == 5 && hero.targetTile[1] == 5) &&
+		
+		if(evilMayor.collision()){
+			if(overworld.mayor){
+				evilMayor.encounter();
+			}
+		}
+		else if((hero.targetTile[0] == 5 && hero.targetTile[1] == 5) &&
 			(hero.tilePos[0] != 5 || hero.tilePos[1] != 5)
 		){
 			fingerhut.enterTown();
@@ -427,6 +434,6 @@
 			if(state != BATTLE && state != TALK){
 				drawScreen();
 			}
-			//showDebugInfo();
+			showDebugInfo();
 		}, 1000/8)
 	}

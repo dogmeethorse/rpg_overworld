@@ -80,6 +80,7 @@ function healingPotion(name,strength, cost){
 		sendMessage("You quaff the "+ this.name + " and gain " + this.strength + "hp", false);
 		if(state === BATTLE){
 			console.log('potion in battle');
+			combat.hdone.result = 'item used';
 			dragonSmasher.dispatchEvent(combat.hdone);
 		}	
 	}
@@ -129,7 +130,7 @@ combatHero = {
 	minDmg :1, // this.lvl,
 	weapons : [noWeapon],
 	inventory : [],
-	fleeChance : 1,
+	fleeChance : 0,
 	setStats : function(){
 		statsBox.innerHTML  = "<span>Level: " + combatHero.lvl + "</span><br>";
 		statsBox.innerHTML += "<span>XP: " + combatHero.xp + "</span><br>";
@@ -159,10 +160,9 @@ combatHero.attack = function(){
 }
 
 combatHero.run = function(){
-	if(Math.random() <= combatHero.fleeChance){
+	if(Math.random() <= combatHero.fleeChance + combat.currentEnemy.escChance){
 		sendMessage("You escape like a coward! Congratulations", false);
 		combat.hdone.result = "run succeed";
-		combat.end();
 	}
 	else{
 		sendMessage("You cannot escape!");

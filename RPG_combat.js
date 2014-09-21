@@ -40,17 +40,18 @@ combat = {
 		// what we really want is for the state to pop back to OVERWORLD OR DUNGEON  AFTER DIALOG BOX IS CLOSED.
 		fightButton.style.display = "none";
 		runButton.style.display = "none";
+		state = OVERWORLD;
+		dialogBox.open();
 		//window.setTimeout(dialogBox.close, 1000); // we want to get rid of this
 	},
 	giveTreasure : function(){
 		var xpGain = combat.currentEnemy.xp;
 		var goldGain = combat.currentEnemy.maxDmg;
-		state = OVERWORLD; 
-		dialogBox.open();
 		sendMessage( "you got " + xpGain + "xp and " + goldGain + " gold.", false );
 		combatHero.xp += xpGain;
 		combatHero.gold += goldGain;
 		combatHero.setStats();
+		combat.end();
 	},
 	heroTurn : function(){
 		if(combatHero.isAlive()){
@@ -76,6 +77,7 @@ combat = {
 		dragonSmasher.dispatchEvent(combat.edone);
 	},
 	handleResult : function(actor){
+		console.log(combat.hdone.result);
 		function handleHeroResult(){
 			if(combat.hdone.result == "hit"){
 				if(combat.currentEnemy.isAlive()){
@@ -91,12 +93,12 @@ combat = {
 				combat.enemyTurn();
 			}
 			else if(combat.hdone.result == "run succeed"){
-				combat.end();
+				combat.end('run');
 			}
 			else if(combat.hdone.result == "run fail"){
 				combat.enemyTurn();
 			}
-			else{
+			else if(combat.hdone.result === "item used"){
 				combat.enemyTurn();
 			}
 		}
