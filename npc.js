@@ -8,8 +8,11 @@ var script= {
 	dogBoy : "The dragon made fun of my dog!",
 	fatLady1 : "The dragon judged me!",
 	kidShroom1 : "The mayor of Pallas is attacking anyone who tries to enter the town.",
+	kidShroom1PostMayor: "",
 	oldJew : "Can't go to Pallas anymore since the mayor flipped out!",
+	oldJewPostMayor : "",
 	mayorFingerhut : "The other mayor is mean!",
+	mayorFingerhutPostMayor : "",
 	bathGuy : "Are you too shy to take your clothes off at the public bath too? How will we ever get clean?",
 	bathGuy2 : "The Dragon flew by. It made me feel small and insecure.",
 	antisocial: "No, you can't come in my house. Don't even talk to me.",
@@ -35,7 +38,19 @@ var script= {
 	intro3 : "   to kill monsters and get xp!",
 	mayor1 : "How Dare You try to enter my town!",
 	mayor2 : "I will smash you!",
-	mayor3 : function(){evilMayor.battle()}
+	mayor3 : function(){evilMayor.battle()},
+	dragonYes1 : "Ha Ha! Yeah look at these dorks!",
+	dragonYes2 : "HA! Is that a human? It looks more like a cow",
+	dragonYes3 : function(){dialogBox.clear()},
+	dragonYes4 : "You're right. That was over the line. I'm sorry.",
+	dragonYes5 : function(){dialogBox.clear(); map = pallas;},
+	dragonYes6 : "This town looks like something that came out of my butt. LOL",
+	dragonDead1 : "1",
+	dragonDead2 : "2",
+	dragonDead3 : "3",
+	dragonDead4 : "4",
+	dragonDead5 : "5",
+	dragonDead6 : "6"
 }
 
 var oldManSprites = [
@@ -302,6 +317,7 @@ MovingNPC.prototype.updatePos = function(){
 }
 NPC.prototype.draw = function(){
 	this.sprites[this.currentFrame].draw(this.x, this.y, true);
+	//console.log(this.currentFrame);
 }
 MovingNPC.prototype.selectFrame = function(){
 			if(this.direction == "down"){

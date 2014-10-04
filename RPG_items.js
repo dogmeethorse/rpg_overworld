@@ -65,6 +65,11 @@ function healingPotion(name,strength, cost){
 	this.strength = strength;
 	this.cost = cost;
 	
+	healingPotion.prototype.remove = function(){
+		combatHero.inventory.splice(combatHero.inventory.indexOf(this), 1);
+		inventoryMenu.updateItems();
+	}
+	
 	healingPotion.prototype.quaff = function(){
 		combatHero.hp += this.strength;
 		if(combatHero.hp > combatHero.maxHp){
@@ -116,6 +121,20 @@ function healingPotion(name,strength, cost){
 
 var smallPotion = new healingPotion('Small Potion', 5, 5);
 var largePotion = new healingPotion('Large Potion', 20, 15);
+var bomb = Object.create(new healingPotion('Bomb',   10, 15));
+bomb.quaff = function(){
+	if(state !== BATTLE){
+		return;
+	}
+	else{
+		this.remove();
+		combat.currentEnemy.hp -= this.strength;
+		sendMessage("BOOM! " + this.strength + " damage!", true);
+		combat.hdone.result = 'hit';
+		dragonSmasher.dispatchEvent(combat.hdone);
+	}
+}
+
 
 combatHero = {
 	weapon : noWeapon,

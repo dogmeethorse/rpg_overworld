@@ -210,7 +210,8 @@ dragon.battle = function(){
 
 dragon.yes = function(){
 	dragon.removelisteners();
-	alert('sweet ending coming soon');
+	dialogBox.leaveQuestionMode();
+	yesToDragon.start();
 }
 dragon.no = function(){
 	dragon.removelisteners();
@@ -278,5 +279,8 @@ evilMayor.collision = function(){
 evilMayor.loadScript = function(){
 	dialogBox.loadBuffer(script.mayor1, script.mayor2, script.mayor3);
 	overworld.mayor = false;
+}
+evilMayor.die = function(){
+	state = OVERWORLD;	
 }
 enemies.loadPics();

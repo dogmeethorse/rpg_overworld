@@ -232,7 +232,6 @@ var hero= {
 		if(hero.tileReached()){ 
 			if(state != TALK && state != BATTLE){
 				map.checkSpecialTiles();
-				//console.log('checking tiles');
 			}			
 			hero.updateTravelVariables();			
 			if(keys.downUp && keys.upUp && keys.leftUp && keys.rightUp){

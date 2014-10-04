@@ -371,6 +371,7 @@
 				hero.nextDirection = 'stop';
 				hero.action = true;
 				//console.log("trying action " + hero.action);
+				//spacebar
 			}
 		},
 		handleUp : function(e){
@@ -419,7 +420,7 @@
 		// we should add intro before the game loop starts. maybe
 		doIntroduction();
 		
-		setInterval(function(){
+		gameLoop = setInterval(function(){
 			hero.move();
 			if(state == TOWN){
 				if(map.NpcList){
