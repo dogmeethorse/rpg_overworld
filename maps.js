@@ -142,17 +142,17 @@
 		];
 	fingerhut.tileList = [water, sand, forest, woodBlock, swamp, tileFloor, stones];
 	fingerhut.NpcList = [
-		new Shopkeeper("Old Man",   oldManSprites, 15, 6, script.fingerhutShop),
-		new NPC("Mayor", afroGuySprites, 7, 14, script.mayorFingerhut),
-		new NPC("bathGuy", oldJewSprites, 17,20, script.bathGuy),
-		new NPC("bathGuy2", oldManSprites, 20,18, script.bathGuy2),
-		new NPC("antisocial", oldManSprites, 20, 7,script.antisocial),
-		new NPC("warner", kidShroomSprites, 17, 16, script.warner),
-		new MovingNPC("Old Clone", oldManSprites,  3, 14),
-		new MovingNPC("Black Girl", blackGirlSprites, 22, 10, script.blackGirl),
-		new MovingNPC("Old Jew", oldJewSprites, 12, 5, script.oldJew),
-		new MovingNPC("fat lady", fatLadySprites, 21, 16, script.fatLady1),
-		new MovingNPC("kid shroom", kidShroomSprites, 8, 20, script.kidShroom1)
+		new Shopkeeper("Old Man",   oldManSprites, 15, 6, script.fingerhutShop),//0
+		new NPC("Mayor", afroGuySprites, 7, 14, script.mayorFingerhut),//1
+		new NPC("bathGuy", oldJewSprites, 17,20, script.bathGuy),//2
+		new NPC("bathGuy2", oldManSprites, 20,18, script.bathGuy2),//3
+		new NPC("antisocial", oldManSprites, 20, 7,script.antisocial),//4
+		new NPC("warner", kidShroomSprites, 17, 16, script.warner),//5
+		new MovingNPC("Old Clone", oldManSprites,  3, 14),//6
+		new MovingNPC("Black Girl", blackGirlSprites, 22, 10, script.blackGirl),//7
+		new MovingNPC("Old Jew", oldJewSprites, 12, 5, script.oldJew),//8
+		new MovingNPC("fat lady", fatLadySprites, 21, 16, script.fatLady1),//9
+		new MovingNPC("kid shroom", kidShroomSprites, 8, 20, script.kidShroom1)//10
 	];
 	
 	fingerhut.enterTown = function(){

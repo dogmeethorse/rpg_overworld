@@ -205,6 +205,7 @@ dragonDead = Object.create(cutScene);
 dragonDead.time = new Date().getTime();
 dragonDead.newTime = new Date().getTime();
 dragonDead.deltaTime = 0;
+dragonDead.ladyMoving = false;
 dragonDead.start = function(){
 	dragonDead.init();
 	dialogBox.loadBuffer(script.dragonDead1,
@@ -220,30 +221,60 @@ dragonDead.start = function(){
 	hero.currentFrame = 0;
 	hero.x = 320;
 	hero.y = 320;
+	dragonDead.moveNpcs();
 	dragonDead.update();
 }
-dragonDead.placeScreen = function(){
-
+dragonDead.moveNpcs = function(){
+	fingerhut.NpcList[6].tilePos[0] = 3; 
+	fingerhut.NpcList[6].tilePos[1] = 14;	
+	fingerhut.NpcList[9].tilePos[0] = 13;
+	fingerhut.NpcList[9].tilePos[1] = 10;
+	fingerhut.NpcList[6].setCoordinates();
+	fingerhut.NpcList[9].setCoordinates();	
+	fingerhut.NpcList[9].direction = 'left';
 }
-dragonDead.mayorDance = function(){
+dragonDead.peopleDance = function(){
 	dragonDead.newTime = new Date().getTime();
 	dragonDead.deltaTime = dragonDead.newTime - dragonDead.time;
 	if(dragonDead.deltaTime > 120){
 		dragonDead.time = dragonDead.newTime;
 		if(fingerhut.NpcList[1].currentFrame === 0){
 			fingerhut.NpcList[1].currentFrame = 1;
+			fingerhut.NpcList[6].currentFrame = 1;
 		}
 		else{
 			fingerhut.NpcList[1].currentFrame = 0;
+			fingerhut.NpcList[6].currentFrame = 0;
 		}
-		map.draw();
-		map.drawNPCs();
 	}
 	//fingerhut.NpcList[1].draw();
 }
+dragonDead.ladyMove = function(){
+	if(fingerhut.NpcList[9].x > 448){
+		fingerhut.NpcList[9].cutsceneMove();
+		console.log
+	}
+	else if(fingerhut.NpcList[9].y < 13 * 64){
+		fingerhut.NpcList[9].direction = 'down';
+		fingerhut.NpcList[9].cutsceneMove();
+	}
+	else if(fingerhut.NpcList[9].x > 448 -64){
+		fingerhut.NpcList[9].direction = 'left';
+		fingerhut.NpcList[9].cutsceneMove();
+	}
+	else{
+		fingerhut.NpcList[9].direction = 'down';
+		fingerhut.NpcList[9].selectFrame();
+	}
+}
 dragonDead.update = function(){
 	hero.draw();
-	dragonDead.mayorDance();
+	dragonDead.peopleDance();
+	if(dragonDead.ladyMoving){
+		dragonDead.ladyMove();
+	}
+	map.draw();
+	map.drawNPCs();
 	requestAnimationFrame(dragonDead.update);	
 }
 

@@ -45,12 +45,12 @@ var script= {
 	dragonYes4 : "You're right. That was over the line. I'm sorry.",
 	dragonYes5 : function(){dialogBox.clear(); map = pallas;},
 	dragonYes6 : "This town looks like something that came out of my butt. LOL",
-	dragonDead1 : "1",
+	dragonDead1 : "I am so excited. The Dragon is dead!! I am spazzing out!",
 	dragonDead2 : "2",
 	dragonDead3 : "3",
-	dragonDead4 : "4",
-	dragonDead5 : "5",
-	dragonDead6 : "6"
+	dragonDead4 : function(){dialogBox.clear(); dragonDead.ladyMoving = true;},
+	dragonDead5 : "My self image is so much better now. Thank you!",
+	dragonDead6 : "                    THE END"
 }
 
 var oldManSprites = [
@@ -198,6 +198,10 @@ function NPC(name, sprites, xTile, yTile, message){
 	this.currentFrame = 0;
 	this.talking = false;
 	this.message = message || script.placeholder;
+}
+NPC.prototype.setCoordinates = function(){
+	this.x = this.tilePos[0] * DEST_WIDTH;; //for pixel positions
+	this.y = this.tilePos[1] * DEST_HEIGHT;;
 }
 
 NPC.prototype.talk = function(){
@@ -364,6 +368,11 @@ MovingNPC.prototype.move = function(){
 		this.tilePos = [this.targetTile[0], this.targetTile[1]];
 		//console.log(this.distanceTravelled);
 	}
+	this.updatePos();
+	this.selectFrame();
+}
+
+MovingNPC.prototype.cutsceneMove = function(){
 	this.updatePos();
 	this.selectFrame();
 }
