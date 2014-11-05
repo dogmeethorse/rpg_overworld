@@ -134,7 +134,11 @@ bomb.quaff = function(){
 		dragonSmasher.dispatchEvent(combat.hdone);
 	}
 }
-
+// Stock for shops in the world
+fingerhutWeapons = [stick, dagger];
+fingerhutItems = [smallPotion, largePotion];
+pallasWeapons = [shortSword, flail, longSword];
+pallasItems = [smallPotion, largePotion];
 
 combatHero = {
 	weapon : noWeapon,
@@ -212,7 +216,7 @@ combatHero.checkLevel = function(){
 	}
 }
 combatHero.isAlive = function(){
-	if(combatHero.hp > 0){
+	if(combatHero.hp > 0){ // This whole function could be return combatHero.hp > 0;
 		return true;
 	}
 	else{

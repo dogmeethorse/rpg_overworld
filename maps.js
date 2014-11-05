@@ -142,7 +142,8 @@
 		];
 	fingerhut.tileList = [water, sand, forest, woodBlock, swamp, tileFloor, stones];
 	fingerhut.NpcList = [
-		new Shopkeeper("Old Man",   oldManSprites, 15, 6, script.fingerhutShop),//0
+		new Shopkeeper("Old Man",   oldManSprites, 15, 6, script.fingerhutShop,
+			fingerhutWeapons, fingerhutItems),//0
 		new NPC("Mayor", afroGuySprites, 7, 14, script.mayorFingerhut),//1
 		new NPC("bathGuy", oldJewSprites, 17,20, script.bathGuy),//2
 		new NPC("bathGuy2", oldManSprites, 20,18, script.bathGuy2),//3
@@ -221,7 +222,8 @@
 			[3,3,3,3,3,3,3,3,3,3,3,1,6,3,3,3,3,3,3,3,3,3,3,3]
 		];
 	pallas.NpcList = [  
-						new Shopkeeper('rich guy', moustacheSprites, 18, 18),
+						new Shopkeeper('rich guy', moustacheSprites, 18, 18,script.fingerhutShop,
+							pallasWeapons, pallasItems),
 						new NPC('old squatter', oldManSprites, 19, 4, script.squatter),
 						new NPC('poor lady', fatLadySprites, 1, 13, script.poorLady),
 						new NPC('poor jew', oldJewSprites, 1, 17, script.poorJew),

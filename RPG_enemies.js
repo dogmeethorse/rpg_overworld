@@ -243,6 +243,7 @@ dragon.encounter = function(){
 dragon.die = function(){
 	delete dungeon.specialLocations.boss;
 	state = dungeon;
+	dragonDead.start();
 }
 
 var evilMayor = Object.create(dragon);

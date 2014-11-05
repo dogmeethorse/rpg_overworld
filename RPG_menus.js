@@ -1,16 +1,8 @@
 var dragonSmasher = document.getElementById("dragonSmasher");
 
-function buyItem(shop, item){
+function buy(thing){
 	return function(){
-		//console.log("shop = "+ shop);
-		shop.items[item].buy();
-	}
-}
-
-function buyWeapon(shop, weapon){
-	return function(){
-	//console.log("shop = "+ shop);
-		shop.weapons[weapon].buy();
+		thing.buy();
 	}
 }
 
@@ -140,45 +132,54 @@ var inventoryMenu = {
 	}
 }
 
-var shopPallas = {
-	self : null,
-	items:[smallPotion, largePotion],
-	weapons:[stick, dagger, shortSword, flail, longSword],
+var shop = {
 	background : document.createElement('div'),
 	itemsToBuy : document.createElement('div'),
 	weaponList : document.createElement('div'),
 	init : function(){
-		this.self = function(){return this}();
 		this.background.setAttribute('class','game');
 		this.background.setAttribute('id', 'shopMenu');
 		this.background.innerHTML = '<h3>SHOP<h3>'		
+			
+		var closeShop = document.createElement('button');
+		closeShop.setAttribute('onclick', 'shop.close()'); // this line needs to be changed when we add more shops// Not going to change it
+		closeShop.innerHTML = "CLOSE";
+		this.background.appendChild(this.weaponList);
+		this.background.appendChild(this.itemsToBuy);
+		this.background.appendChild(closeShop);
+	},
+	stock: function(shopWeapons, shopItems){
+		var weapons = shopWeapons;
+		var items = shopItems; 
 		var weapButtons = [];
-		//adding weapons
-		for(var weap = 0; weap < this.weapons.length; weap++){
+		for(var weap = 0; weap < weapons.length; weap++){
 			weapButtons[weap] = document.createElement('button')
-			weapButtons[weap].addEventListener('click', buyWeapon(shopPallas, weap),false);
-			weapButtons[weap].innerHTML = this.weapons[weap].name + " price " + this.weapons[weap].cost + "gold";
+			weapButtons[weap].addEventListener('click', buy(weapons[weap]),false);
+			weapButtons[weap].innerHTML = weapons[weap].name + " price " + weapons[weap].cost + "gold";
 			this.weaponList.appendChild(weapButtons[weap]);
 		}	
 		//adding items	
 		var itemButtons =[];
 		var itemNo;
-		for(itemNo = 0; itemNo < this.items.length; itemNo++ ){
+		for(itemNo = 0; itemNo < items.length; itemNo++ ){
 			itemButtons[itemNo] = document.createElement('button');
-			itemButtons[itemNo].textContent= this.items[itemNo].name + " " + this.items[itemNo].cost + "gold";
-			itemButtons[itemNo].addEventListener('click', buyItem(shopPallas, itemNo),false);			
+			itemButtons[itemNo].textContent= items[itemNo].name + " " + items[itemNo].cost + "gold";
+			itemButtons[itemNo].addEventListener('click', buy(items[itemNo]),false);			
 			this.itemsToBuy.appendChild(itemButtons[itemNo]);
 		}
-	
-		var closeShop = document.createElement('button');
-		closeShop.setAttribute('onclick', 'shopPallas.close()'); // this line needs to be changed when we add more shops
-		closeShop.innerHTML = "CLOSE";
-		this.background.appendChild(this.weaponList);
-		this.background.appendChild(this.itemsToBuy);
-		this.background.appendChild(closeShop);
-	},	
-	open : function (){
+	},
+	unstock: function(){
+		function removeStock(node){
+			while(node.firstChild){
+				node.removeChild(node.firstChild);
+			}
+		}
+		removeStock(this.weaponList);
+		removeStock(this.itemsToBuy);
+	},
+	open : function (shopWeapons, shopItems){
 		state = SHOP;
+		shop.stock(shopWeapons, shopItems);
 		dragonSmasher.appendChild(this.background);
 		inventoryMenu.enterSellMode();
 		inventoryMenu.handleSellMode();
@@ -186,11 +187,12 @@ var shopPallas = {
 	},
 	close : function(shopMenu){
 		dragonSmasher.removeChild(this.background);
+		this.unstock();
 		state = TOWN;
 		inventoryMenu.endSellMode();
 		dialogBox.style.zIndex = -1;
 	}
 }
-shopPallas.init();
+shop.init();
 inventoryMenu.create();
 inventoryMenu.updateWeapons();

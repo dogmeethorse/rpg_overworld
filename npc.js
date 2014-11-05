@@ -45,12 +45,12 @@ var script= {
 	dragonYes4 : "You're right. That was over the line. I'm sorry.",
 	dragonYes5 : function(){dialogBox.clear(); map = pallas;},
 	dragonYes6 : "This town looks like something that came out of my butt. LOL",
-	dragonDead1 : "I am so excited. The Dragon is dead!! I am spazzing out!",
-	dragonDead2 : "2",
-	dragonDead3 : "3",
+	dragonDead1 : " I am so excited. The Dragon is dead!! I am spazzing out!",
+	dragonDead2 : function(){dialogBox.clear(), dialogBox.sayNextInBuffer();},
+	dragonDead3 : "  Killing that other mayor was great too!",
 	dragonDead4 : function(){dialogBox.clear(); dragonDead.ladyMoving = true;},
 	dragonDead5 : "My self image is so much better now. Thank you!",
-	dragonDead6 : "                    THE END"
+	dragonDead6 : " THE END"
 }
 
 var oldManSprites = [
@@ -376,13 +376,15 @@ MovingNPC.prototype.cutsceneMove = function(){
 	this.updatePos();
 	this.selectFrame();
 }
-
-function Shopkeeper(name, sprites, xTile, yTile, message){
+//for shopKeeper weapons and items are arrays
+function Shopkeeper(name, sprites, xTile, yTile, message, weapons, items){ 
 	NPC.apply(this, [name, sprites, xTile, yTile, message]);
+	this.weapons = weapons;
+	this.items = items;
 }
 Shopkeeper.prototype = new NPC();
 
 Shopkeeper.prototype.talk = function(){
 	NPC.prototype.talk.call(this);
-	shopPallas.open();
+	shop.open(this.weapons, this.items);
 }
