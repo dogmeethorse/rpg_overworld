@@ -4,8 +4,6 @@
  * name,hp,dmg,aggro,atk,esc
  */
 
-const NUM_ENEMIES = 9;
-
 var enemy_pics = [];
 
 function Enemy(index, name,hp,dmg,aggro,atk,esc){
@@ -21,12 +19,16 @@ function Enemy(index, name,hp,dmg,aggro,atk,esc){
 	this.maxHp = this.hp;
 	
 	Enemy.prototype.draw = function(){
-		//hCtx.fillStyle = "#567DCE";
-		//hCtx.fillRect(150, 50, 400, 400);
-		//hCtx.fillStyle = "#346524";
-		//hCtx.fillRect(150, 300, 400, 150);
-		hCtx.drawImage(fightBackground, 150, 50, 400, 400);	
-		hCtx.drawImage(enemies.pics[this.index], 150, 25, 400,400);
+		if(combat.oldState === DUNGEON){
+			hCtx.fillStyle = "#140C1C";
+			hCtx.fillRect(100, 20, 500, 500);
+			//hCtx.fillStyle = "#4E4A4E";
+			//hCtx.fillRect(150, 300, 400, 150);
+		}
+		else{
+			hCtx.drawImage(fightBackground, 150, 50, 400, 400);
+		}	
+			hCtx.drawImage(enemies.pics[this.index], 150, 25, 400,400);
 	}
 	
 	Enemy.prototype.isAlive = function(){
@@ -86,18 +88,21 @@ function loadImage(imName){
 //
 var enemies = {
 	pics : [],
-	list : [	
-		new Enemy(0,'These are Supposed to be Bones', 11, 2, 0, 0.2, 0),//0
-		new Enemy(1,'Mean Lady',  25, 10, 0, 0.3, 0),					//1
-		new Enemy(2,'Robed Jerk', 10,  3, 0, 0.2, .25),					//2
-		new Enemy(3,'Imp',         4,  1, 0, 0.2, .65), 					//3
-		new Enemy(4,'Angry Chest', 8,  5, 0, 0.2, .2),					//4
-		new Enemy(5,'Scary Shadow',7,  4, 0, 0.2, .3),					//5
-		new Enemy(6,'Gross Thing', 6,  4, 0, 0.2, .4),					//6
-		new Enemy(7,'Skeleton',    3,  2, 0, 0.2, .6),					//7
-		new Enemy(8,'Zombie',      5,  3, 0, 0.5, .8)],					//8
+	list : [	//index, name,	hp,dmg,aggro,atk,esc
+		new Enemy(0, 'These are Supposed to be Bones', 11, 2, 0, 0.2, 0),//0
+		new Enemy(1, 'Mean Lady',  25, 10, 0, 0.35, 0),					//1
+		new Enemy(2, 'Robed Jerk', 10,  3, 0, 0.65, .25),				//2
+		new Enemy(3, 'Imp',         4,  1, 0, 0.4, .65), 				//3
+		new Enemy(4, 'Angry Chest', 22,  12, 0, 0.6, .2),				//4
+		new Enemy(5, 'Scary Shadow',7,  4, 0, 0.6, .3),					//5
+		new Enemy(6, 'Gross Thing', 6,  4, 0, 0.3, .4),					//6
+		new Enemy(7, 'Skeleton',    3,  2, 0, 0.3, .6),					//7
+		new Enemy(8, 'Zombie',      5,  3, 0, 0.4, .8),					//8
+		new Enemy(10, 'Poorly Drawn Bat', 30, 10, 0, 0.6, 0),			//9
+		new Enemy(11, 'Salty Slime', 20, 8, 0, 0.7, 0),					//10
+		new Enemy(12, 'Different Colored Imp', 16, 13, 0, 0.5, 0)],		//11
 	zone : 0,
-	zones :[[8,7,3], [0,3,5,6], [2,5,6], [2,5,6]],
+	zones :[[8, 7, 3], [0, 3, 5, 6], [2, 5, 6], [2, 5, 6],[4, 9, 10, 11]],
 	loadPics: function(){
 		//loads into img array
 		console.log('loading images');
@@ -111,9 +116,15 @@ var enemies = {
 		this.pics[7] = loadImage('skeleton.png');
 		this.pics[8] = loadImage('zombie.png');
 		this.pics[9] = loadImage('Dragon3.png');
+		this.pics[10] =loadImage('bat.png');
+		this.pics[11] =loadImage('slime.png');
+		this.pics[12] =loadImage('darkImp.png');
 	},
 	getZone : function(){
-		if(hero.tilePos[0] < 13){
+		if(state === DUNGEON){
+			this.zone = 4;
+		}
+		else if(hero.tilePos[0] < 13){
 			if(hero.tilePos[1] < 8){
 				this.zone = 0;	
 			}
@@ -131,19 +142,12 @@ var enemies = {
 		}
 	},
 	selectBaddy : function(){
-		if(state == DUNGEON){
-			return dragon;
-		}
-		
 		var baddy = randomInt(0, this.zones[this.zone].length -1);
 		//console.log("zone = " + this.zone + " baddy number" + baddy);
 		return enemies.list[this.zones[this.zone][baddy]];
 	},
 	handleAppearance : function(){
-		//console.log('enemy found');
-		state = BATTLE;
 		this.getZone();
-		//this.selectBaddy();
 		combat.init();
 	},
 	areThere : function(){
@@ -282,6 +286,10 @@ evilMayor.loadScript = function(){
 	overworld.mayor = false;
 }
 evilMayor.die = function(){
-	state = OVERWORLD;	
+	state = OVERWORLD;
+	//change scripts so people react to mayor's death
+	fingerhut.NpcList[1].changeMessage(script.mayorFingerhutPostMayor);
+	fingerhut.NpcList[8].changeMessage(script.oldJewPostMayor);
+	fingerhut.NpcList[10].changeMessage(script.kidShroom1PostMayor);
 }
 enemies.loadPics();

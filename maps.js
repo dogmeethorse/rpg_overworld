@@ -280,7 +280,7 @@
 		];
 	dungeon.NpcList = [];
 	dungeon.specialLocations = {
-		boss: [6,18]
+		boss: [18,21]
 	}
 	dungeon.drawSpecialLocations = function(){
 		if(dungeon.specialLocations.boss){
@@ -320,9 +320,14 @@
 		}
 		//check to see if walked on dragon
 		//console.log('checking tiles');
-		if(dungeon.specialLocations.boss){
+		else if(dungeon.specialLocations.boss){
 			if(dragon.collision(dungeon.specialLocations.boss[0], dungeon.specialLocations.boss[1])){
 				dragon.encounter();
+			}
+			else if(hero.distanceTravelled > 0){
+					if(enemies.areThere()){
+						enemies.handleAppearance();
+				}
 			}
 		}
 	}
@@ -369,11 +374,9 @@
 				hero.nextDirection = 'down';
 				keys.downUp = false;
 			}
-			if(key == 32){ //this is talking not quite sure how to add it in.
+			if(key == 32){
 				hero.nextDirection = 'stop';
 				hero.action = true;
-				//console.log("trying action " + hero.action);
-				//spacebar
 			}
 		},
 		handleUp : function(e){
@@ -419,16 +422,14 @@
 		window.addEventListener('keyup', keys.handleUp, false);
 		
 		drawScreen();
-		// we should add intro before the game loop starts. maybe
 		doIntroduction();
-		
+		//Game loop is global
 		gameLoop = setInterval(function(){
 			hero.move();
 			if(state == TOWN){
 				if(map.NpcList){
 					for(var npc = 0; npc < map.NpcList.length; npc++){
 						if(map.NpcList[npc] instanceof MovingNPC){
-							//console.log("attempt to move");
 							map.NpcList[npc].move();
 						}
 					}

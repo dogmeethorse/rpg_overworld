@@ -1,5 +1,6 @@
 combat = {
 	currentEnemy : null,
+	oldState : null,
 	hdone  : new Event('hdone'), // hero is done
 	edone : new Event('eDone'), //enemy is done.
 	attachEvents : function(){
@@ -11,12 +12,12 @@ combat = {
 	
 	},
 	init : function(){
+		combat.oldState = state;
+		state = BATTLE;
 		fightButton.style.display  = "inline";
 		runButton.style.display    = "inline";
 		fightButton.disabled = false;
 		runButton.disabled   = false;
-		console.log('init COMBAT');
-		console.log('hello');
 		if(this.currentEnemy = enemies.selectBaddy()){
 			this.currentEnemy.greeting();
 			this.currentEnemy.draw();
@@ -37,12 +38,11 @@ combat = {
 		else{
 			console.log("failed to pick enemy");
 		}
-		// what we really want is for the state to pop back to OVERWORLD OR DUNGEON  AFTER DIALOG BOX IS CLOSED.
 		fightButton.style.display = "none";
 		runButton.style.display = "none";
-		state = OVERWORLD;
+		state = combat.oldState;
+		combat.oldState = null;
 		dialogBox.open();
-		//window.setTimeout(dialogBox.close, 1000); // we want to get rid of this
 	},
 	giveTreasure : function(){
 		var xpGain = combat.currentEnemy.xp;
@@ -51,7 +51,7 @@ combat = {
 		combatHero.xp += xpGain;
 		combatHero.gold += goldGain;
 		combatHero.setStats();
-		combat.end();
+		//combat.end();
 	},
 	heroTurn : function(){
 		if(combatHero.isAlive()){

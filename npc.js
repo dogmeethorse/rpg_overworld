@@ -8,11 +8,11 @@ var script= {
 	dogBoy : "The dragon made fun of my dog!",
 	fatLady1 : "The dragon judged me!",
 	kidShroom1 : "The mayor of Pallas is attacking anyone who tries to enter the town.",
-	kidShroom1PostMayor: "",
+	kidShroom1PostMayor: "I don't know man, killing the mayor... Do two wrongs ever make a right?",
 	oldJew : "Can't go to Pallas anymore since the mayor flipped out!",
-	oldJewPostMayor : "",
+	oldJewPostMayor : "The mayor is dead. Time to visit those smokin' hot Pallas ladies!! ",
 	mayorFingerhut : "The other mayor is mean!",
-	mayorFingerhutPostMayor : "",
+	mayorFingerhutPostMayor : "Please don't kill me. I'll give you the key to the city.",
 	bathGuy : "Are you too shy to take your clothes off at the public bath too? How will we ever get clean?",
 	bathGuy2 : "The Dragon flew by. It made me feel small and insecure.",
 	antisocial: "No, you can't come in my house. Don't even talk to me.",
@@ -211,6 +211,10 @@ NPC.prototype.talk = function(){
 	//physically moving the divs around
 	dialogBox.open();
 	sendMessage(this.message, true);
+}
+
+NPC.prototype.changeMessage = function(newMessage){
+	this.message = newMessage;
 }
 
 NPC.prototype.draw = function(){
