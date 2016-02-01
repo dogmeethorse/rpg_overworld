@@ -251,7 +251,11 @@ MovingNPC.prototype.getDirection = function(){
 	}
 }
 MovingNPC.prototype.checkTargetTile = function(){
-		if(!map.tileList[this.targetTileValue].passable){
+		if(typeof map.tileList[this.targetTileValue] == "undefined"){
+			console.log("guy out of bounds");
+			return;
+		}
+		else if(!map.tileList[this.targetTileValue].passable){
 			this.direction = 'stop';
 			this.targetTile = this.tilePos;
 			return;
@@ -285,13 +289,14 @@ MovingNPC.prototype.getTargetTile = function(){
 	}
 	else if(this.direction == "right"){
 		this.targetTile =[this.tilePos[0] + 1,this.tilePos[1]];
-		}
+	}
 	else if(this.direction == "left"){
 		this.targetTile =[this.tilePos[0] -1 ,this.tilePos[1]];
 	}
-	else if(this.direction == "stop"){
+	if(	this.direction == "stop" || typeof map.layout[this.targetTile[1]] == "undefined" ||
+	typeof map.layout[this.targetTile[1]][this.targetTile[0]] == "undefined"){
 		this.targetTile =[this.tilePos[0], this.tilePos[1]]; 
-	}
+	}	
 	this.targetTileValue = map.layout[this.targetTile[1]][this.targetTile[0]];	//reversed because row comes first
 }
 

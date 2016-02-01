@@ -27,8 +27,9 @@ function Enemy(index, name,hp,dmg,aggro,atk,esc){
 		}
 		else{
 			hCtx.drawImage(fightBackground, 150, 50, 400, 400);
-		}	
-			hCtx.drawImage(enemies.pics[this.index], 150, 25, 400,400);
+		}
+		console.log("drawing enemy?");	
+		hCtx.drawImage(enemies.pics[this.index], 150, 25, 400,400);
 	}
 	
 	Enemy.prototype.isAlive = function(){
@@ -143,7 +144,6 @@ var enemies = {
 	},
 	selectBaddy : function(){
 		var baddy = randomInt(0, this.zones[this.zone].length -1);
-		//console.log("zone = " + this.zone + " baddy number" + baddy);
 		return enemies.list[this.zones[this.zone][baddy]];
 	},
 	handleAppearance : function(){
@@ -241,6 +241,7 @@ dragon.propose = function(){
 }
 
 dragon.encounter = function(){
+	combat.oldState = DUNGEON;
 	this.draw();
 	this.introduction();
 }

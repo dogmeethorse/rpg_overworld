@@ -1,15 +1,13 @@
+var enemiesKilled = 0;
+var timesDead = 0
 combat = {
 	currentEnemy : null,
 	oldState : null,
-	hdone  : new Event('hdone'), // hero is done
+	result  : "", // 
 	edone : new Event('eDone'), //enemy is done.
 	attachEvents : function(){
-		dragonSmasher.addEventListener('hdone',  function(){combat.handleResult('hero')});	 // hero turn done
-		dragonSmasher.addEventListener('eDone',  function(){combat.handleResult('enemy')});//end enemy turn
-		
 		fightButton.addEventListener('click', combatHero.attack),//hero attack
 		runButton.addEventListener('click', combatHero.run); 
-	
 	},
 	init : function(){
 		combat.oldState = state;
@@ -33,6 +31,7 @@ combat = {
 		//how is a string that says how combat ended
 		console.log('ending combat');
 		if(this.currentEnemy){
+			enemiesKilled++;
 			this.currentEnemy.die();
 		}
 		else{
@@ -65,7 +64,7 @@ combat = {
 		}
 	},
 	enemyTurn : function(){
-		console.log(combat.hdone.result);
+		console.log(combat.result);
 		//check if enemy alive
 		//disable fight button
 		fightButton.disabled = true;
@@ -74,12 +73,12 @@ combat = {
 		combatHero.setStats();
 		// effects
 		//fire done event:
-		dragonSmasher.dispatchEvent(combat.edone);
+		combat.handleResult("enemy");
 	},
 	handleResult : function(actor){
-		console.log(combat.hdone.result);
+		console.log(combat.result);
 		function handleHeroResult(){
-			if(combat.hdone.result == "hit"){
+			if(combat.result == "hit"){
 				if(combat.currentEnemy.isAlive()){
 					combat.enemyTurn();
 				}
@@ -89,20 +88,19 @@ combat = {
 					combat.end();
 				}
 			}
-			else if(combat.hdone.result == "miss"){
+			else if(combat.result == "miss"){
 				combat.enemyTurn();
 			}
-			else if(combat.hdone.result == "run succeed"){
+			else if(combat.result == "run succeed"){
 				combat.end('run');
 			}
-			else if(combat.hdone.result == "run fail"){
+			else if(combat.result == "run fail"){
 				combat.enemyTurn();
 			}
-			else if(combat.hdone.result === "item used"){
+			else if(combat.result === "item used"){
 				combat.enemyTurn();
 			}
 		}
-		
 		function handleEnemyResult(){
 			if(combatHero.isAlive()){
 				combat.heroTurn();
@@ -117,11 +115,12 @@ combat = {
 		else if (actor == "enemy"){
 			handleEnemyResult();
 		}
-		combat.hdone.result = null;
-		combat.edone.result = null;
 	}
 }
 
 function handleEnd(){
+	console.log("handling end enemies killed = " + enemiesKilled);
+	timesDead++;
+	console.log("times death announced = " + timesDead);
 	sendMessage("You are dead", false);
 }

@@ -412,9 +412,6 @@
 		dialogBox.loadBuffer(script.intro1, script.intro2, script.intro3);
 		dialogBox.open();
 		dialogBox.sayNextInBuffer();
-		while(!dialogBox.bufferIsEmpty){ // introduction to the game.
-			hero.move();
-		}
 	}
 	
 	function startUp() {				
@@ -424,7 +421,7 @@
 		drawScreen();
 		doIntroduction();
 		//Game loop is global
-		gameLoop = setInterval(function(){
+		/*gameLoop = setInterval(function(){
 			hero.move();
 			if(state == TOWN){
 				if(map.NpcList){
@@ -440,4 +437,33 @@
 			}
 			showDebugInfo();
 		}, 1000/8)
+		*/
+		window.requestAnimationFrame(gameStep.update);
+	}
+	
+	gameStep = {
+		timeLastFrame : new Date().getTime(),
+		timeNow : null,
+		delta : 70,
+		update : function(){
+			gameStep.timeNow = new Date().getTime();
+			if(gameStep.timeNow - gameStep.delta > gameStep.timeLastFrame){
+				gameStep.timeLastFrame = gameStep.timeNow;
+				hero.move();
+				if(state == TOWN){
+					if(map.NpcList){
+						for(var npc = 0; npc < map.NpcList.length; npc++){
+							if(map.NpcList[npc] instanceof MovingNPC){
+								map.NpcList[npc].move();
+							}
+						}
+					}
+				}
+				if(state != BATTLE && state != TALK){
+					drawScreen();
+				}
+				showDebugInfo();
+			}
+			window.requestAnimationFrame(gameStep.update);
+		}
 	}

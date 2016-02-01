@@ -208,6 +208,7 @@ var hero= {
 			}
 		}
 		else if(state == TALK){ //NPC puts you into talk state.
+			console.log("talking");
 			if(dialogBox.bufferIsEmpty()){
 				dialogBox.close();
 			}
