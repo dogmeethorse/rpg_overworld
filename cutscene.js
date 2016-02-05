@@ -19,6 +19,32 @@ cutScene.init = function(){
 cutScene.drawCharacter = function(character, x, y){
 	context.drawImage(character, x, y);
 }
+var wakeUp = Object.create(cutScene)
+
+wakeUp.start = function(){
+	wakeUp.init();
+	map = fingerhut;
+	state= TALK;
+	combatHero.gold = 0;
+	combatHero.hp = combatHero.maxHp; 
+	combatHero.setStats();
+	dialogBox.loadBuffer(script.mayorWakeUp1,
+		script.mayorWakeUp2,
+		script.mayorWakeUp3,
+		script.mayorWakeUp4);
+	context.translate(-64, -576);
+	dialogBox.sayNextInBuffer();
+	hero.currentFrame = 0;
+	hero.x = 320;
+	hero.y = 320;
+	hero.tilePos	= [6, 14];
+	hero.targetTile	= [6, 14];
+	map.x = -64;
+	map.y = -576;
+	drawScreen();
+	dialogBox.sayNextInBuffer()
+}
+
 
 var yesToDragon = Object.create(cutScene);
 

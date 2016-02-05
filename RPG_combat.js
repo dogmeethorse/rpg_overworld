@@ -4,7 +4,7 @@ combat = {
 	currentEnemy : null,
 	oldState : null,
 	result  : "", // 
-	edone : new Event('eDone'), //enemy is done.
+	//edone : new Event('eDone'), //enemy is done.
 	attachEvents : function(){
 		fightButton.addEventListener('click', combatHero.attack),//hero attack
 		runButton.addEventListener('click', combatHero.run); 
@@ -106,7 +106,7 @@ combat = {
 				combat.heroTurn();
 			}
 			else{
-				handleEnd();
+				handleDefeat();
 			}
 		}
 		if(actor == "hero"){
@@ -118,9 +118,10 @@ combat = {
 	}
 }
 
-function handleEnd(){
+function handleDefeat(){
 	console.log("handling end enemies killed = " + enemiesKilled);
+	combat.end();
 	timesDead++;
-	console.log("times death announced = " + timesDead);
-	sendMessage("You are dead", false);
+	sendMessage("This is way to Stressful. You feel yourself passing out.", false);
+	window.setTimeout( wakeUp.start, 4000); 
 }
