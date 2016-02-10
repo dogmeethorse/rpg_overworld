@@ -449,7 +449,9 @@
 			gameStep.timeNow = new Date().getTime();
 			if(gameStep.timeNow - gameStep.delta > gameStep.timeLastFrame){
 				gameStep.timeLastFrame = gameStep.timeNow;
-				hero.move();
+				if(state != PASSEDOUT){ 
+					hero.move();
+				}
 				if(state == TOWN){
 					if(map.NpcList){
 						for(var npc = 0; npc < map.NpcList.length; npc++){
@@ -462,7 +464,7 @@
 				if(state != BATTLE && state != TALK){
 					drawScreen();
 				}
-				showDebugInfo();
+				//showDebugInfo();
 			}
 			window.requestAnimationFrame(gameStep.update);
 		}

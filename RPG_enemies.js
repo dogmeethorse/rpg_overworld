@@ -284,10 +284,17 @@ evilMayor.collision = function(){
 }
 evilMayor.loadScript = function(){
 	dialogBox.loadBuffer(script.mayor1, script.mayor2, script.mayor3);
-	overworld.mayor = false;
 }
 evilMayor.die = function(){
-	state = OVERWORLD;
+	console.log("die function");
+	if(evilMayor.hp <= 0){
+		overworld.mayor = false;
+		state = OVERWORLD;
+	}
+	else {
+		console.log('passed out');
+		state = PASSEDOUT;
+	}
 	//change scripts so people react to mayor's death
 	fingerhut.NpcList[1].changeMessage(script.mayorFingerhutPostMayor);
 	fingerhut.NpcList[8].changeMessage(script.oldJewPostMayor);

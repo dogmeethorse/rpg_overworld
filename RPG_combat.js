@@ -123,5 +123,6 @@ function handleDefeat(){
 	combat.end();
 	timesDead++;
 	sendMessage("This is way to Stressful. You feel yourself passing out.", false);
+	state = PASSEDOUT;
 	window.setTimeout( wakeUp.start, 4000); 
 }

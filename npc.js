@@ -8,7 +8,7 @@ var script= {
 	dogBoy : "The dragon made fun of my dog!",
 	fatLady1 : "The dragon judged me!",
 	kidShroom1 : "The mayor of Pallas is attacking anyone who tries to enter the town.",
-	kidShroom1PostMayor: "I don't know man, killing the mayor... Do two wrongs ever make a right?",
+	kidShroom1PostMayor: "I don't know man, killing the other mayor... Do two wrongs ever make a right?",
 	oldJew : "Can't go to Pallas anymore since the mayor flipped out!",
 	oldJewPostMayor : "The mayor is dead. Time to visit those smokin' hot Pallas ladies!! ",
 	mayorFingerhut : "The other mayor is mean!",

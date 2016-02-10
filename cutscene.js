@@ -24,10 +24,11 @@ var wakeUp = Object.create(cutScene)
 wakeUp.start = function(){
 	wakeUp.init();
 	map = fingerhut;
-	state= TALK;
+	state = TALK;
 	combatHero.gold = 0;
 	combatHero.hp = combatHero.maxHp; 
 	combatHero.setStats();
+	dialogBox.revertState = TOWN;
 	dialogBox.loadBuffer(script.mayorWakeUp1,
 		script.mayorWakeUp2,
 		script.mayorWakeUp3,

@@ -8,6 +8,7 @@
 	
 	const START = 1;
 	const ENDGAME = 0;
+	const PASSEDOUT = 2;
 	const TOWN	= 10;
 	const TALK	= 15;
 	const OVERWORLD = 20;
