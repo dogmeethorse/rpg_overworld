@@ -246,9 +246,14 @@ dragon.encounter = function(){
 	this.introduction();
 }
 dragon.die = function(){
-	delete dungeon.specialLocations.boss;
-	state = dungeon;
-	dragonDead.start();
+	if(dragon.isAlive()){
+		combatHero.die();
+	}
+	else{
+		delete dungeon.specialLocations.boss;
+		state = dungeon;
+		dragonDead.start();
+	}
 }
 
 var evilMayor = Object.create(dragon);
@@ -290,14 +295,14 @@ evilMayor.die = function(){
 	if(evilMayor.hp <= 0){
 		overworld.mayor = false;
 		state = OVERWORLD;
+		//change scripts so people react to mayor's death
+		fingerhut.NpcList[1].changeMessage(script.mayorFingerhutPostMayor);
+		fingerhut.NpcList[8].changeMessage(script.oldJewPostMayor);
+		fingerhut.NpcList[10].changeMessage(script.kidShroom1PostMayor);
 	}
 	else {
 		console.log('passed out');
 		state = PASSEDOUT;
 	}
-	//change scripts so people react to mayor's death
-	fingerhut.NpcList[1].changeMessage(script.mayorFingerhutPostMayor);
-	fingerhut.NpcList[8].changeMessage(script.oldJewPostMayor);
-	fingerhut.NpcList[10].changeMessage(script.kidShroom1PostMayor);
 }
 enemies.loadPics();
